@@ -5,6 +5,8 @@
 
 This project simulates a 8085 processor.
 
+![screenshot](https://raw.githubusercontent.com/thetodd/8085-Simulator/gh-pages/screenshots/screenshot8085.PNG)
+
 ###Supported Features
 - 8085 assembler
 - syntax highlighting
