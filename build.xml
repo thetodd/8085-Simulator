@@ -32,7 +32,7 @@
 			<fileset dir="libs" includes="*.jar" />
 		</path>
 		<!-- Compile the java code from ${src} into ${build} -->
-		<javac srcdir="${src}" destdir="${build}">
+		<javac srcdir="${src}" destdir="${build}" encoding="iso-8859-1">
 			<compilerarg value="-Xbootclasspath/p:${toString:lib.path.ref}" />
 		</javac>
 	</target>
