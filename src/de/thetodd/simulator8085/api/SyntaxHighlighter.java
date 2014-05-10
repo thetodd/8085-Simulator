@@ -15,6 +15,7 @@ public class SyntaxHighlighter {
 	private StyleRange labelStyle;
 	private StyleRange numberStyle;
 	private StyleRange breakpointStyle;
+	private StyleRange commentStyle;
 
 	private String[] mnemonics = { "ORG", "JMP", "MVI", "HLT", "NOP", "ADD" };
 
@@ -37,6 +38,9 @@ public class SyntaxHighlighter {
 		breakpointStyle.fontStyle = SWT.BOLD;
 		breakpointStyle.foreground = new Color(display, 0xCC, 0x00, 0x00);
 		breakpointStyle.background = new Color(display, 0xFF, 0xCC, 0xCC);
+
+		commentStyle = new StyleRange();
+		commentStyle.foreground = new Color(display, 0x1d, 0x37, 0x84);
 	}
 
 	public void highlight(StyledText codeWidget) {
@@ -60,7 +64,7 @@ public class SyntaxHighlighter {
 		// Highlight Hexnumbers
 		Pattern pattern2 = Pattern.compile("0x[0-9a-f]+");
 		Matcher matcher2 = pattern2.matcher(code);
-		// check all occurance
+		// check all occurrences
 		while (matcher2.find()) {
 			StyleRange styleRange = (StyleRange) numberStyle.clone();
 			styleRange.start = matcher2.start();
@@ -71,7 +75,7 @@ public class SyntaxHighlighter {
 		// Highlight Labels
 		Pattern pattern = Pattern.compile("[a-z]+:");
 		Matcher matcher = pattern.matcher(code);
-		// check all occurance
+		// check all occurrences
 		while (matcher.find()) {
 			StyleRange styleRange = (StyleRange) labelStyle.clone();
 			styleRange.start = matcher.start();
@@ -82,11 +86,22 @@ public class SyntaxHighlighter {
 		// Highlight Breakpoints
 		Pattern pattern3 = Pattern.compile("@:");
 		Matcher matcher3 = pattern3.matcher(code);
-		// check all occurance
+		// check all occurrences
 		while (matcher3.find()) {
 			StyleRange styleRange = (StyleRange) breakpointStyle.clone();
 			styleRange.start = matcher3.start();
 			styleRange.length = matcher3.end() - matcher3.start();
+			codeWidget.setStyleRange(styleRange);
+		}
+		
+		//Highlight Comments
+		Pattern pattern4 = Pattern.compile(";.*");
+		Matcher matcher4 = pattern4.matcher(code);
+		// check all occurrences
+		while (matcher4.find()) {
+			StyleRange styleRange = (StyleRange) commentStyle.clone();
+			styleRange.start = matcher4.start();
+			styleRange.length = matcher4.end() - matcher4.start();
 			codeWidget.setStyleRange(styleRange);
 		}
 	}
