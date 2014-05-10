@@ -14,6 +14,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -25,23 +26,23 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import de.thetodd.simulator8085.api.Memory;
 import de.thetodd.simulator8085.api.Processor;
 import de.thetodd.simulator8085.api.ProcessorChangedListener;
 import de.thetodd.simulator8085.api.RegisterChangeEvent;
+import de.thetodd.simulator8085.api.RegisterChangeEvent.Register;
 import de.thetodd.simulator8085.api.Simulator;
 import de.thetodd.simulator8085.api.SyntaxHighlighter;
-import de.thetodd.simulator8085.api.RegisterChangeEvent.Register;
 import de.thetodd.simulator8085.api.actions.Action;
 import de.thetodd.simulator8085.api.actions.AssembleAction;
 import de.thetodd.simulator8085.api.actions.OneStepAction;
@@ -57,7 +58,6 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 	private Text txtRegisterE;
 	private Text txtRegisterH;
 	private Text txtRegisterL;
-	private Text txtRegisterF;
 	private Text txtMemoryEnd;
 	private Table table;
 	private Text txtRegisterSP;
@@ -68,6 +68,11 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 	private Label lblPercent;
 	private Text txtMemoryStart;
 	private ProgressBar pbLoad;
+	private Label lblSignFlag;
+	private Label lblZeroFlag;
+	private Label lblACarryFlag;
+	private Label lblParityFlag;
+	private Label lblCarryFlag;
 
 	/**
 	 * Open the window.
@@ -102,21 +107,60 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				.setImage(SWTResourceManager
 						.getImage(SimulatorMainWindow.class,
 								"/de/thetodd/simulator8085/gui/icons/application_xp_terminal.png"));
-		shlSimulator.setSize(732, 462);
-		shlSimulator.setText("8085 Simulator - Hochschule Fulda");
+		shlSimulator.setSize(737, 462);
+		shlSimulator.setText("8085 Simulator");
 		shlSimulator.setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		Composite composite = new Composite(shlSimulator, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
 
 		Group grpRegister = new Group(composite, SWT.NONE);
-		grpRegister.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
+		grpRegister.setLayout(new GridLayout(7, false));
+		grpRegister.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false,
 				false, 1, 2));
-		grpRegister.setText("Register");
+		grpRegister.setText("Registers");
 
 		Label lblA = new Label(grpRegister, SWT.NONE);
-		lblA.setBounds(10, 34, 8, 15);
+		lblA.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false,
+				1, 1));
+		lblA.setAlignment(SWT.CENTER);
 		lblA.setText("A");
+
+		Label lblB = new Label(grpRegister, SWT.NONE);
+		lblB.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false,
+				1, 1));
+		lblB.setText("B");
+		lblB.setAlignment(SWT.CENTER);
+
+		Label lblC = new Label(grpRegister, SWT.NONE);
+		lblC.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false,
+				1, 1));
+		lblC.setText("C");
+		lblC.setAlignment(SWT.CENTER);
+
+		Label lblD = new Label(grpRegister, SWT.NONE);
+		lblD.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false,
+				1, 1));
+		lblD.setText("D");
+		lblD.setAlignment(SWT.CENTER);
+
+		Label lblE = new Label(grpRegister, SWT.NONE);
+		lblE.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false,
+				1, 1));
+		lblE.setText("E");
+		lblE.setAlignment(SWT.CENTER);
+
+		Label lblH = new Label(grpRegister, SWT.NONE);
+		lblH.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false,
+				1, 1));
+		lblH.setText("H");
+		lblH.setAlignment(SWT.CENTER);
+
+		Label lblL = new Label(grpRegister, SWT.NONE);
+		lblL.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false,
+				1, 1));
+		lblL.setText("L");
+		lblL.setAlignment(SWT.CENTER);
 
 		txtRegisterA = new Text(grpRegister, SWT.BORDER | SWT.READ_ONLY);
 		txtRegisterA
@@ -125,7 +169,6 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		txtRegisterA.setText("0x00");
 		txtRegisterA.setFont(SWTResourceManager.getFont("Courier New", 14,
 				SWT.BOLD));
-		txtRegisterA.setBounds(24, 27, 56, 28);
 
 		txtRegisterB = new Text(grpRegister, SWT.BORDER | SWT.READ_ONLY);
 		txtRegisterB.setText("0x00");
@@ -134,11 +177,6 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				SWT.BOLD));
 		txtRegisterB
 				.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		txtRegisterB.setBounds(100, 27, 56, 28);
-
-		Label lblB = new Label(grpRegister, SWT.NONE);
-		lblB.setText("B");
-		lblB.setBounds(86, 34, 8, 15);
 
 		txtRegisterC = new Text(grpRegister, SWT.BORDER | SWT.READ_ONLY);
 		txtRegisterC.setText("0x00");
@@ -147,11 +185,6 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				SWT.BOLD));
 		txtRegisterC
 				.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		txtRegisterC.setBounds(176, 27, 56, 28);
-
-		Label lblC = new Label(grpRegister, SWT.NONE);
-		lblC.setText("C");
-		lblC.setBounds(162, 34, 8, 15);
 
 		txtRegisterD = new Text(grpRegister, SWT.BORDER | SWT.READ_ONLY);
 		txtRegisterD.setText("0x00");
@@ -160,11 +193,6 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				SWT.BOLD));
 		txtRegisterD
 				.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		txtRegisterD.setBounds(252, 27, 56, 28);
-
-		Label lblD = new Label(grpRegister, SWT.NONE);
-		lblD.setText("D");
-		lblD.setBounds(238, 34, 8, 15);
 
 		txtRegisterE = new Text(grpRegister, SWT.BORDER | SWT.READ_ONLY);
 		txtRegisterE.setText("0x00");
@@ -173,11 +201,6 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				SWT.BOLD));
 		txtRegisterE
 				.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		txtRegisterE.setBounds(328, 27, 56, 28);
-
-		Label lblE = new Label(grpRegister, SWT.NONE);
-		lblE.setText("E");
-		lblE.setBounds(314, 34, 8, 15);
 
 		txtRegisterH = new Text(grpRegister, SWT.BORDER | SWT.READ_ONLY);
 		txtRegisterH.setText("0x00");
@@ -186,11 +209,6 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				SWT.BOLD));
 		txtRegisterH
 				.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		txtRegisterH.setBounds(24, 61, 56, 28);
-
-		Label lblH = new Label(grpRegister, SWT.NONE);
-		lblH.setText("H");
-		lblH.setBounds(10, 68, 8, 15);
 
 		txtRegisterL = new Text(grpRegister, SWT.BORDER | SWT.READ_ONLY);
 		txtRegisterL.setText("0x00");
@@ -199,64 +217,118 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				SWT.BOLD));
 		txtRegisterL
 				.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		txtRegisterL.setBounds(100, 61, 56, 28);
 
-		Label lblL = new Label(grpRegister, SWT.NONE);
-		lblL.setText("L");
-		lblL.setBounds(86, 68, 8, 15);
+		Label lblSp = new Label(grpRegister, SWT.NONE);
+		lblSp.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false,
+				2, 1));
+		lblSp.setText("Stackpointer");
+		lblSp.setAlignment(SWT.CENTER);
 
-		txtRegisterF = new Text(grpRegister, SWT.BORDER | SWT.READ_ONLY);
-		txtRegisterF.setText("0x00");
-		txtRegisterF.setForeground(SWTResourceManager.getColor(255, 215, 0));
-		txtRegisterF.setFont(SWTResourceManager.getFont("Courier New", 14,
-				SWT.BOLD));
-		txtRegisterF
-				.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		txtRegisterF.setBounds(176, 61, 56, 28);
+		Label lblPc = new Label(grpRegister, SWT.NONE);
+		lblPc.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false,
+				2, 1));
+		lblPc.setText("Programcounter");
+		lblPc.setAlignment(SWT.CENTER);
 
-		Label lblF = new Label(grpRegister, SWT.NONE);
-		lblF.setText("F");
-		lblF.setBounds(162, 68, 8, 15);
+		Label lblFlags = new Label(grpRegister, SWT.NONE);
+		lblFlags.setText("Flags");
+		lblFlags.setAlignment(SWT.CENTER);
+		new Label(grpRegister, SWT.NONE);
+		new Label(grpRegister, SWT.NONE);
 
-		txtRegisterSP = new Text(grpRegister, SWT.BORDER | SWT.READ_ONLY);
+		txtRegisterSP = new Text(grpRegister, SWT.BORDER | SWT.READ_ONLY
+				| SWT.CENTER);
+		txtRegisterSP.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false,
+				false, 2, 1));
 		txtRegisterSP.setText("0x0000");
 		txtRegisterSP.setForeground(SWTResourceManager.getColor(255, 215, 0));
 		txtRegisterSP.setFont(SWTResourceManager.getFont("Courier New", 14,
 				SWT.BOLD));
 		txtRegisterSP.setBackground(SWTResourceManager
 				.getColor(SWT.COLOR_BLACK));
-		txtRegisterSP.setBounds(252, 61, 83, 28);
 
-		Label lblSp = new Label(grpRegister, SWT.NONE);
-		lblSp.setText("SP");
-		lblSp.setBounds(238, 68, 13, 15);
-
-		txtRegisterPC = new Text(grpRegister, SWT.BORDER | SWT.READ_ONLY);
+		txtRegisterPC = new Text(grpRegister, SWT.BORDER | SWT.READ_ONLY
+				| SWT.CENTER);
+		txtRegisterPC.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false,
+				false, 2, 1));
 		txtRegisterPC.setText("0x0000");
 		txtRegisterPC.setForeground(SWTResourceManager.getColor(255, 215, 0));
 		txtRegisterPC.setFont(SWTResourceManager.getFont("Courier New", 14,
 				SWT.BOLD));
 		txtRegisterPC.setBackground(SWTResourceManager
 				.getColor(SWT.COLOR_BLACK));
-		txtRegisterPC.setBounds(360, 61, 83, 28);
 
-		Label lblPc = new Label(grpRegister, SWT.NONE);
-		lblPc.setText("PC");
-		lblPc.setBounds(341, 68, 17, 15);
+		Composite composite_3 = new Composite(grpRegister, SWT.NONE);
+		composite_3.setLayout(new GridLayout(5, false));
+		GridData gd_composite_3 = new GridData(SWT.LEFT, SWT.CENTER, false,
+				false, 3, 1);
+		gd_composite_3.heightHint = 55;
+		composite_3.setLayoutData(gd_composite_3);
+
+		Label lblNewLabel = new Label(composite_3, SWT.NONE);
+		lblNewLabel.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false,
+				false, 1, 1));
+		lblNewLabel.setText("S");
+
+		Label lblNewLabel_1 = new Label(composite_3, SWT.NONE);
+		lblNewLabel_1.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false,
+				false, 1, 1));
+		lblNewLabel_1.setText("Z");
+
+		Label lblNewLabel_2 = new Label(composite_3, SWT.NONE);
+		lblNewLabel_2.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false,
+				false, 1, 1));
+		lblNewLabel_2.setText("AC");
+
+		Label lblNewLabel_3 = new Label(composite_3, SWT.NONE);
+		lblNewLabel_3.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false,
+				false, 1, 1));
+		lblNewLabel_3.setText("P");
+
+		Label lblNewLabel_4 = new Label(composite_3, SWT.NONE);
+		lblNewLabel_4.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false,
+				false, 1, 1));
+		lblNewLabel_4.setText("C");
+
+		lblSignFlag = new Label(composite_3, SWT.NONE);
+		lblSignFlag.setImage(SWTResourceManager.getImage(
+				SimulatorMainWindow.class,
+				"/de/thetodd/simulator8085/gui/icons/accept.png"));
+
+		lblZeroFlag = new Label(composite_3, SWT.NONE);
+		lblZeroFlag.setImage(SWTResourceManager.getImage(
+				SimulatorMainWindow.class,
+				"/de/thetodd/simulator8085/gui/icons/accept.png"));
+
+		lblACarryFlag = new Label(composite_3, SWT.NONE);
+		lblACarryFlag.setImage(SWTResourceManager.getImage(
+				SimulatorMainWindow.class,
+				"/de/thetodd/simulator8085/gui/icons/delete.png"));
+
+		lblParityFlag = new Label(composite_3, SWT.NONE);
+		lblParityFlag.setImage(SWTResourceManager.getImage(
+				SimulatorMainWindow.class,
+				"/de/thetodd/simulator8085/gui/icons/delete.png"));
+
+		lblCarryFlag = new Label(composite_3, SWT.NONE);
+		lblCarryFlag.setImage(SWTResourceManager.getImage(
+				SimulatorMainWindow.class,
+				"/de/thetodd/simulator8085/gui/icons/accept.png"));
 
 		Composite composite_1 = new Composite(composite, SWT.NONE);
 		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false,
-				1, 1));
+				1, 2));
 		composite_1.setLayout(new GridLayout(3, false));
 
 		Label lblSpeicherbereich = new Label(composite_1, SWT.NONE);
-		lblSpeicherbereich.setText("Speicherbereich Anfang:");
+		lblSpeicherbereich.setText("Memory start");
 
 		txtMemoryStart = new Text(composite_1, SWT.BORDER);
 		txtMemoryStart.setText("0x1800");
 
-		Button button = new Button(composite_1, SWT.NONE);
-		button.addSelectionListener(new SelectionAdapter() {
+		Button btnSetMemory = new Button(composite_1, SWT.NONE);
+		btnSetMemory.setText("set memory");
+		btnSetMemory.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				short start = Integer.decode(txtMemoryStart.getText())
@@ -272,114 +344,20 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				Simulator.getInstance().fireMemoryChangeEvent();
 			}
 		});
-		button.setToolTipText("Speicher anpassen");
-		button.setImage(SWTResourceManager.getImage(SimulatorMainWindow.class,
+		btnSetMemory.setToolTipText("Speicher anpassen");
+		btnSetMemory.setImage(SWTResourceManager.getImage(SimulatorMainWindow.class,
 				"/de/thetodd/simulator8085/gui/icons/drive_edit.png"));
-		button.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false,
+		btnSetMemory.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false,
 				1, 2));
 
 		Label lblSpeicherbereichEnde = new Label(composite_1, SWT.NONE);
-		lblSpeicherbereichEnde.setText("Speicherbereich Ende:");
+		lblSpeicherbereichEnde.setText("Memory end");
 
 		txtMemoryEnd = new Text(composite_1, SWT.BORDER);
 		txtMemoryEnd.setText("0x1BFF");
 
-		ToolBar toolBar = new ToolBar(composite, SWT.FLAT | SWT.RIGHT);
-
-		ToolItem toolItem = new ToolItem(toolBar, SWT.NONE);
-		toolItem.setToolTipText("Datei \u00F6ffnen");
-		toolItem.setImage(SWTResourceManager.getImage(
-				SimulatorMainWindow.class,
-				"/de/thetodd/simulator8085/gui/icons/folder_explore.png"));
-
-		ToolItem toolItem_1 = new ToolItem(toolBar, SWT.NONE);
-		toolItem_1.setToolTipText("Datei speichern");
-		toolItem_1.setImage(SWTResourceManager.getImage(
-				SimulatorMainWindow.class,
-				"/de/thetodd/simulator8085/gui/icons/disk.png"));
-
-		ToolItem tltmNewItem = new ToolItem(toolBar, SWT.NONE);
-		tltmNewItem.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				Action assemble = new AssembleAction(codeText.getText());
-				assemble.run();
-
-				// Reload counters
-				lblProgramSize.setText(Simulator.getInstance().getProgramSize()
-						+ " Byte");
-				lblCommandCount.setText(Simulator.getInstance()
-						.getCommandCount() + " Anweisungen");
-				short memSize = Memory.getInstance().getMemorySize();
-				double load = Simulator.getInstance().getProgramSize()
-						/ memSize * 100;
-				pbLoad.setSelection((int) load);
-				if (load > memSize) {
-					pbLoad.setState(SWT.ERROR);
-				} else {
-					pbLoad.setState(SWT.NORMAL);
-				}
-
-				updateLineHighlighting();
-			}
-		});
-		tltmNewItem.setImage(SWTResourceManager.getImage(
-				SimulatorMainWindow.class,
-				"/de/thetodd/simulator8085/gui/icons/wrench.png"));
-		tltmNewItem.setToolTipText("Assemblieren");
-
-		ToolItem tltmNewItem_1 = new ToolItem(toolBar, SWT.NONE);
-		tltmNewItem_1.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				// SwingWorker<Boolean, Object> simulate = new SimulateAction();
-
-				SimulateAction simulate = new SimulateAction();
-				simulate.run();
-				updateLineHighlighting();
-			}
-		});
-		tltmNewItem_1.setToolTipText("Simulieren");
-		tltmNewItem_1.setImage(SWTResourceManager.getImage(
-				SimulatorMainWindow.class,
-				"/de/thetodd/simulator8085/gui/icons/control_play.png"));
-
-		ToolItem tltmNewItem_2 = new ToolItem(toolBar, SWT.NONE);
-		tltmNewItem_2.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				Action einzel = new OneStepAction();
-				einzel.run();
-				updateLineHighlighting();
-				Simulator.getInstance().fireRegisterChangeEvent(
-						new RegisterChangeEvent(RegisterChangeEvent
-								.getAllTemplate()));
-			}
-		});
-		tltmNewItem_2.setImage(SWTResourceManager.getImage(
-				SimulatorMainWindow.class,
-				"/de/thetodd/simulator8085/gui/icons/control_end_blue.png"));
-		tltmNewItem_2.setToolTipText("Einzelschritt");
-
-		ToolItem tltmReset = new ToolItem(toolBar, SWT.NONE);
-		tltmReset.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				Memory.getInstance().resetMemory();
-				Processor.getInstance().resetProcessor();
-				Simulator.getInstance().fireRegisterChangeEvent(
-						new RegisterChangeEvent(RegisterChangeEvent
-								.getAllTemplate()));
-			}
-		});
-		tltmReset.setToolTipText("Reset");
-		tltmReset
-				.setImage(SWTResourceManager
-						.getImage(SimulatorMainWindow.class,
-								"/de/thetodd/simulator8085/gui/icons/arrow_rotate_anticlockwise.png"));
-
 		CTabFolder tabFolder = new CTabFolder(composite, SWT.BORDER);
-		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2,
+		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 2,
 				1));
 		tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(
 				SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
@@ -389,17 +367,17 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				.setImage(SWTResourceManager
 						.getImage(SimulatorMainWindow.class,
 								"/de/thetodd/simulator8085/gui/icons/application_xp_terminal.png"));
-		tbtmProgramm.setText("Programm");
+		tbtmProgramm.setText("Program");
 		tabFolder.setSelection(tbtmProgramm);
 
-		codeText = new StyledText(tabFolder, SWT.BORDER);
+		codeText = new StyledText(tabFolder, SWT.BORDER|SWT.V_SCROLL);
 		codeText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				SyntaxHighlighter highlighter = new SyntaxHighlighter();
 				highlighter.highlight(codeText);
 			}
 		});
-		codeText.setText("ORG 0x1800\r\nJMP start\r\nstart:\r\nMVI A,0x33\r\nJMP ende\r\nORG 0x1900\r\n@:\r\nende:\r\nMVI A,0x44\r\nMVI A,0x55\r\nJMP start\r\nHLT");
+		codeText.setText(";Kommentar\r\nORG 0x1800\r\nJMP start\r\nstart:\r\nMVI A,0x33\r\nADD A\r\nJMP ende\r\nORG 0x1900\r\n@:\r\nende:\r\nMVI A,0x44\r\nMVI A,0x55\r\nJMP start\r\nHLT");
 		codeText.setTopMargin(5);
 		codeText.setBottomMargin(5);
 		codeText.setRightMargin(5);
@@ -412,7 +390,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		tbtmSpeicher.setImage(SWTResourceManager.getImage(
 				SimulatorMainWindow.class,
 				"/de/thetodd/simulator8085/gui/icons/drive.png"));
-		tbtmSpeicher.setText("Speicher");
+		tbtmSpeicher.setText("Memory");
 
 		TableViewer tableViewer = new TableViewer(tabFolder, SWT.BORDER
 				| SWT.FULL_SELECTION);
@@ -527,7 +505,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		tbtmProgramminformationen.setImage(SWTResourceManager.getImage(
 				SimulatorMainWindow.class,
 				"/de/thetodd/simulator8085/gui/icons/chart_bar.png"));
-		tbtmProgramminformationen.setText("Programminformationen");
+		tbtmProgramminformationen.setText("Program survey");
 
 		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
 		tbtmProgramminformationen.setControl(composite_2);
@@ -590,6 +568,140 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				SWT.RIGHT);
 		fd_pbLoad.left = new FormAttachment(lblAuslastungSpeicherbereich, 6);
 		pbLoad.setLayoutData(fd_pbLoad);
+
+		Menu menu = new Menu(shlSimulator, SWT.BAR);
+		shlSimulator.setMenuBar(menu);
+
+		MenuItem mntmFile = new MenuItem(menu, SWT.CASCADE);
+		mntmFile.setText("File");
+
+		Menu menu_1 = new Menu(mntmFile);
+		mntmFile.setMenu(menu_1);
+
+		MenuItem mntmNewFile = new MenuItem(menu_1, SWT.NONE);
+		mntmNewFile.setText("New File\tCtrl+N");
+		mntmNewFile.setAccelerator(SWT.MOD1+'N');
+
+		MenuItem mntmOpen = new MenuItem(menu_1, SWT.NONE);
+		mntmOpen.setImage(SWTResourceManager.getImage(
+				SimulatorMainWindow.class,
+				"/de/thetodd/simulator8085/gui/icons/folder_explore.png"));
+		mntmOpen.setText("Open...\tCtrl+O");
+		mntmOpen.setAccelerator(SWT.MOD1+'O');
+
+		MenuItem mntmSave = new MenuItem(menu_1, SWT.NONE);
+		mntmSave.setImage(SWTResourceManager.getImage(
+				SimulatorMainWindow.class,
+				"/de/thetodd/simulator8085/gui/icons/disk.png"));
+		mntmSave.setText("Save...\tCtrl+S");
+		mntmSave.setAccelerator(SWT.MOD1 + 'S');
+
+		new MenuItem(menu_1, SWT.SEPARATOR);
+
+		MenuItem mntmClose = new MenuItem(menu_1, SWT.NONE);
+		mntmClose.setText("Close");
+		mntmClose.setAccelerator(SWT.MOD2+SWT.F4);
+
+		MenuItem mntmSimulate = new MenuItem(menu, SWT.CASCADE);
+		mntmSimulate.setText("Simulate");
+
+		Menu menu_2 = new Menu(mntmSimulate);
+		mntmSimulate.setMenu(menu_2);
+
+		MenuItem mntmAsseble = new MenuItem(menu_2, SWT.NONE);
+		mntmAsseble.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				Action assemble = new AssembleAction(codeText.getText());
+				assemble.run();
+
+				// Reload counters
+				lblProgramSize.setText(Simulator.getInstance().getProgramSize()
+						+ " Byte");
+				lblCommandCount.setText(Simulator.getInstance()
+						.getCommandCount() + " Anweisungen");
+				short memSize = Memory.getInstance().getMemorySize();
+				double load = Simulator.getInstance().getProgramSize()
+						/ memSize * 100;
+				pbLoad.setSelection((int) load);
+				if (load > memSize) {
+					pbLoad.setState(SWT.ERROR);
+				} else {
+					pbLoad.setState(SWT.NORMAL);
+				}
+
+				updateLineHighlighting();
+			}
+		});
+		mntmAsseble.setImage(SWTResourceManager.getImage(
+				SimulatorMainWindow.class,
+				"/de/thetodd/simulator8085/gui/icons/wrench.png"));
+		mntmAsseble.setText("Assemble\tF6");
+		mntmAsseble.setAccelerator(SWT.F6);
+
+		MenuItem mntmResetProcessor = new MenuItem(menu_2, SWT.NONE);
+		mntmResetProcessor.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				Memory.getInstance().resetMemory();
+				Processor.getInstance().resetProcessor();
+				Simulator.getInstance().fireRegisterChangeEvent(
+						new RegisterChangeEvent(RegisterChangeEvent
+								.getAllTemplate()));
+			}
+		});
+		mntmResetProcessor
+				.setImage(SWTResourceManager
+						.getImage(SimulatorMainWindow.class,
+								"/de/thetodd/simulator8085/gui/icons/arrow_rotate_anticlockwise.png"));
+		mntmResetProcessor.setText("Reset Processor\tCtrl+R");
+		mntmResetProcessor.setAccelerator(SWT.MOD1 + 'R');
+
+		MenuItem mntmNexBreakpoint = new MenuItem(menu_2, SWT.NONE);
+		mntmNexBreakpoint.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				SimulateAction simulate = new SimulateAction();
+				simulate.run();
+				updateLineHighlighting();
+			}
+		});
+		mntmNexBreakpoint.setImage(SWTResourceManager.getImage(
+				SimulatorMainWindow.class,
+				"/de/thetodd/simulator8085/gui/icons/control_end_blue.png"));
+		mntmNexBreakpoint.setText("Next Breakpoint\tF8");
+		mntmNexBreakpoint.setAccelerator(SWT.F8);
+
+		MenuItem mntmOneStep = new MenuItem(menu_2, SWT.NONE);
+		mntmOneStep.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				Action einzel = new OneStepAction();
+				einzel.run();
+				updateLineHighlighting();
+				Simulator.getInstance().fireRegisterChangeEvent(
+						new RegisterChangeEvent(RegisterChangeEvent
+								.getAllTemplate()));
+			}
+		});
+		mntmOneStep.setImage(SWTResourceManager.getImage(
+				SimulatorMainWindow.class,
+				"/de/thetodd/simulator8085/gui/icons/control_play.png"));
+		mntmOneStep.setText("One Step\tF7");
+		mntmOneStep.setAccelerator(SWT.F7);
+
+		MenuItem mntmNewSubmenu = new MenuItem(menu, SWT.CASCADE);
+		mntmNewSubmenu.setText("Help");
+
+		Menu menu_3 = new Menu(mntmNewSubmenu);
+		mntmNewSubmenu.setMenu(menu_3);
+
+		MenuItem mntmHelpContents = new MenuItem(menu_3, SWT.NONE);
+		mntmHelpContents.setText("Help Contents\tF1");
+		mntmHelpContents.setAccelerator(SWT.F1);
+
+		MenuItem mntmAbout = new MenuItem(menu_3, SWT.NONE);
+		mntmAbout.setText("About...");
 	}
 
 	@Override
@@ -635,8 +747,38 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 					.getInstance().getRegisterE()));
 		}
 		if (regs.contains(Register.REGISTER_F)) {
-			txtRegisterF.setText(String.format("0x%02X", Processor
-					.getInstance().getRegisterF()));
+			byte f = Processor.getInstance().getRegisterF();
+			Image imgSet = SWTResourceManager.getImage(
+					SimulatorMainWindow.class,
+					"/de/thetodd/simulator8085/gui/icons/accept.png");
+			Image imgNotSet = SWTResourceManager.getImage(
+					SimulatorMainWindow.class,
+					"/de/thetodd/simulator8085/gui/icons/delete.png");
+			if ((f & 0x80) == 0x80) {
+				lblSignFlag.setImage(imgSet);
+			} else {
+				lblSignFlag.setImage(imgNotSet);
+			}
+			if ((f & 0x40) == 0x40) {
+				lblZeroFlag.setImage(imgSet);
+			} else {
+				lblZeroFlag.setImage(imgNotSet);
+			}
+			if ((f & 0x10) == 0x10) {
+				lblACarryFlag.setImage(imgSet);
+			} else {
+				lblACarryFlag.setImage(imgNotSet);
+			}
+			if ((f & 0x04) == 0x04) {
+				lblParityFlag.setImage(imgSet);
+			} else {
+				lblParityFlag.setImage(imgNotSet);
+			}
+			if ((f & 0x01) == 0x01) {
+				lblCarryFlag.setImage(imgSet);
+			} else {
+				lblCarryFlag.setImage(imgNotSet);
+			}
 		}
 		if (regs.contains(Register.REGISTER_H)) {
 			txtRegisterH.setText(String.format("0x%02X", Processor
