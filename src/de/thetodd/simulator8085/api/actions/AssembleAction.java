@@ -82,6 +82,7 @@ public class AssembleAction implements Action {
 			linenumber++;
 		}
 		Simulator.getInstance().fireMemoryChangeEvent();
+		Simulator.getInstance().setAssembled(true);
 	}
 
 }
