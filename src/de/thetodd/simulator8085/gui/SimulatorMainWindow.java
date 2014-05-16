@@ -46,6 +46,7 @@ import de.thetodd.simulator8085.api.SyntaxHighlighter;
 import de.thetodd.simulator8085.api.actions.Action;
 import de.thetodd.simulator8085.api.actions.AssembleAction;
 import de.thetodd.simulator8085.api.actions.OneStepAction;
+import de.thetodd.simulator8085.api.actions.PrintAction;
 import de.thetodd.simulator8085.api.actions.SimulateAction;
 
 public class SimulatorMainWindow implements ProcessorChangedListener {
@@ -595,6 +596,17 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				"/de/thetodd/simulator8085/gui/icons/disk.png"));
 		mntmSave.setText("Save...\tCtrl+S");
 		mntmSave.setAccelerator(SWT.MOD1 + 'S');
+		
+		MenuItem mntmPrint = new MenuItem(menu_1, SWT.NONE);
+		mntmPrint.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				PrintAction print = new PrintAction(codeText.getText(),"Filename");
+				print.run();
+			}
+		});
+		mntmPrint.setText("Print...\tF10");
+		mntmPrint.setAccelerator(SWT.F10);
 
 		new MenuItem(menu_1, SWT.SEPARATOR);
 
