@@ -310,4 +310,31 @@ public class Processor {
 		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_F));
 	}
 
+	public void setFlags(byte b) {
+		if (b == 0) {
+			Processor.getInstance().setZeroFlag(true);
+		} else {
+			Processor.getInstance().setZeroFlag(false);
+		}
+
+		int p_count = 0; // Counter for Parity
+		for (byte i = 0; i < 8; i++) { // Cycle thru any bit of byte
+			byte n = (byte) (0x01 << i);
+			if ((b & n) == n) { // Bit is 1
+				p_count++;
+			}
+		}
+		if ((p_count % 2) == 0) {
+			Processor.getInstance().setParityFlag(true);
+		} else {
+			Processor.getInstance().setParityFlag(false);
+		}
+		
+		if((b&0x80) == 0x80) {
+			Processor.getInstance().setSignFlag(true);
+		} else {
+			Processor.getInstance().setSignFlag(false);
+		}
+	}
+	
 }
