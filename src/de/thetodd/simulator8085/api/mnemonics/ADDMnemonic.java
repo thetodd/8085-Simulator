@@ -36,7 +36,7 @@ public class ADDMnemonic implements Mnemonic {
 			break;
 		default:
 			throw new IllegalArgumentException("Argument " + arguments[0]
-					+ " wird nicht unterstützt!");
+					+ " wird nicht unterstï¿½tzt!");
 		}
 
 		return opcode;
@@ -47,78 +47,38 @@ public class ADDMnemonic implements Mnemonic {
 		byte opcode = Memory.getInstance().get(
 				Processor.getInstance().getProgramcounter());
 		Processor.getInstance().incProgramcounter();
-		int a = Processor.getInstance().getRegisterA();
-		if (Processor.getInstance().isSignFlag()) {
-			a = -a;
-		}
+		byte b = 0;
 		switch (opcode) {
 		case (byte) 0x87:
-			int b = (a + Processor.getInstance().getRegisterA());
-			Processor.getInstance().setRegisterA((byte) b);
-			setFlags(b);
+			b = Processor.getInstance().getRegisterA();
 			break;
-		// case (byte) 0x86: Processor.getInstance().setRegisterA((byte)
-		// (Processor.getInstance().getRegisterA()+arg)); break;
 		case (byte) 0x80:
-			Processor.getInstance().setRegisterA(
-					(byte) (Processor.getInstance().getRegisterA() + Processor
-							.getInstance().getRegisterB()));
+			b = Processor.getInstance().getRegisterB();
 			break;
 		case (byte) 0x81:
-			Processor.getInstance().setRegisterA(
-					(byte) (Processor.getInstance().getRegisterA() + Processor
-							.getInstance().getRegisterC()));
+			b = Processor.getInstance().getRegisterC();
 			break;
 		case (byte) 0x82:
-			Processor.getInstance().setRegisterA(
-					(byte) (Processor.getInstance().getRegisterA() + Processor
-							.getInstance().getRegisterD()));
+			b = (Processor.getInstance().getRegisterD());
 			break;
 		case (byte) 0x83:
-			Processor.getInstance().setRegisterA(
-					(byte) (Processor.getInstance().getRegisterA() + Processor
-							.getInstance().getRegisterE()));
+			b = (Processor.getInstance().getRegisterE());
 			break;
 		case (byte) 0x84:
-			Processor.getInstance().setRegisterA(
-					(byte) (Processor.getInstance().getRegisterA() + Processor
-							.getInstance().getRegisterH()));
+			b = (Processor.getInstance().getRegisterH());
 			break;
 		case (byte) 0x85:
-			Processor.getInstance().setRegisterA(
-					(byte) (Processor.getInstance().getRegisterA() + Processor
-							.getInstance().getRegisterL()));
+			b = (Processor.getInstance().getRegisterL());
 			break;
 		default:
 			break;
 		}
-	}
 
-	private void setFlags(int b) {
-		if (b == 0) {
-			Processor.getInstance().setZeroFlag(true);
-		} else {
-			Processor.getInstance().setZeroFlag(false);
-		}
-
-		int p_count = 0; // Counter for Parity
-		for (byte i = 0; i < 8; i++) { // Cycle thru any bit of byte
-			byte n = (byte) (0x01 << i);
-			if ((b & n) == n) { // Bit is 1
-				p_count++;
-			}
-		}
-		if ((p_count % 2) == 0) {
-			Processor.getInstance().setParityFlag(true);
-		} else {
-			Processor.getInstance().setParityFlag(false);
-		}
-		
-		if(b<0) {
-			Processor.getInstance().setSignFlag(true);
-		} else {
-			Processor.getInstance().setSignFlag(false);
-		}
+		short a2 = (short) (Processor.getInstance().getRegisterA() & 0xFF);
+		short b2 = (short) (b & 0xFF);
+		int c = a2 + b2;
+		Processor.getInstance().setRegisterA((byte) c);
+		Processor.getInstance().setFlags((short) c);
 	}
 
 	@Override
