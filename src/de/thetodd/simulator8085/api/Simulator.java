@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import de.thetodd.simulator8085.api.mnemonics.ACIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ADDMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.ADIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.HLTMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.JMPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.MVIMnemonic;
@@ -31,17 +33,24 @@ public class Simulator {
 	}
 
 	public Simulator() {
+		
+		getMnemonicsList();
+
+		breakpoints = new ArrayList<>();
+		labelMap = new HashMap<>();
+		changeListeners = new ArrayList<>();
+		codeMap = new HashMap<>();
+	}
+
+	private void getMnemonicsList() {
 		mnemonicMap = new HashMap<String, Mnemonic>();
 		mnemonicMap.put("mvi", new MVIMnemonic());
 		mnemonicMap.put("hlt", new HLTMnemonic());
 		mnemonicMap.put("nop", new NOPMnemonic());
 		mnemonicMap.put("jmp", new JMPMnemonic());
 		mnemonicMap.put("add", new ADDMnemonic());
-
-		breakpoints = new ArrayList<>();
-		labelMap = new HashMap<>();
-		changeListeners = new ArrayList<>();
-		codeMap = new HashMap<>();
+		mnemonicMap.put("adi", new ADIMnemonic());
+		mnemonicMap.put("aci", new ACIMnemonic());
 	}
 
 	public HashMap<Short, Integer> getCodeMap() {
@@ -85,7 +94,7 @@ public class Simulator {
 		String mnemonic = line.split(" ")[0].toLowerCase();
 		if (isMnemonic(mnemonic)) {
 			String[] args = new String[0];
-			if(line.split(" ").length > 1) {
+			if (line.split(" ").length > 1) {
 				args = line.split(" ")[1].split(",");
 			}
 			return getOpcodes(mnemonic, args);
