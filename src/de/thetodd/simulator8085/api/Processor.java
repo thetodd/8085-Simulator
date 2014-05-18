@@ -310,7 +310,7 @@ public class Processor {
 		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_F));
 	}
 
-	public void setFlags(byte b) {
+	public void setFlags(short b) {
 		if (b == 0) {
 			Processor.getInstance().setZeroFlag(true);
 		} else {
@@ -334,6 +334,12 @@ public class Processor {
 			Processor.getInstance().setSignFlag(true);
 		} else {
 			Processor.getInstance().setSignFlag(false);
+		}
+		
+		if((b&0xff00) != 0x00) {
+			Processor.getInstance().setCarryFlag(true);
+		} else {
+			Processor.getInstance().setCarryFlag(false);
 		}
 	}
 	
