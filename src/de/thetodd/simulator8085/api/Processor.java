@@ -135,6 +135,31 @@ public class Processor {
 		}
 		return flags;
 	}
+	
+	public void setRegisterF(byte flags) {
+		//Reset flags
+		setSignFlag(false);
+		setAuxiliaryCarryFlag(false);
+		setCarryFlag(false);
+		setParityFlag(false);
+		setZeroFlag(false);
+		
+		if ((flags &= 0x80) == 0x80) {
+			setSignFlag(true);
+		}
+		if ((flags &= 0x40) == 0x40) {
+			setZeroFlag(true);
+		}
+		if ((flags &= 0x10) == 0x10) {
+			setAuxiliaryCarryFlag(true);
+		}
+		if ((flags &= 0x04) == 0x04) {
+			setParityFlag(true);
+		}
+		if ((flags &= 0x01) == 0x01) {
+			setCarryFlag(true);
+		}
+	}
 
 	/**
 	 * @return the h
@@ -310,6 +335,10 @@ public class Processor {
 		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_F));
 	}
 
+	/**
+	 * Sets the flags by value.
+	 * @param b
+	 */
 	public void setFlags(short b) {
 		if (b == 0) {
 			Processor.getInstance().setZeroFlag(true);

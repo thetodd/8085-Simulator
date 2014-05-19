@@ -43,12 +43,12 @@ public class Memory {
 		// Simulator.getInstance().fireMemoryChangeEvent();
 	}
 
-	// TODO: Überprüfung, ob Speicherzelle zulässig
+	// TODO: Ueberpruefung, ob Speicherzelle zulaessig
 	public byte get(short adr) {
 		return memory.get(adr);
 	}
 
-	// TODO: Überprüfung, ob Speicherzelle zulässig
+	// TODO: Ueberpruefung, ob Speicherzelle zulaessig
 	public void put(short adr, byte content) {
 		memory.put(adr, content);
 		Simulator.getInstance().fireMemoryChangeEvent();
@@ -72,5 +72,24 @@ public class Memory {
 
 	public short getMemorySize() {
 		return (short) (this.end - this.start);
+	}
+	
+	/**
+	 * Decreases SP register and writes a byte to the memory at the position SP points to.
+	 * @param b the byte to be written to stack.
+	 */
+	public void pushStack(byte b) {
+		Processor.getInstance().setStackpointer((short) (Processor.getInstance().getStackpointer()-1));
+		Memory.getInstance().put(Processor.getInstance().getStackpointer(), b);
+	}
+	
+	/**
+	 * Gets the byte from the memory at the position SP points to and increases SP register.
+	 * @return Byte from memory SP points to.
+	 */
+	public byte popStack() {
+		byte b = Memory.getInstance().get(Processor.getInstance().getStackpointer());
+		Processor.getInstance().setStackpointer((short) (Processor.getInstance().getStackpointer()+1));
+		return b;
 	}
 }

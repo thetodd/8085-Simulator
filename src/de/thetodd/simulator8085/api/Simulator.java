@@ -12,6 +12,8 @@ import de.thetodd.simulator8085.api.mnemonics.HLTMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.JMPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.MVIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.NOPMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.POPMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.PUSHMnemonic;
 
 public class Simulator {
 
@@ -53,6 +55,8 @@ public class Simulator {
 		mnemonicMap.put("adi", new ADIMnemonic());
 		mnemonicMap.put("aci", new ACIMnemonic());
 		mnemonicMap.put("adc", new ADCMnemonic());
+		mnemonicMap.put("push", new PUSHMnemonic());
+		mnemonicMap.put("pop", new POPMnemonic());
 	}
 
 	public HashMap<Short, Integer> getCodeMap() {
