@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import de.thetodd.simulator8085.api.mnemonics.ACIMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.ADCMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ADDMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ADIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.HLTMnemonic;
@@ -51,6 +52,7 @@ public class Simulator {
 		mnemonicMap.put("add", new ADDMnemonic());
 		mnemonicMap.put("adi", new ADIMnemonic());
 		mnemonicMap.put("aci", new ACIMnemonic());
+		mnemonicMap.put("adc", new ADCMnemonic());
 	}
 
 	public HashMap<Short, Integer> getCodeMap() {
