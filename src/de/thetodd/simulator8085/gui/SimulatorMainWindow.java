@@ -109,7 +109,12 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 						.getImage(SimulatorMainWindow.class,
 								"/de/thetodd/simulator8085/gui/icons/application_xp_terminal.png"));
 		shlSimulator.setSize(737, 462);
-		shlSimulator.setText("8085 Simulator");
+		if (Simulator.getInstance().isDebugMode()) {
+			shlSimulator.setText("8085 Simulator [DEBUG-MODE]");
+		} else {
+			shlSimulator.setText("8085 Simulator");
+		}
+
 		shlSimulator.setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		Composite composite = new Composite(shlSimulator, SWT.NONE);
@@ -346,10 +351,11 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 			}
 		});
 		btnSetMemory.setToolTipText("Speicher anpassen");
-		btnSetMemory.setImage(SWTResourceManager.getImage(SimulatorMainWindow.class,
+		btnSetMemory.setImage(SWTResourceManager.getImage(
+				SimulatorMainWindow.class,
 				"/de/thetodd/simulator8085/gui/icons/drive_edit.png"));
-		btnSetMemory.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false,
-				1, 2));
+		btnSetMemory.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false,
+				false, 1, 2));
 
 		Label lblSpeicherbereichEnde = new Label(composite_1, SWT.NONE);
 		lblSpeicherbereichEnde.setText("Memory end");
@@ -358,8 +364,8 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		txtMemoryEnd.setText("0x1BFF");
 
 		CTabFolder tabFolder = new CTabFolder(composite, SWT.BORDER);
-		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 2,
-				1));
+		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true,
+				2, 1));
 		tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(
 				SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 
@@ -371,7 +377,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		tbtmProgramm.setText("Program");
 		tabFolder.setSelection(tbtmProgramm);
 
-		codeText = new StyledText(tabFolder, SWT.BORDER|SWT.V_SCROLL);
+		codeText = new StyledText(tabFolder, SWT.BORDER | SWT.V_SCROLL);
 		codeText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				SyntaxHighlighter highlighter = new SyntaxHighlighter();
@@ -581,14 +587,14 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 
 		MenuItem mntmNewFile = new MenuItem(menu_1, SWT.NONE);
 		mntmNewFile.setText("New File\tCtrl+N");
-		mntmNewFile.setAccelerator(SWT.MOD1+'N');
+		mntmNewFile.setAccelerator(SWT.MOD1 + 'N');
 
 		MenuItem mntmOpen = new MenuItem(menu_1, SWT.NONE);
 		mntmOpen.setImage(SWTResourceManager.getImage(
 				SimulatorMainWindow.class,
 				"/de/thetodd/simulator8085/gui/icons/folder_explore.png"));
 		mntmOpen.setText("Open...\tCtrl+O");
-		mntmOpen.setAccelerator(SWT.MOD1+'O');
+		mntmOpen.setAccelerator(SWT.MOD1 + 'O');
 
 		MenuItem mntmSave = new MenuItem(menu_1, SWT.NONE);
 		mntmSave.setImage(SWTResourceManager.getImage(
@@ -596,12 +602,13 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				"/de/thetodd/simulator8085/gui/icons/disk.png"));
 		mntmSave.setText("Save...\tCtrl+S");
 		mntmSave.setAccelerator(SWT.MOD1 + 'S');
-		
+
 		MenuItem mntmPrint = new MenuItem(menu_1, SWT.NONE);
 		mntmPrint.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				PrintAction print = new PrintAction(codeText.getText(),"Filename");
+				PrintAction print = new PrintAction(codeText.getText(),
+						"Filename");
 				print.run();
 			}
 		});
@@ -612,7 +619,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 
 		MenuItem mntmClose = new MenuItem(menu_1, SWT.NONE);
 		mntmClose.setText("Close");
-		mntmClose.setAccelerator(SWT.MOD2+SWT.F4);
+		mntmClose.setAccelerator(SWT.MOD2 + SWT.F4);
 
 		MenuItem mntmSimulate = new MenuItem(menu, SWT.CASCADE);
 		mntmSimulate.setText("Simulate");

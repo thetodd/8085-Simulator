@@ -8,12 +8,14 @@ import de.thetodd.simulator8085.api.mnemonics.ACIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ADCMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ADDMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ADIMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.CALLMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.HLTMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.JMPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.MVIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.NOPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.POPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.PUSHMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.RETMnemonic;
 
 public class Simulator {
 
@@ -22,6 +24,11 @@ public class Simulator {
 	private HashMap<String, Short> labelMap;
 	private int commandCount;
 	private int programSize;
+	
+	/**
+	 * true if program is in debug mode
+	 */
+	private boolean debugMode;
 
 	private HashMap<String, Mnemonic> mnemonicMap;
 	private ArrayList<ProcessorChangedListener> changeListeners;
@@ -57,6 +64,8 @@ public class Simulator {
 		mnemonicMap.put("adc", new ADCMnemonic());
 		mnemonicMap.put("push", new PUSHMnemonic());
 		mnemonicMap.put("pop", new POPMnemonic());
+		mnemonicMap.put("call", new CALLMnemonic());
+		mnemonicMap.put("ret", new RETMnemonic());
 	}
 
 	public HashMap<Short, Integer> getCodeMap() {
@@ -180,5 +189,13 @@ public class Simulator {
 
 	public void setAssembled(boolean isAssembled) {
 		this.isAssembled = isAssembled;
+	}
+
+	public boolean isDebugMode() {
+		return debugMode;
+	}
+
+	public void setDebugMode(boolean debugMode) {
+		this.debugMode = debugMode;
 	}
 }

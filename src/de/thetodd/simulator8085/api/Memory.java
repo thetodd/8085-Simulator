@@ -34,8 +34,12 @@ public class Memory {
 		start = (short) (start & (short) 0xFFF0);
 		end = (short) (end | (short) 0x000F);
 		memory.clear();
+		boolean debug = Simulator.getInstance().isDebugMode();
 		for (short i = start; i <= end; i++) {
-			byte n = (byte) (Math.random() * 0xff); // Random Memorycontent
+			byte n = 0x00;
+			if (!debug) {
+				n = (byte) (Math.random() * 0xff); // Random Memorycontent
+			}
 			memory.put(i, n);
 		}
 		this.start = start;
@@ -73,23 +77,31 @@ public class Memory {
 	public short getMemorySize() {
 		return (short) (this.end - this.start);
 	}
-	
+
 	/**
-	 * Decreases SP register and writes a byte to the memory at the position SP points to.
-	 * @param b the byte to be written to stack.
+	 * Decreases SP register and writes a byte to the memory at the position SP
+	 * points to.
+	 * 
+	 * @param b
+	 *            the byte to be written to stack.
 	 */
 	public void pushStack(byte b) {
-		Processor.getInstance().setStackpointer((short) (Processor.getInstance().getStackpointer()-1));
+		Processor.getInstance().setStackpointer(
+				(short) (Processor.getInstance().getStackpointer() - 1));
 		Memory.getInstance().put(Processor.getInstance().getStackpointer(), b);
 	}
-	
+
 	/**
-	 * Gets the byte from the memory at the position SP points to and increases SP register.
+	 * Gets the byte from the memory at the position SP points to and increases
+	 * SP register.
+	 * 
 	 * @return Byte from memory SP points to.
 	 */
 	public byte popStack() {
-		byte b = Memory.getInstance().get(Processor.getInstance().getStackpointer());
-		Processor.getInstance().setStackpointer((short) (Processor.getInstance().getStackpointer()+1));
+		byte b = Memory.getInstance().get(
+				Processor.getInstance().getStackpointer());
+		Processor.getInstance().setStackpointer(
+				(short) (Processor.getInstance().getStackpointer() + 1));
 		return b;
 	}
 }
