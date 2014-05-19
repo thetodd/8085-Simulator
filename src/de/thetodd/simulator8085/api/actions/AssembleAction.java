@@ -32,7 +32,7 @@ public class AssembleAction implements Action {
 				String labelName = mnemonic.substring(0, mnemonic.length() - 1);
 				Simulator.getInstance().addLabel(labelName, adr);
 				// System.out.println("Label: "+labelName+" - "+String.format("0x%04X",adr));
-			} else if(line.startsWith(";")) { //Comment-Line
+			} else if(line.startsWith(";") || line.equals("")) { //Comment-Line
 				//Do nothing
 			} else { // is mnemonic
 				adr += Simulator.getInstance().getMnemonics().get(mnemonic)
@@ -61,7 +61,7 @@ public class AssembleAction implements Action {
 			} else if (mnemonic.endsWith(":")) {
 				String labelName = mnemonic.substring(0, mnemonic.length() - 1);
 				Simulator.getInstance().addLabel(labelName, adresse);
-			} else if(mnemonic.startsWith(";")) {
+			} else if(mnemonic.startsWith(";") || line.equals("")) {
 				//DO nothing
 			} else {
 				byte[] opcodes = new byte[0];
