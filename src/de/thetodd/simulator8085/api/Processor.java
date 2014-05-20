@@ -192,6 +192,39 @@ public class Processor {
 		this.l = l;
 		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_L));
 	}
+	
+	public short getRegisterBC() {
+		short bc = (short) (getRegisterB()<<8);
+		bc |= getRegisterC();
+		return bc;
+	}
+	
+	public short getRegisterDE() {
+		short de = (short) (getRegisterD()<<8);
+		de |= getRegisterE();
+		return de;
+	}
+	
+	public short getRegisterHL() {
+		short hl = (short) (getRegisterH()<<8);
+		hl |= getRegisterL();
+		return hl;
+	}
+	
+	public void setRegisterBC(short bc) {
+		setRegisterB((byte) (bc>>8));
+		setRegisterC((byte) (bc));
+	}
+	
+	public void setRegisterDE(short de) {
+		setRegisterD((byte) (de>>8));
+		setRegisterE((byte) (de));
+	}
+	
+	public void setRegisterHL(short hl) {
+		setRegisterH((byte) (hl>>8));
+		setRegisterL((byte) (hl));
+	}
 
 	/**
 	 * @return the pc
