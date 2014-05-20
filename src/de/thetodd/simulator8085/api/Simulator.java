@@ -9,6 +9,14 @@ import de.thetodd.simulator8085.api.mnemonics.ADCMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ADDMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ADIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.CALLMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.CCMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.CMMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.CNCMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.CNZMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.CPEMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.CPMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.CPOMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.CZMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.HLTMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.JMPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.MVIMnemonic;
@@ -24,7 +32,7 @@ public class Simulator {
 	private HashMap<String, Short> labelMap;
 	private int commandCount;
 	private int programSize;
-	
+
 	/**
 	 * true if program is in debug mode
 	 */
@@ -43,7 +51,7 @@ public class Simulator {
 	}
 
 	public Simulator() {
-		
+
 		getMnemonicsList();
 
 		breakpoints = new ArrayList<>();
@@ -64,8 +72,19 @@ public class Simulator {
 		mnemonicMap.put("adc", new ADCMnemonic());
 		mnemonicMap.put("push", new PUSHMnemonic());
 		mnemonicMap.put("pop", new POPMnemonic());
+		
 		mnemonicMap.put("call", new CALLMnemonic());
+		mnemonicMap.put("cc", new CCMnemonic());
+		mnemonicMap.put("cm", new CMMnemonic());
+		mnemonicMap.put("cnc", new CNCMnemonic());
+		mnemonicMap.put("cnz", new CNZMnemonic());
+		mnemonicMap.put("cpe", new CPEMnemonic());
+		mnemonicMap.put("cp", new CPMnemonic());
+		mnemonicMap.put("cpo", new CPOMnemonic());
+		mnemonicMap.put("cz", new CZMnemonic());
+		
 		mnemonicMap.put("ret", new RETMnemonic());
+
 	}
 
 	public HashMap<Short, Integer> getCodeMap() {
