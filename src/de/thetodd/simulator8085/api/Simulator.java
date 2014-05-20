@@ -10,6 +10,8 @@ import de.thetodd.simulator8085.api.mnemonics.ADDMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ADIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.CALLMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.CCMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.CMAMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.CMCMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.CMMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.CNCMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.CNZMnemonic;
@@ -82,6 +84,9 @@ public class Simulator {
 		mnemonicMap.put("cp", new CPMnemonic());
 		mnemonicMap.put("cpo", new CPOMnemonic());
 		mnemonicMap.put("cz", new CZMnemonic());
+		
+		mnemonicMap.put("cma", new CMAMnemonic());
+		mnemonicMap.put("cmc", new CMCMnemonic());
 		
 		mnemonicMap.put("ret", new RETMnemonic());
 
