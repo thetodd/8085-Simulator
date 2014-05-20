@@ -23,6 +23,7 @@ import de.thetodd.simulator8085.api.mnemonics.DCXMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.HLTMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.INXMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.JMPMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.MOVMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.MVIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.NOPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.POPMnemonic;
@@ -92,6 +93,8 @@ public class Simulator {
 		
 		mnemonicMap.put("dcx", new DCXMnemonic());
 		mnemonicMap.put("inx", new INXMnemonic());
+		
+		mnemonicMap.put("mov", new MOVMnemonic());
 		
 		mnemonicMap.put("ret", new RETMnemonic());
 
