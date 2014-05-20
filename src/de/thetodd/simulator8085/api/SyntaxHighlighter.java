@@ -17,7 +17,7 @@ public class SyntaxHighlighter {
 	private StyleRange breakpointStyle;
 	private StyleRange commentStyle;
 
-	private String[] mnemonics = { "ORG", "JMP", "MVI", "HLT", "NOP", "ADD" };
+	private String[] mnemonics = { "ORG", "JMP", "MVI", "HLT", "NOP", "ADD", "ACI","ADC","ADI","CALL","CC","CMA","CMC","CMM","CNC","CNZ","CPE","CPO","CP","CZ","DCX","INX","MOV","POP","PUSH","RET" };
 
 	public SyntaxHighlighter() {
 		Display display = Display.getDefault();
