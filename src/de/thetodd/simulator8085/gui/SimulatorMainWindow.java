@@ -1,5 +1,6 @@
 package de.thetodd.simulator8085.gui;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -74,6 +75,12 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 	private Label lblACarryFlag;
 	private Label lblParityFlag;
 	private Label lblCarryFlag;
+	
+	private File document;
+	
+	public SimulatorMainWindow() {
+		
+	}
 
 	/**
 	 * Open the window.
@@ -586,6 +593,19 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		mntmFile.setMenu(menu_1);
 
 		MenuItem mntmNewFile = new MenuItem(menu_1, SWT.NONE);
+		mntmNewFile.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				document = null;
+				Processor.getInstance().resetProcessor();
+				Memory.getInstance().resetMemory();
+				Simulator.getInstance().fireMemoryChangeEvent();
+				Simulator.getInstance().fireRegisterChangeEvent(
+						new RegisterChangeEvent(RegisterChangeEvent
+								.getAllTemplate()));
+				codeText.setText("");
+			}
+		});
 		mntmNewFile.setText("New File\tCtrl+N");
 		mntmNewFile.setAccelerator(SWT.MOD1 + 'N');
 

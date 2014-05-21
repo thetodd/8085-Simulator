@@ -1,7 +1,6 @@
 package de.thetodd.simulator8085.api;
 
 import java.util.HashMap;
-import java.util.Set;
 
 public class Memory {
 
@@ -59,10 +58,7 @@ public class Memory {
 	}
 
 	public void resetMemory() {
-		Set<Short> keys = memory.keySet();
-		for (Short key : keys) {
-			memory.put(key, (byte) 0x00);
-		}
+		setRange(this.start,this.end);
 		Simulator.getInstance().fireMemoryChangeEvent();
 	}
 
