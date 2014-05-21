@@ -1,8 +1,14 @@
 package de.thetodd.simulator8085.gui;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.swing.JFileChooser;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -75,11 +81,11 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 	private Label lblACarryFlag;
 	private Label lblParityFlag;
 	private Label lblCarryFlag;
-	
+
 	private File document;
-	
+
 	public SimulatorMainWindow() {
-		
+
 	}
 
 	/**
@@ -610,6 +616,23 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		mntmNewFile.setAccelerator(SWT.MOD1 + 'N');
 
 		MenuItem mntmOpen = new MenuItem(menu_1, SWT.NONE);
+		mntmOpen.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				JFileChooser fc = new JFileChooser();
+				int returnVal = fc.showOpenDialog(null);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					document = fc.getSelectedFile();
+					try {
+						String text = new String(Files.readAllBytes(document
+								.toPath()));
+						codeText.setText(text);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
 		mntmOpen.setImage(SWTResourceManager.getImage(
 				SimulatorMainWindow.class,
 				"/de/thetodd/simulator8085/gui/icons/folder_explore.png"));
@@ -617,6 +640,30 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		mntmOpen.setAccelerator(SWT.MOD1 + 'O');
 
 		MenuItem mntmSave = new MenuItem(menu_1, SWT.NONE);
+		mntmSave.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if (document == null) { // We have a new file, ask for save path
+					JFileChooser fc = new JFileChooser();
+					int returnVal = fc.showSaveDialog(null);
+					if (returnVal == JFileChooser.APPROVE_OPTION) {
+						document = fc.getSelectedFile();
+					}
+				}
+				if (document != null) {
+					try {
+						// Create file
+						FileWriter fstream = new FileWriter(document);
+						BufferedWriter out = new BufferedWriter(fstream);
+						out.write(codeText.getText());
+						// Close the output stream
+						out.close();
+					} catch (Exception e) {// Catch exception if any
+						System.err.println("Error: " + e.getMessage());
+					}
+				}
+			}
+		});
 		mntmSave.setImage(SWTResourceManager.getImage(
 				SimulatorMainWindow.class,
 				"/de/thetodd/simulator8085/gui/icons/disk.png"));
