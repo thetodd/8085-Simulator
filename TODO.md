@@ -2,86 +2,86 @@ TODOs
 ===
 
 ###Mnemonics
-- [] ACI
-- [] ADC
+- [X] ACI
+- [X] ADC
 - [X] ADD
-- [] ADI
-- [] ANA
-- [] ANI
-- [] CALL
-- [] CC
-- [] CM
-- [] CNC
-- [] CNZ
-- [] CP
-- [] CPE
-- [] CPO
-- [] CZ
-- [] CMO
-- [] CMP
-- [] CMI
-- [] DAA
-- [] DAD
-- [] DCR
-- [] DCX
-- [] DI
-- [] EI
+- [X] ADI
+- [ ] ANA
+- [ ] ANI
+- [X] CALL
+- [X] CC
+- [X] CM
+- [X] CNC
+- [X] CNZ
+- [X] CP
+- [X] CPE
+- [X] CPO
+- [X] CZ
+- [X] CMO
+- [X] CMP
+- [X] CMI
+- [ ] DAA
+- [ ] DAD
+- [ ] DCR
+- [X] DCX
+- [ ] DI
+- [ ] EI
 - [X] HLT
-- [] IN
-- [] INR
-- [] INX
-- [] JC
-- [] JM
-- [] JNC
-- [] JNZ
-- [] JP
-- [] JPE
-- [] JPO
-- [] JZ
+- [ ] IN
+- [ ] INR
+- [X] INX
+- [ ] JC
+- [ ] JM
+- [ ] JNC
+- [ ] JNZ
+- [ ] JP
+- [ ] JPE
+- [ ] JPO
+- [ ] JZ
 - [X] JMP
-- [] LDA
-- [] LDAX
-- [] LHLD
-- [] LXIB
-- [] LXID
-- [] LXIH
-- [] LXISP
-- [] MOV
-- [] MVI
+- [ ] LDA
+- [ ] LDAX
+- [ ] LHLD
+- [ ] LXIB
+- [ ] LXID
+- [ ] LXIH
+- [ ] LXISP
+- [X] MOV
+- [X] MVI
 - [X] NOP
-- [] ORA
-- [] ORI
-- [] OUT
-- [] PCHL
-- [] POP
-- [] PUSH
-- [] RAL
-- [] RAR
-- [] RC
-- [] RIM
-- [] RM
-- [] RNC
-- [] RNZ
-- [] RP
-- [] RPE
-- [] RPO
-- [] RZ
-- [] RET
-- [] RRC
-- [] RLC
-- [] RST
-- [] SBB
-- [] SBI
-- [] SHLD
-- [] SIM
-- [] SPHL
-- [] STA
-- [] STAX
-- [] STAD
-- [] STC
-- [] SUB
-- [] SUI
-- [] XCHG
-- [] XRA
-- [] XRI
-- [] XTHL
+- [ ] ORA
+- [ ] ORI
+- [ ] OUT
+- [ ] PCHL
+- [X] POP
+- [X] PUSH
+- [ ] RAL
+- [ ] RAR
+- [ ] RC
+- [ ] RIM
+- [ ] RM
+- [ ] RNC
+- [ ] RNZ
+- [ ] RP
+- [ ] RPE
+- [ ] RPO
+- [ ] RZ
+- [X] RET
+- [ ] RRC
+- [ ] RLC
+- [ ] RST
+- [ ] SBB
+- [ ] SBI
+- [ ] SHLD
+- [ ] SIM
+- [ ] SPHL
+- [ ] STA
+- [ ] STAX
+- [ ] STAD
+- [ ] STC
+- [ ] SUB
+- [ ] SUI
+- [ ] XCHG
+- [ ] XRA
+- [ ] XRI
+- [ ] XTHL
