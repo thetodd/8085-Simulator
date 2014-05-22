@@ -397,7 +397,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				highlighter.highlight(codeText);
 			}
 		});
-		codeText.setText(";Kommentar\r\nORG 0x1800\r\nJMP start\r\nstart:\r\nMVI A,0x33\r\nADD A\r\nJMP ende\r\nORG 0x1900\r\n@:\r\nende:\r\nMVI A,0x44\r\nMVI A,0x55\r\nJMP start\r\nHLT");
+		codeText.setText("");
 		codeText.setTopMargin(5);
 		codeText.setBottomMargin(5);
 		codeText.setRightMargin(5);
