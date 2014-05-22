@@ -1,7 +1,7 @@
 TODOs
 ===
 
-###Mnemonics
+###Currently supported mnemonics
 - [X] ACI
 - [X] ADC
 - [X] ADD
