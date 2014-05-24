@@ -1,5 +1,6 @@
 package de.thetodd.simulator8085.api;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ import de.thetodd.simulator8085.api.mnemonics.JMPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.MOVMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.MVIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.NOPMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.OUTMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.POPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.PUSHMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.RETMnemonic;
@@ -44,6 +46,7 @@ public class Simulator {
 	private boolean debugMode;
 
 	private HashMap<String, Mnemonic> mnemonicMap;
+	private HashMap<Byte,Byte> outMap;
 	private ArrayList<ProcessorChangedListener> changeListeners;
 	private HashMap<Short, Integer> codeMap; // Address <-> Codeline Map
 	private boolean isAssembled;
@@ -63,6 +66,7 @@ public class Simulator {
 		labelMap = new HashMap<>();
 		changeListeners = new ArrayList<>();
 		codeMap = new HashMap<>();
+		outMap = new HashMap<>();
 	}
 
 	private void getMnemonicsList() {
@@ -97,6 +101,8 @@ public class Simulator {
 		mnemonicMap.put("mov", new MOVMnemonic());
 		
 		mnemonicMap.put("ret", new RETMnemonic());
+		
+		mnemonicMap.put("out", new OUTMnemonic());
 
 	}
 
@@ -121,6 +127,12 @@ public class Simulator {
 	public void fireMemoryChangeEvent() {
 		for (ProcessorChangedListener l : changeListeners) {
 			l.memoryChanged();
+		}
+	}
+	
+	public void fireOutChangedEvent(byte adr, byte value) {
+		for (ProcessorChangedListener l : changeListeners) {
+			l.outChanged(adr,value);
 		}
 	}
 
@@ -150,6 +162,15 @@ public class Simulator {
 		}
 	}
 
+	public void setOutEntry(byte adr, byte c) {
+		outMap.put(adr, c);
+		fireOutChangedEvent(adr,c);
+	}
+	
+	public byte getOutEntry(byte adr) {
+		return outMap.get(adr);
+	}
+	
 	/**
 	 * Return true if m is a valid mnemonic
 	 * 

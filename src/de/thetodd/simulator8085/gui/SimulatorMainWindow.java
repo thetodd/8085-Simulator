@@ -55,6 +55,7 @@ import de.thetodd.simulator8085.api.actions.AssembleAction;
 import de.thetodd.simulator8085.api.actions.OneStepAction;
 import de.thetodd.simulator8085.api.actions.PrintAction;
 import de.thetodd.simulator8085.api.actions.SimulateAction;
+import de.thetodd.simulator8085.gui.outviews.ListView;
 
 public class SimulatorMainWindow implements ProcessorChangedListener {
 
@@ -104,6 +105,11 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		Simulator.getInstance().fireMemoryChangeEvent();
 		Simulator.getInstance().fireRegisterChangeEvent(
 				new RegisterChangeEvent(RegisterChangeEvent.getAllTemplate()));
+		
+		//Testweise ListViewer oeffnen
+		//ListView lv = new ListView(Display.getDefault());
+		//lv.open();
+		//lv.layout();
 
 		while (!shlSimulator.isDisposed()) {
 			if (!display.readAndDispatch()) {
@@ -775,6 +781,23 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				"/de/thetodd/simulator8085/gui/icons/control_play.png"));
 		mntmOneStep.setText("One Step\tF7");
 		mntmOneStep.setAccelerator(SWT.F7);
+		
+		MenuItem mntmViewers = new MenuItem(menu, SWT.CASCADE);
+		mntmViewers.setText("Viewers");
+		
+		Menu menu_4 = new Menu(mntmViewers);
+		mntmViewers.setMenu(menu_4);
+		
+		MenuItem mntmList = new MenuItem(menu_4, SWT.NONE);
+		mntmList.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				ListView lv = new ListView(Display.getDefault());
+				lv.open();
+				lv.layout();
+			}
+		});
+		mntmList.setText("List");
 
 		MenuItem mntmNewSubmenu = new MenuItem(menu, SWT.CASCADE);
 		mntmNewSubmenu.setText("Help");
@@ -893,5 +916,9 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 			codeText.setLineBackground(linenumber, 1,
 					new Color(Display.getDefault(), 0xFF, 0xFF, 0x99));
 		}
+	}
+
+	@Override
+	public void outChanged(byte adr, byte value) {		
 	}
 }
