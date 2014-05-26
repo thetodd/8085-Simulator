@@ -3,6 +3,8 @@ package de.thetodd.simulator8085.gui.outviews;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -55,6 +57,15 @@ public class ListView extends Shell implements ProcessorChangedListener {
 		setText("List Viewer");
 		setSize(452, 302);
 
+
+		addDisposeListener(new DisposeListener() {
+			
+			@Override
+			public void widgetDisposed(DisposeEvent arg0) {
+				Simulator.getInstance().unregisterChangeListener(ListView.this);				
+			}
+		});
+		
 	}
 
 	@Override
