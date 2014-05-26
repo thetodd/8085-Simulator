@@ -27,6 +27,8 @@ import de.thetodd.simulator8085.api.mnemonics.JMPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.MOVMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.MVIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.NOPMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.ORAMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.ORIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.OUTMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.POPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.PUSHMnemonic;
@@ -103,6 +105,9 @@ public class Simulator {
 		mnemonicMap.put("ret", new RETMnemonic());
 		
 		mnemonicMap.put("out", new OUTMnemonic());
+		
+		mnemonicMap.put("ori", new ORIMnemonic());
+		mnemonicMap.put("ora", new ORAMnemonic());
 
 	}
 
