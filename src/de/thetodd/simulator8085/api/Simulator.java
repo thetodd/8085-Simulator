@@ -23,7 +23,15 @@ import de.thetodd.simulator8085.api.mnemonics.CZMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.DCXMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.HLTMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.INXMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.JCMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.JMMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.JMPMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.JNCMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.JNZMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.JPEMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.JPMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.JPOMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.JZMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.MOVMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.MVIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.NOPMnemonic;
@@ -76,7 +84,17 @@ public class Simulator {
 		mnemonicMap.put("mvi", new MVIMnemonic());
 		mnemonicMap.put("hlt", new HLTMnemonic());
 		mnemonicMap.put("nop", new NOPMnemonic());
+		
 		mnemonicMap.put("jmp", new JMPMnemonic());
+		mnemonicMap.put("jc", new JCMnemonic());
+		mnemonicMap.put("jm", new JMMnemonic());
+		mnemonicMap.put("jnc", new JNCMnemonic());
+		mnemonicMap.put("jnz", new JNZMnemonic());
+		mnemonicMap.put("jpe", new JPEMnemonic());
+		mnemonicMap.put("jp", new JPMnemonic());
+		mnemonicMap.put("jpo", new JPOMnemonic());
+		mnemonicMap.put("jz", new JZMnemonic());
+		
 		mnemonicMap.put("add", new ADDMnemonic());
 		mnemonicMap.put("adi", new ADIMnemonic());
 		mnemonicMap.put("aci", new ACIMnemonic());
