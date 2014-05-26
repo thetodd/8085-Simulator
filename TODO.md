@@ -30,14 +30,14 @@ TODOs
 - [ ] IN
 - [ ] INR
 - [X] INX
-- [ ] JC
-- [ ] JM
-- [ ] JNC
-- [ ] JNZ
-- [ ] JP
-- [ ] JPE
-- [ ] JPO
-- [ ] JZ
+- [X] JC
+- [X] JM
+- [X] JNC
+- [X] JNZ
+- [X] JP
+- [X] JPE
+- [X] JPO
+- [X] JZ
 - [X] JMP
 - [ ] LDA
 - [ ] LDAX
@@ -49,9 +49,9 @@ TODOs
 - [X] MOV
 - [X] MVI
 - [X] NOP
-- [ ] ORA
-- [ ] ORI
-- [ ] OUT
+- [X] ORA
+- [X] ORI
+- [X] OUT
 - [ ] PCHL
 - [X] POP
 - [X] PUSH
