@@ -46,7 +46,8 @@ public class Processor {
 	 */
 	public void setRegisterA(byte a) {
 		this.a = a;
-		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_A));
+		// Simulator.getInstance().fireRegisterChangeEvent(new
+		// RegisterChangeEvent(Register.REGISTER_A));
 	}
 
 	/**
@@ -62,7 +63,8 @@ public class Processor {
 	 */
 	public void setRegisterB(byte b) {
 		this.b = b;
-		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_B));
+		// Simulator.getInstance().fireRegisterChangeEvent(new
+		// RegisterChangeEvent(Register.REGISTER_B));
 	}
 
 	/**
@@ -78,7 +80,8 @@ public class Processor {
 	 */
 	public void setRegisterC(byte c) {
 		this.c = c;
-		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_C));
+		// Simulator.getInstance().fireRegisterChangeEvent(new
+		// RegisterChangeEvent(Register.REGISTER_C));
 	}
 
 	/**
@@ -94,7 +97,8 @@ public class Processor {
 	 */
 	public void setRegisterD(byte d) {
 		this.d = d;
-		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_D));
+		// Simulator.getInstance().fireRegisterChangeEvent(new
+		// RegisterChangeEvent(Register.REGISTER_D));
 	}
 
 	/**
@@ -110,7 +114,8 @@ public class Processor {
 	 */
 	public void setRegisterE(byte e) {
 		this.e = e;
-		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_E));
+		// Simulator.getInstance().fireRegisterChangeEvent(new
+		// RegisterChangeEvent(Register.REGISTER_E));
 	}
 
 	/**
@@ -135,15 +140,15 @@ public class Processor {
 		}
 		return flags;
 	}
-	
+
 	public void setRegisterF(byte flags) {
-		//Reset flags
+		// Reset flags
 		setSignFlag(false);
 		setAuxiliaryCarryFlag(false);
 		setCarryFlag(false);
 		setParityFlag(false);
 		setZeroFlag(false);
-		
+
 		if ((flags &= 0x80) == 0x80) {
 			setSignFlag(true);
 		}
@@ -174,7 +179,8 @@ public class Processor {
 	 */
 	public void setRegisterH(byte h) {
 		this.h = h;
-		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_H));
+		// Simulator.getInstance().fireRegisterChangeEvent(new
+		// RegisterChangeEvent(Register.REGISTER_H));
 	}
 
 	/**
@@ -190,39 +196,40 @@ public class Processor {
 	 */
 	public void setRegisterL(byte l) {
 		this.l = l;
-		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_L));
+		// Simulator.getInstance().fireRegisterChangeEvent(new
+		// RegisterChangeEvent(Register.REGISTER_L));
 	}
-	
+
 	public short getRegisterBC() {
-		short bc = (short) (getRegisterB()<<8);
+		short bc = (short) (getRegisterB() << 8);
 		bc |= getRegisterC();
 		return bc;
 	}
-	
+
 	public short getRegisterDE() {
-		short de = (short) (getRegisterD()<<8);
+		short de = (short) (getRegisterD() << 8);
 		de |= getRegisterE();
 		return de;
 	}
-	
+
 	public short getRegisterHL() {
-		short hl = (short) (getRegisterH()<<8);
+		short hl = (short) (getRegisterH() << 8);
 		hl |= getRegisterL();
 		return hl;
 	}
-	
+
 	public void setRegisterBC(short bc) {
-		setRegisterB((byte) (bc>>8));
+		setRegisterB((byte) (bc >> 8));
 		setRegisterC((byte) (bc));
 	}
-	
+
 	public void setRegisterDE(short de) {
-		setRegisterD((byte) (de>>8));
+		setRegisterD((byte) (de >> 8));
 		setRegisterE((byte) (de));
 	}
-	
+
 	public void setRegisterHL(short hl) {
-		setRegisterH((byte) (hl>>8));
+		setRegisterH((byte) (hl >> 8));
 		setRegisterL((byte) (hl));
 	}
 
@@ -239,13 +246,15 @@ public class Processor {
 	 */
 	public void setProgramcounter(short pc) {
 		this.pc = pc;
-		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_PC));
+		// Simulator.getInstance().fireRegisterChangeEvent(new
+		// RegisterChangeEvent(Register.REGISTER_PC));
 	}
 
 	// Inkrementiert den PCum 1
 	public void incProgramcounter() {
 		this.pc += 1;
-		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_PC));
+		// Simulator.getInstance().fireRegisterChangeEvent(new
+		// RegisterChangeEvent(Register.REGISTER_PC));
 	}
 
 	/**
@@ -261,7 +270,8 @@ public class Processor {
 	 */
 	public void setStackpointer(short sp) {
 		this.sp = sp;
-		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_SP));
+		// Simulator.getInstance().fireRegisterChangeEvent(new
+		// RegisterChangeEvent(Register.REGISTER_SP));
 	}
 
 	/**
@@ -284,8 +294,9 @@ public class Processor {
 		carryFlag = false;
 		signFlag = false;
 		auxiliaryCarryFlag = false;
-		
-		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(RegisterChangeEvent.getBCTemplate()));
+
+		// Simulator.getInstance().fireRegisterChangeEvent(new
+		// RegisterChangeEvent(RegisterChangeEvent.getBCTemplate()));
 	}
 
 	/**
@@ -301,7 +312,8 @@ public class Processor {
 	 */
 	public void setZeroFlag(boolean zeroFlag) {
 		this.zeroFlag = zeroFlag;
-		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_F));
+		// Simulator.getInstance().fireRegisterChangeEvent(new
+		// RegisterChangeEvent(Register.REGISTER_F));
 	}
 
 	/**
@@ -317,7 +329,8 @@ public class Processor {
 	 */
 	public void setParityFlag(boolean parityFlag) {
 		this.parityFlag = parityFlag;
-		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_F));
+		// Simulator.getInstance().fireRegisterChangeEvent(new
+		// RegisterChangeEvent(Register.REGISTER_F));
 	}
 
 	/**
@@ -333,7 +346,8 @@ public class Processor {
 	 */
 	public void setCarryFlag(boolean carryFlag) {
 		this.carryFlag = carryFlag;
-		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_F));
+		// Simulator.getInstance().fireRegisterChangeEvent(new
+		// RegisterChangeEvent(Register.REGISTER_F));
 	}
 
 	/**
@@ -349,7 +363,8 @@ public class Processor {
 	 */
 	public void setSignFlag(boolean signFlag) {
 		this.signFlag = signFlag;
-		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_F));
+		// Simulator.getInstance().fireRegisterChangeEvent(new
+		// RegisterChangeEvent(Register.REGISTER_F));
 	}
 
 	/**
@@ -365,20 +380,17 @@ public class Processor {
 	 */
 	public void setAuxiliaryCarryFlag(boolean auxiliaryCarryFlag) {
 		this.auxiliaryCarryFlag = auxiliaryCarryFlag;
-		//Simulator.getInstance().fireRegisterChangeEvent(new RegisterChangeEvent(Register.REGISTER_F));
+		// Simulator.getInstance().fireRegisterChangeEvent(new
+		// RegisterChangeEvent(Register.REGISTER_F));
 	}
 
 	/**
 	 * Sets the flags by value.
+	 * 
 	 * @param b
 	 */
 	public void setFlags(short b) {
-		if (b == 0) {
-			Processor.getInstance().setZeroFlag(true);
-		} else {
-			Processor.getInstance().setZeroFlag(false);
-		}
-
+		Processor.getInstance().setZeroFlag((b == 0));
 		int p_count = 0; // Counter for Parity
 		for (byte i = 0; i < 8; i++) { // Cycle thru any bit of byte
 			byte n = (byte) (0x01 << i);
@@ -386,23 +398,9 @@ public class Processor {
 				p_count++;
 			}
 		}
-		if ((p_count % 2) == 0) {
-			Processor.getInstance().setParityFlag(true);
-		} else {
-			Processor.getInstance().setParityFlag(false);
-		}
-		
-		if((b&0x80) == 0x80) {
-			Processor.getInstance().setSignFlag(true);
-		} else {
-			Processor.getInstance().setSignFlag(false);
-		}
-		
-		if((b&0xff00) != 0x00) {
-			Processor.getInstance().setCarryFlag(true);
-		} else {
-			Processor.getInstance().setCarryFlag(false);
-		}
+		Processor.getInstance().setParityFlag(((p_count % 2) == 0));
+		Processor.getInstance().setSignFlag(((b & 0x80) == 0x80));
+		Processor.getInstance().setCarryFlag(((b & 0xff00) != 0x00));
 	}
-	
+
 }
