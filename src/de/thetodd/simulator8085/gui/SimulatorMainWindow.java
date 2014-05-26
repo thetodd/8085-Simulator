@@ -55,6 +55,7 @@ import de.thetodd.simulator8085.api.actions.AssembleAction;
 import de.thetodd.simulator8085.api.actions.OneStepAction;
 import de.thetodd.simulator8085.api.actions.PrintAction;
 import de.thetodd.simulator8085.api.actions.SimulateAction;
+import de.thetodd.simulator8085.gui.outviews.LEDBar;
 import de.thetodd.simulator8085.gui.outviews.ListView;
 
 public class SimulatorMainWindow implements ProcessorChangedListener {
@@ -798,6 +799,17 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 			}
 		});
 		mntmList.setText("List");
+		
+		MenuItem mntmIntersection = new MenuItem(menu_4, SWT.NONE);
+		mntmIntersection.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				LEDBar insect = new LEDBar(Display.getDefault());
+				insect.open();
+				insect.layout();
+			}
+		});
+		mntmIntersection.setText("LEDBar");
 
 		MenuItem mntmNewSubmenu = new MenuItem(menu, SWT.CASCADE);
 		mntmNewSubmenu.setText("Help");
