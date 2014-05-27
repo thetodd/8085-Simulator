@@ -57,15 +57,15 @@ TODOs
 - [X] PUSH
 - [ ] RAL
 - [ ] RAR
-- [ ] RC
+- [X] RC
 - [ ] RIM
-- [ ] RM
-- [ ] RNC
-- [ ] RNZ
-- [ ] RP
-- [ ] RPE
-- [ ] RPO
-- [ ] RZ
+- [X] RM
+- [X] RNC
+- [X] RNZ
+- [X] RP
+- [X] RPE
+- [X] RPO
+- [X] RZ
 - [X] RET
 - [ ] RRC
 - [ ] RLC

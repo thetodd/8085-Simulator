@@ -40,7 +40,15 @@ import de.thetodd.simulator8085.api.mnemonics.ORIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.OUTMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.POPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.PUSHMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.RCMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.RETMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.RMMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.RNCMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.RNZMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.RPEMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.RPMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.RPOMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.RZMnemonic;
 
 public class Simulator {
 
@@ -99,6 +107,7 @@ public class Simulator {
 		mnemonicMap.put("adi", new ADIMnemonic());
 		mnemonicMap.put("aci", new ACIMnemonic());
 		mnemonicMap.put("adc", new ADCMnemonic());
+		
 		mnemonicMap.put("push", new PUSHMnemonic());
 		mnemonicMap.put("pop", new POPMnemonic());
 		
@@ -121,6 +130,14 @@ public class Simulator {
 		mnemonicMap.put("mov", new MOVMnemonic());
 		
 		mnemonicMap.put("ret", new RETMnemonic());
+		mnemonicMap.put("rc", new RCMnemonic());
+		mnemonicMap.put("rm", new RMMnemonic());
+		mnemonicMap.put("rnc", new RNCMnemonic());
+		mnemonicMap.put("rnz", new RNZMnemonic());
+		mnemonicMap.put("rpe", new RPEMnemonic());
+		mnemonicMap.put("rp", new RPMnemonic());
+		mnemonicMap.put("rpo", new RPOMnemonic());
+		mnemonicMap.put("rz", new RZMnemonic());
 		
 		mnemonicMap.put("out", new OUTMnemonic());
 		
