@@ -22,13 +22,13 @@ TODOs
 - [X] CMI
 - [ ] DAA
 - [ ] DAD
-- [ ] DCR
+- [X] DCR
 - [X] DCX
 - [ ] DI
 - [ ] EI
 - [X] HLT
 - [ ] IN
-- [ ] INR
+- [X] INR
 - [X] INX
 - [X] JC
 - [X] JM
@@ -39,20 +39,20 @@ TODOs
 - [X] JPO
 - [X] JZ
 - [X] JMP
-- [ ] LDA
-- [ ] LDAX
-- [ ] LHLD
-- [ ] LXIB
-- [ ] LXID
-- [ ] LXIH
-- [ ] LXISP
+- [X] LDA
+- [X] LDAX
+- [X] LHLD
+- [X] LXIB
+- [X] LXID
+- [X] LXIH
+- [X] LXISP
 - [X] MOV
 - [X] MVI
 - [X] NOP
 - [X] ORA
 - [X] ORI
 - [X] OUT
-- [ ] PCHL
+- [X] PCHL
 - [X] POP
 - [X] PUSH
 - [ ] RAL
@@ -74,14 +74,13 @@ TODOs
 - [ ] SBI
 - [ ] SHLD
 - [ ] SIM
-- [ ] SPHL
-- [ ] STA
-- [ ] STAX
-- [ ] STAD
-- [ ] STC
+- [X] SPHL
+- [X] STA
+- [X] STAX
+- [X] STC
 - [ ] SUB
 - [ ] SUI
-- [ ] XCHG
+- [X] XCHG
 - [ ] XRA
 - [ ] XRI
 - [ ] XTHL

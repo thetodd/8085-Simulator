@@ -26,6 +26,7 @@ import de.thetodd.simulator8085.api.mnemonics.DADMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.DCRMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.DCXMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.HLTMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.INRMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.INXMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.JCMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.JMMnemonic;
@@ -36,12 +37,20 @@ import de.thetodd.simulator8085.api.mnemonics.JPEMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.JPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.JPOMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.JZMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.LDAMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.LDAXMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.LHLDMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.LXIBMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.LXIDMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.LXIHMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.LXISPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.MOVMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.MVIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.NOPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ORAMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ORIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.OUTMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.PCHLMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.POPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.PUSHMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.RCMnemonic;
@@ -53,6 +62,11 @@ import de.thetodd.simulator8085.api.mnemonics.RPEMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.RPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.RPOMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.RZMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.SPHLMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.STAMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.STAXMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.STCMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.XCHGMnemonic;
 
 public class Simulator {
 
@@ -152,6 +166,23 @@ public class Simulator {
 		
 		mnemonicMap.put("dad", new DADMnemonic());
 		mnemonicMap.put("dcr", new DCRMnemonic());
+		mnemonicMap.put("inr", new INRMnemonic());
+		
+		mnemonicMap.put("sta", new STAMnemonic());
+		mnemonicMap.put("stax", new STAXMnemonic());
+		mnemonicMap.put("lda", new LDAMnemonic());
+		mnemonicMap.put("ldax", new LDAXMnemonic());
+		mnemonicMap.put("lhld", new LHLDMnemonic());
+		mnemonicMap.put("lxib", new LXIBMnemonic());
+		mnemonicMap.put("lxid", new LXIDMnemonic());
+		mnemonicMap.put("lxih", new LXIHMnemonic());
+		mnemonicMap.put("lxisp", new LXISPMnemonic());
+		
+		mnemonicMap.put("pchl", new PCHLMnemonic());
+		mnemonicMap.put("xchg", new XCHGMnemonic());
+		mnemonicMap.put("stc", new STCMnemonic());
+		mnemonicMap.put("sphl", new SPHLMnemonic());
+		
 
 	}
 
