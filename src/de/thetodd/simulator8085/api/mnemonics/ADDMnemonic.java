@@ -36,7 +36,7 @@ public class ADDMnemonic implements Mnemonic {
 			break;
 		default:
 			throw new IllegalArgumentException("Argument " + arguments[0]
-					+ " wird nicht unterst�tzt!");
+					+ " wird nicht unterstuetzt!");
 		}
 
 		return opcode;
