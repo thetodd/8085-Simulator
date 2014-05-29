@@ -4,35 +4,35 @@ import de.thetodd.simulator8085.api.Memory;
 import de.thetodd.simulator8085.api.Mnemonic;
 import de.thetodd.simulator8085.api.Processor;
 
-public class ADDMnemonic implements Mnemonic {
+public class SUBMnemonic implements Mnemonic {
 
 	public byte[] getOpcode(String[] arguments) {
 		byte[] opcode = new byte[1];
 		char arg = arguments[0].toLowerCase().charAt(0);
 		switch (arg) {
 		case 'a':
-			opcode[0] = (byte) 0x87;
+			opcode[0] = (byte) 0x97;
 			break;
 		case 'm':
-			opcode[0] = (byte) 0x86;
+			opcode[0] = (byte) 0x96;
 			break;
 		case 'b':
-			opcode[0] = (byte) 0x80;
+			opcode[0] = (byte) 0x90;
 			break;
 		case 'c':
-			opcode[0] = (byte) 0x81;
+			opcode[0] = (byte) 0x91;
 			break;
 		case 'd':
-			opcode[0] = (byte) 0x82;
+			opcode[0] = (byte) 0x92;
 			break;
 		case 'e':
-			opcode[0] = (byte) 0x83;
+			opcode[0] = (byte) 0x93;
 			break;
 		case 'h':
-			opcode[0] = (byte) 0x84;
+			opcode[0] = (byte) 0x94;
 			break;
 		case 'l':
-			opcode[0] = (byte) 0x85;
+			opcode[0] = (byte) 0x95;
 			break;
 		default:
 			throw new IllegalArgumentException("Argument " + arguments[0]
@@ -49,26 +49,29 @@ public class ADDMnemonic implements Mnemonic {
 		Processor.getInstance().incProgramcounter();
 		byte b = 0;
 		switch (opcode) {
-		case (byte) 0x87:
+		case (byte) 0x97:
 			b = Processor.getInstance().getRegisterA();
 			break;
-		case (byte) 0x80:
+		case (byte) 0x90:
 			b = Processor.getInstance().getRegisterB();
 			break;
-		case (byte) 0x81:
+		case (byte) 0x91:
 			b = Processor.getInstance().getRegisterC();
 			break;
-		case (byte) 0x82:
+		case (byte) 0x92:
 			b = (Processor.getInstance().getRegisterD());
 			break;
-		case (byte) 0x83:
+		case (byte) 0x93:
 			b = (Processor.getInstance().getRegisterE());
 			break;
-		case (byte) 0x84:
+		case (byte) 0x94:
 			b = (Processor.getInstance().getRegisterH());
 			break;
-		case (byte) 0x85:
+		case (byte) 0x95:
 			b = (Processor.getInstance().getRegisterL());
+			break;
+		case (byte) 0x96:
+			b = Memory.getInstance().get(Processor.getInstance().getRegisterHL());
 			break;
 		default:
 			break;
@@ -76,14 +79,14 @@ public class ADDMnemonic implements Mnemonic {
 
 		short a2 = (short) (Processor.getInstance().getRegisterA() & 0xFF);
 		short b2 = (short) (b & 0xFF);
-		int c = a2 + b2;
+		int c = a2 - b2;
 		Processor.getInstance().setRegisterA((byte) c);
 		Processor.getInstance().setFlags((short) c);
 	}
 
 	@Override
 	public boolean hasOpcode(byte opcode) {
-		return (opcode >= (byte) 0x80) && (opcode <= (byte) 0x87);
+		return (opcode >= (byte) 0x90) && (opcode <= (byte) 0x97);
 	}
 
 	@Override

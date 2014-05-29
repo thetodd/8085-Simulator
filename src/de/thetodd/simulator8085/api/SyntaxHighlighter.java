@@ -1,5 +1,7 @@
 package de.thetodd.simulator8085.api;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,8 +19,8 @@ public class SyntaxHighlighter {
 	private StyleRange breakpointStyle;
 	private StyleRange commentStyle;
 
-	private String[] mnemonics = { "ORG", "JMP", "MVI", "HLT", "NOP", "ADD", "ACI","ADC","ADI","CALL","CC","CMA","CMC","CMM","CNC","CNZ","CPE","CPO","CP","CZ","DCX","INX","MOV","POP","PUSH","RET" };
-
+	private Set<String> mnemonics;
+	
 	public SyntaxHighlighter() {
 		Display display = Display.getDefault();
 
@@ -41,28 +43,31 @@ public class SyntaxHighlighter {
 
 		commentStyle = new StyleRange();
 		commentStyle.foreground = new Color(display, 0x1d, 0x37, 0x84);
+		
+		mnemonics = new HashSet<String>();
+		mnemonics.addAll(Simulator.getInstance().getMnemonics().keySet());
+		mnemonics.add("org"); //Add pseudo-opcode ORG
 	}
 
 	public void highlight(StyledText codeWidget) {
 		String code = codeWidget.getText();
+		codeWidget.replaceStyleRanges(0, code.length(), new StyleRange[0]); //Erase old styles
+		
 
 		// Highlight Mnemonics
-		for (int i = 0; i < mnemonics.length; i++) {
-			String m = mnemonics[i];
-			// System.out.println("Parse for " + m);
+		for (String m : mnemonics) {
 			int index = 0;
-			while ((index = code.indexOf(m, index)) > -1) {
-				// System.out.println(index);
+			while ((index = code.toLowerCase().indexOf(m+" ", index)) > -1) {
 				StyleRange styleRange = (StyleRange) mnemonicStyle.clone();
 				styleRange.start = index;
-				styleRange.length = 3;
+				styleRange.length = m.length();
 				codeWidget.setStyleRange(styleRange);
-				index += 3;
+				index += m.length();
 			}
 		}
 
 		// Highlight Hexnumbers
-		Pattern pattern2 = Pattern.compile("0x[0-9a-f]+");
+		Pattern pattern2 = Pattern.compile("0x[0-9a-fA-F]+");
 		Matcher matcher2 = pattern2.matcher(code);
 		// check all occurrences
 		while (matcher2.find()) {
