@@ -65,12 +65,17 @@ import de.thetodd.simulator8085.api.mnemonics.RPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.RPOMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.RRCMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.RZMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.SBBMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.SBIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.SHLDMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.SPHLMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.STAMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.STAXMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.STCMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.SUBMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.SUIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.XCHGMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.XTHLMnemonic;
 
 public class Simulator {
 
@@ -129,6 +134,10 @@ public class Simulator {
 		mnemonicMap.put("adi", new ADIMnemonic());
 		mnemonicMap.put("aci", new ACIMnemonic());
 		mnemonicMap.put("adc", new ADCMnemonic());
+		mnemonicMap.put("sui", new SUIMnemonic());
+		mnemonicMap.put("sub", new SUBMnemonic());
+		mnemonicMap.put("sbi", new SBIMnemonic());
+		mnemonicMap.put("sbb", new SBBMnemonic());
 		
 		mnemonicMap.put("push", new PUSHMnemonic());
 		mnemonicMap.put("pop", new POPMnemonic());
@@ -184,6 +193,7 @@ public class Simulator {
 		
 		mnemonicMap.put("pchl", new PCHLMnemonic());
 		mnemonicMap.put("xchg", new XCHGMnemonic());
+		mnemonicMap.put("xthl", new XTHLMnemonic());
 		mnemonicMap.put("stc", new STCMnemonic());
 		mnemonicMap.put("sphl", new SPHLMnemonic());
 		mnemonicMap.put("shld", new SHLDMnemonic());
