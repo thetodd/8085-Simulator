@@ -55,8 +55,8 @@ TODOs
 - [X] PCHL
 - [X] POP
 - [X] PUSH
-- [ ] RAL
-- [ ] RAR
+- [X] RAL
+- [X] RAR
 - [X] RC
 - [ ] RIM
 - [X] RM
