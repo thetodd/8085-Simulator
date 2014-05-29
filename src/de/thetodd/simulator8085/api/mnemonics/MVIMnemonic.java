@@ -40,6 +40,7 @@ public class MVIMnemonic implements Mnemonic {
 				Processor.getInstance().getProgramcounter());
 		Processor.getInstance().incProgramcounter();
 		if (opcode == 0x3E) {
+			System.out.println("Set Register A");
 			Processor.getInstance().setRegisterA(
 					Memory.getInstance().get(
 							Processor.getInstance().getProgramcounter()));
@@ -76,9 +77,10 @@ public class MVIMnemonic implements Mnemonic {
 
 	@Override
 	public boolean hasOpcode(byte opcode) {
-		return (opcode == 0x3E) || (opcode == 0x36) || (opcode == 0x06)
-				|| (opcode == 0x0E) || (opcode == 0x16) || (opcode == 0x1E)
-				|| (opcode == 0x26) || (opcode == 0x2E);
+		return (opcode == (byte) 0x3E) || (opcode == (byte) 0x36)
+				|| (opcode == (byte) 0x06) || (opcode == (byte) 0x0E)
+				|| (opcode == (byte) 0x16) || (opcode == (byte) 0x1E)
+				|| (opcode == (byte) 0x26) || (opcode == (byte) 0x2E);
 	}
 
 	@Override
