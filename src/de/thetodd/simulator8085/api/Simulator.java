@@ -9,6 +9,8 @@ import de.thetodd.simulator8085.api.mnemonics.ACIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ADCMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ADDMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ADIMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.ANAMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.ANIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.CALLMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.CCMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.CMAMnemonic;
@@ -143,6 +145,8 @@ public class Simulator {
 		
 		mnemonicMap.put("ori", new ORIMnemonic());
 		mnemonicMap.put("ora", new ORAMnemonic());
+		mnemonicMap.put("ani", new ANIMnemonic());
+		mnemonicMap.put("ana", new ANAMnemonic());
 
 	}
 

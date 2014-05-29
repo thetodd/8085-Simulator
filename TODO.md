@@ -6,8 +6,8 @@ TODOs
 - [X] ADC
 - [X] ADD
 - [X] ADI
-- [ ] ANA
-- [ ] ANI
+- [X] ANA
+- [X] ANI
 - [X] CALL
 - [X] CC
 - [X] CM
