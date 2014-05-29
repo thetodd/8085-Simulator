@@ -89,10 +89,10 @@ public class INRMnemonic implements Mnemonic {
 
 	@Override
 	public boolean hasOpcode(byte opcode) {
-		return (opcode >= (byte) 0x04) || (opcode >= (byte) 0x0c)
-				|| (opcode >= (byte) 0x14) || (opcode >= (byte) 0x1c)
-				|| (opcode >= (byte) 0x24) || (opcode >= (byte) 0x2c)
-				|| (opcode >= (byte) 0x34) || (opcode >= (byte) 0x3c);
+		return (opcode == (byte) 0x04) || (opcode == (byte) 0x0c)
+				|| (opcode == (byte) 0x14) || (opcode == (byte) 0x1c)
+				|| (opcode == (byte) 0x24) || (opcode == (byte) 0x2c)
+				|| (opcode == (byte) 0x34) || (opcode == (byte) 0x3c);
 	}
 
 	@Override

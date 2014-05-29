@@ -89,10 +89,10 @@ public class DCRMnemonic implements Mnemonic {
 
 	@Override
 	public boolean hasOpcode(byte opcode) {
-		return (opcode >= (byte) 0x05) || (opcode >= (byte) 0x0d)
-				|| (opcode >= (byte) 0x15) || (opcode >= (byte) 0x1D)
-				|| (opcode >= (byte) 0x25) || (opcode >= (byte) 0x2d)
-				|| (opcode >= (byte) 0x35) || (opcode >= (byte) 0x3d);
+		return (opcode == (byte) 0x05) || (opcode == (byte) 0x0d)
+				|| (opcode == (byte) 0x15) || (opcode == (byte) 0x1D)
+				|| (opcode == (byte) 0x25) || (opcode == (byte) 0x2d)
+				|| (opcode == (byte) 0x35) || (opcode == (byte) 0x3d);
 	}
 
 	@Override
