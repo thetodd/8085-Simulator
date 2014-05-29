@@ -19,8 +19,8 @@ public class SyntaxHighlighter {
 	private StyleRange breakpointStyle;
 	private StyleRange commentStyle;
 
-	private Set<String> mnemonics;// = { "ORG", "JMP", "MVI", "HLT", "NOP", "ADD", "ACI","ADC","ADI","CALL","CC","CMA","CMC","CMM","CNC","CNZ","CPE","CPO","CP","CZ","DCX","INX","MOV","POP","PUSH","RET" };
-
+	private Set<String> mnemonics;
+	
 	public SyntaxHighlighter() {
 		Display display = Display.getDefault();
 
@@ -51,16 +51,18 @@ public class SyntaxHighlighter {
 
 	public void highlight(StyledText codeWidget) {
 		String code = codeWidget.getText();
+		codeWidget.replaceStyleRanges(0, code.length(), new StyleRange[0]); //Erase old styles
+		
 
 		// Highlight Mnemonics
 		for (String m : mnemonics) {
 			int index = 0;
-			while ((index = code.toLowerCase().indexOf(m, index)) > -1) {
+			while ((index = code.toLowerCase().indexOf(m+" ", index)) > -1) {
 				StyleRange styleRange = (StyleRange) mnemonicStyle.clone();
 				styleRange.start = index;
-				styleRange.length = 3;
+				styleRange.length = m.length();
 				codeWidget.setStyleRange(styleRange);
-				index += 3;
+				index += m.length();
 			}
 		}
 
