@@ -23,6 +23,7 @@ import de.thetodd.simulator8085.api.mnemonics.CPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.CPOMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.CZMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.DADMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.DCRMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.DCXMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.HLTMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.INXMnemonic;
@@ -150,6 +151,7 @@ public class Simulator {
 		mnemonicMap.put("ana", new ANAMnemonic());
 		
 		mnemonicMap.put("dad", new DADMnemonic());
+		mnemonicMap.put("dcr", new DCRMnemonic());
 
 	}
 
