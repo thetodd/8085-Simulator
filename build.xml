@@ -37,12 +37,13 @@
 		<javac includeantruntime="false" srcdir="${src}" destdir="${builddir}/application">
 			<classpath refid="app.class.path" />
 		</javac>
+		<copy dest="${builddir}/application/de/thetodd/simulator8085/gui/icons" src="${src}/de/thetodd/simulator8085/gui/icons" />
 	</target>
 
 	<target name="run" depends="build">
 		<java classname="de.thetodd.simulator8085.MainProgram" classpath="${builddir}/application">
 			<classpath>
-				<path location="${builddir}/application"/>
+				<path location="${builddir}/application" />
 				<path refid="app.class.path" />
 			</classpath>
 		</java>
