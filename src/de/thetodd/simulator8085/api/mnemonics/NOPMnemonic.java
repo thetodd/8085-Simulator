@@ -8,7 +8,7 @@ public class NOPMnemonic implements Mnemonic {
 	public byte[] getOpcode(String[] arguments) {
 		byte[] opcode = new byte[1];
 		if (arguments.length > 0) {
-			throw new IllegalArgumentException("Argumente sind nicht zulässig!");
+			throw new IllegalArgumentException("Argumente sind nicht zulaessig!");
 		}
 		opcode[0] = 0x00;
 

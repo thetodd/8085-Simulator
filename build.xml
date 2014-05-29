@@ -1,53 +1,86 @@
-<project name="8085-Simulator" default="dist" basedir=".">
+<?xml version="1.0"?>
+<project name="Sim8085" default="main" basedir=".">
 
-	<description>
-		simple example build file
-	</description>
-	<!-- set global properties for this build -->
-	<property name="src" location="src" />
-	<property name="build" location="build" />
-	<property name="dist" location="dist" />
-	<property name="classpath" location="libs" />
+	<property file="build.properties" />
+	<property name="src" value="src" />
+	<property name="testfiles" value="testing" />
+	<property name="builddir" value="build" />
+	<property name="dist" value="dist" />
+	<property name="version" value="${major_version}.${minor_version}.${revision}" />
+	<property name="distname" value="${projectname}-v${version}" />
+
+	<path id="class.path">
+		<fileset dir="libs">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<!-- JUnit classpath. -->
+	<path id="junit.class.path">
+		<fileset dir="libs/application" includes="*.jar" />
+		<fileset dir="libs/test" includes="*.jar" />
+		<pathelement location="${builddir}/application" />
+		<pathelement location="${builddir}/test" />
+	</path>
 
 	<target name="init">
-		<!-- Create the time stamp -->
-		<tstamp />
-		<!-- Create the build directory structure used by compile -->
-		<mkdir dir="${build}" />
-	</target>
-
-	<target name="compile" depends="init" description="compile the source ">
-		<path id="lib.path.ref">
-			<fileset dir="libs" includes="*.jar" />
-		</path>
-		<!-- Compile the java code from ${src} into ${build} -->
-		<javac srcdir="${src}" destdir="${build}">
-			<compilerarg value="-Xbootclasspath/p:${toString:lib.path.ref}" />
-		</javac>
-	</target>
-
-	<target name="test" depends="init" description="compile the source ">
-		<!-- Compile the java code from ${src} into ${build} -->
-		<path id="lib.path.ref">
-			<fileset dir="libs" includes="*.jar" />
-		</path>
-		<!-- Compile the java code from ${src} into ${build} -->
-		<javac srcdir="${src}" destdir="${build}" encoding="iso-8859-1">
-			<compilerarg value="-Xbootclasspath/p:${toString:lib.path.ref}" />
-		</javac>
-	</target>
-
-	<target name="dist" depends="compile" description="generate the distribution">
-		<!-- Create the distribution directory -->
+		<tstamp>
+			<format property="time.stamp" pattern="yyyyMMddHHmmss" />
+		</tstamp>
+		<mkdir dir="${builddir}/application" />
+		<mkdir dir="${builddir}/test" />
 		<mkdir dir="${dist}" />
-
-		<!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-		<jar jarfile="${dist}/Sim8085-${DSTAMP}.jar" basedir="${build}" />
 	</target>
 
-	<target name="clean" description="clean up">
-		<!-- Delete the ${build} and ${dist} directory trees -->
-		<delete dir="${build}" />
+	<target name="build" depends="init">
+		<echo message="Building the application" />
+		<javac includeantruntime="false" srcdir="${src}" destdir="${builddir}/application">
+			<classpath refid="class.path" />
+		</javac>
+		<buildnumber />
+	</target>
+
+	<target name="test" depends="build">
+		<echo message="Testing the application" />
+		<!-- Build Test Classes -->
+		<javac includeantruntime="false" srcdir="${testfiles}" destdir="${builddir}/test">
+			<classpath refid="junit.class.path" />
+		</javac>
+		<!-- Batchrun Test Classes -->
+		<junit haltonfailure="true" printsummary="false">
+			<classpath refid="junit.class.path" />
+
+			<formatter type="plain" usefile="false" />
+			<batchtest fork="yes">
+				<fileset dir="${builddir}/test" />
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="main" depends="build, test">
+	</target>
+
+	<target name="jar" depends="build">
+		<jar jarfile="${dist}/deps.jar">
+			<zipgroupfileset dir="libs/application">
+				<include name="**/*.jar" />
+			</zipgroupfileset>
+		</jar>
+		<sleep seconds="1" />
+		<jar jarfile="${dist}/${distname}_${build.number}-${time.stamp}.jar" basedir="${builddir}/application">
+			<zipfileset src="${dist}/deps.jar" excludes="META-INF/*.SF" />
+			<fileset dir="${src}">
+				<include name="**/*.png" />
+			</fileset>
+			<manifest>
+				<attribute name="Main-Class" value="${mainclass}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="clean">
+		<delete dir="${builddir}" />
 		<delete dir="${dist}" />
 	</target>
+
 </project>

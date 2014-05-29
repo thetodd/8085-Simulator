@@ -27,7 +27,7 @@ public class MVIMnemonic implements Mnemonic {
 			opcode[0] = 0x36;
 		} else {
 			throw new IllegalArgumentException("Argument " + arguments[0]
-					+ " ist nicht zulässig!");
+					+ " ist nicht zulaessig!");
 		}
 		opcode[1] = (byte) Integer.decode(arguments[1]).intValue();
 
