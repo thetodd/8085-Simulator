@@ -37,7 +37,10 @@
 		<javac includeantruntime="false" srcdir="${src}" destdir="${builddir}/application">
 			<classpath refid="app.class.path" />
 		</javac>
-		<copy dest="${builddir}/application/de/thetodd/simulator8085/gui/icons" src="${src}/de/thetodd/simulator8085/gui/icons" />
+		<copy todir="${builddir}/application">
+			<fileset dir="${src}" includes="**/*.png">
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="run" depends="build">
