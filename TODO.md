@@ -67,8 +67,8 @@ TODOs
 - [X] RPO
 - [X] RZ
 - [X] RET
-- [ ] RRC
-- [ ] RLC
+- [X] RRC
+- [X] RLC
 - [ ] RST
 - [ ] SBB
 - [ ] SBI

@@ -61,6 +61,7 @@ import de.thetodd.simulator8085.api.mnemonics.RNZMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.RPEMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.RPMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.RPOMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.RRCMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.RZMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.SPHLMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.STAMnemonic;
@@ -183,7 +184,8 @@ public class Simulator {
 		mnemonicMap.put("stc", new STCMnemonic());
 		mnemonicMap.put("sphl", new SPHLMnemonic());
 		
-
+		mnemonicMap.put("rrc", new RRCMnemonic());
+		mnemonicMap.put("rlc", new RRCMnemonic());
 	}
 
 	public HashMap<Short, Integer> getCodeMap() {
