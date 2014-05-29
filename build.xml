@@ -44,7 +44,7 @@
 	</target>
 
 	<target name="run" depends="build">
-		<java classname="de.thetodd.simulator8085.MainProgram" classpath="${builddir}/application">
+		<java classname="de.thetodd.simulator8085.MainProgram" output="${dist}/output.txt">
 			<classpath>
 				<path location="${builddir}/application" />
 				<path refid="app.class.path" />
