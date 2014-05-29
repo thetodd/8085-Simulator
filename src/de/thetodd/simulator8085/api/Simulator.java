@@ -75,6 +75,8 @@ import de.thetodd.simulator8085.api.mnemonics.STCMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.SUBMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.SUIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.XCHGMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.XRAMnemonic;
+import de.thetodd.simulator8085.api.mnemonics.XRIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.XTHLMnemonic;
 
 public class Simulator {
@@ -176,6 +178,8 @@ public class Simulator {
 		mnemonicMap.put("ora", new ORAMnemonic());
 		mnemonicMap.put("ani", new ANIMnemonic());
 		mnemonicMap.put("ana", new ANAMnemonic());
+		mnemonicMap.put("xri", new XRIMnemonic());
+		mnemonicMap.put("xra", new XRAMnemonic());
 		
 		mnemonicMap.put("dad", new DADMnemonic());
 		mnemonicMap.put("dcr", new DCRMnemonic());

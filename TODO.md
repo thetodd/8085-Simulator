@@ -9,5 +9,3 @@ TODOs
 - [ ] RIM
 - [ ] RST
 - [ ] SIM
-- [ ] XRA
-- [ ] XRI
