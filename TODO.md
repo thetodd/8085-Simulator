@@ -11,7 +11,6 @@ TODOs
 - [ ] RST
 - [ ] SBB
 - [ ] SBI
-- [ ] SHLD
 - [ ] SIM
 - [ ] SUB
 - [ ] SUI
