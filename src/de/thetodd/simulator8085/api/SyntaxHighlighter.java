@@ -1,5 +1,6 @@
 package de.thetodd.simulator8085.api;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,17 +44,18 @@ public class SyntaxHighlighter {
 		commentStyle = new StyleRange();
 		commentStyle.foreground = new Color(display, 0x1d, 0x37, 0x84);
 		
-		mnemonics = Simulator.getInstance().getMnemonics().keySet();
+		mnemonics = new HashSet<String>();
+		mnemonics.addAll(Simulator.getInstance().getMnemonics().keySet());
 		mnemonics.add("org"); //Add pseudo-opcode ORG
 	}
 
 	public void highlight(StyledText codeWidget) {
-		String code = codeWidget.getText().toLowerCase();
+		String code = codeWidget.getText();
 
 		// Highlight Mnemonics
 		for (String m : mnemonics) {
 			int index = 0;
-			while ((index = code.indexOf(m, index)) > -1) {
+			while ((index = code.toLowerCase().indexOf(m, index)) > -1) {
 				StyleRange styleRange = (StyleRange) mnemonicStyle.clone();
 				styleRange.start = index;
 				styleRange.length = 3;
@@ -63,7 +65,7 @@ public class SyntaxHighlighter {
 		}
 
 		// Highlight Hexnumbers
-		Pattern pattern2 = Pattern.compile("0x[0-9a-f]+");
+		Pattern pattern2 = Pattern.compile("0x[0-9a-fA-F]+");
 		Matcher matcher2 = pattern2.matcher(code);
 		// check all occurrences
 		while (matcher2.find()) {
