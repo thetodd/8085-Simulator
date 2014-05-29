@@ -37,7 +37,6 @@
 		<javac includeantruntime="false" srcdir="${src}" destdir="${builddir}/application">
 			<classpath refid="app.class.path" />
 		</javac>
-		<buildnumber />
 	</target>
 
 	<target name="run" depends="build">
@@ -76,7 +75,7 @@
 			</zipgroupfileset>
 		</jar>
 		<sleep seconds="1" />
-		<jar jarfile="${dist}/${distname}_${build.number}-${time.stamp}.jar" basedir="${builddir}/application">
+		<jar jarfile="${dist}/${distname}_${time.stamp}.jar" basedir="${builddir}/application">
 			<zipfileset src="${dist}/deps.jar" excludes="META-INF/*.SF" />
 			<fileset dir="${src}">
 				<include name="**/*.png" />
