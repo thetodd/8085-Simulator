@@ -4,12 +4,12 @@ import java.util.Collection;
 
 import org.eclipse.swt.widgets.Display;
 
-import de.thetodd.simulator8085.api.Memory;
 import de.thetodd.simulator8085.api.Mnemonic;
-import de.thetodd.simulator8085.api.Processor;
-import de.thetodd.simulator8085.api.ProcessorError;
-import de.thetodd.simulator8085.api.RegisterChangeEvent;
 import de.thetodd.simulator8085.api.Simulator;
+import de.thetodd.simulator8085.api.exceptions.ProcessorError;
+import de.thetodd.simulator8085.api.listener.RegisterChangeEvent;
+import de.thetodd.simulator8085.api.platform.Memory;
+import de.thetodd.simulator8085.api.platform.Processor;
 import de.thetodd.simulator8085.gui.SimulatorMainWindow;
 
 public class SimulatorThread extends Thread {

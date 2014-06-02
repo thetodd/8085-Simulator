@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import de.thetodd.simulator8085.api.Processor;
+import de.thetodd.simulator8085.api.platform.Processor;
 
 public class ProcessorTest {
 

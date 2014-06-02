@@ -12,9 +12,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import de.thetodd.simulator8085.api.ProcessorChangedListener;
-import de.thetodd.simulator8085.api.RegisterChangeEvent;
 import de.thetodd.simulator8085.api.Simulator;
+import de.thetodd.simulator8085.api.listener.ProcessorChangedListener;
+import de.thetodd.simulator8085.api.listener.RegisterChangeEvent;
 
 public class ListView extends Shell implements ProcessorChangedListener {
 	private Table table;

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import de.thetodd.simulator8085.api.listener.ProcessorChangedListener;
+import de.thetodd.simulator8085.api.listener.RegisterChangeEvent;
 import de.thetodd.simulator8085.api.mnemonics.ACIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ADCMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ADDMnemonic;

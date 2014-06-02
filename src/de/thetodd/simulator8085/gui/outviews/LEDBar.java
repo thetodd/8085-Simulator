@@ -9,9 +9,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 
-import de.thetodd.simulator8085.api.ProcessorChangedListener;
-import de.thetodd.simulator8085.api.RegisterChangeEvent;
 import de.thetodd.simulator8085.api.Simulator;
+import de.thetodd.simulator8085.api.listener.ProcessorChangedListener;
+import de.thetodd.simulator8085.api.listener.RegisterChangeEvent;
 import de.thetodd.simulator8085.gui.outviews.widgets.LEDWidget;
 
 public class LEDBar extends Shell implements ProcessorChangedListener {

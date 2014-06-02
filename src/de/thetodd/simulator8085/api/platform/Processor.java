@@ -1,4 +1,4 @@
-package de.thetodd.simulator8085.api;
+package de.thetodd.simulator8085.api.platform;
 
 public class Processor {
 

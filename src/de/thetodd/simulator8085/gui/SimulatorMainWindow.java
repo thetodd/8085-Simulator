@@ -43,19 +43,19 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import de.thetodd.simulator8085.api.Memory;
-import de.thetodd.simulator8085.api.Processor;
-import de.thetodd.simulator8085.api.ProcessorChangedListener;
-import de.thetodd.simulator8085.api.RegisterChangeEvent;
-import de.thetodd.simulator8085.api.RegisterChangeEvent.Register;
 import de.thetodd.simulator8085.api.Simulator;
-import de.thetodd.simulator8085.api.SyntaxHighlighter;
 import de.thetodd.simulator8085.api.actions.Action;
 import de.thetodd.simulator8085.api.actions.AssembleAction;
 import de.thetodd.simulator8085.api.actions.OneStepAction;
 import de.thetodd.simulator8085.api.actions.PrintAction;
 import de.thetodd.simulator8085.api.actions.SimulateAction;
 import de.thetodd.simulator8085.api.actions.SimulatorThread;
+import de.thetodd.simulator8085.api.helpers.SyntaxHighlighter;
+import de.thetodd.simulator8085.api.listener.ProcessorChangedListener;
+import de.thetodd.simulator8085.api.listener.RegisterChangeEvent;
+import de.thetodd.simulator8085.api.listener.RegisterChangeEvent.Register;
+import de.thetodd.simulator8085.api.platform.Memory;
+import de.thetodd.simulator8085.api.platform.Processor;
 import de.thetodd.simulator8085.gui.outviews.LEDBar;
 import de.thetodd.simulator8085.gui.outviews.ListView;
 
