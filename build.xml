@@ -72,7 +72,7 @@
 	<target name="main" depends="build, test">
 	</target>
 
-	<target name="jar" depends="build">
+	<target name="dist" depends="build">
 		<jar jarfile="${dist}/deps.jar">
 			<zipgroupfileset dir="libs/application">
 				<include name="**/*.jar" />
