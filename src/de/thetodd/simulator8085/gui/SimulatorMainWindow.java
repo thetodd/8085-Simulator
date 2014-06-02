@@ -55,6 +55,7 @@ import de.thetodd.simulator8085.api.actions.AssembleAction;
 import de.thetodd.simulator8085.api.actions.OneStepAction;
 import de.thetodd.simulator8085.api.actions.PrintAction;
 import de.thetodd.simulator8085.api.actions.SimulateAction;
+import de.thetodd.simulator8085.api.actions.SimulatorThread;
 import de.thetodd.simulator8085.gui.outviews.LEDBar;
 import de.thetodd.simulator8085.gui.outviews.ListView;
 
@@ -85,9 +86,11 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 	private Label lblCarryFlag;
 
 	private File document;
+	private SimulatorMainWindow window;
+	private SimulatorThread simThread;
 
 	public SimulatorMainWindow() {
-
+		
 	}
 
 	/**
@@ -107,10 +110,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		Simulator.getInstance().fireRegisterChangeEvent(
 				new RegisterChangeEvent(RegisterChangeEvent.getAllTemplate()));
 		
-		//Testweise ListViewer oeffnen
-		//ListView lv = new ListView(Display.getDefault());
-		//lv.open();
-		//lv.layout();
+		this.window = this;
 
 		while (!shlSimulator.isDisposed()) {
 			if (!display.readAndDispatch()) {
@@ -749,6 +749,30 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 								"/de/thetodd/simulator8085/gui/icons/arrow_rotate_anticlockwise.png"));
 		mntmResetProcessor.setText("Reset Processor\tCtrl+R");
 		mntmResetProcessor.setAccelerator(SWT.MOD1 + 'R');
+		
+		MenuItem mntmSimulate_1 = new MenuItem(menu_2, SWT.NONE);
+		mntmSimulate_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if(simThread != null && simThread.isRunning()) {
+					simThread.stopRunning();
+				}
+				simThread = new SimulatorThread(window);
+				simThread.startRunning();
+			}
+		});
+		mntmSimulate_1.setText("Start simulation");
+		
+		MenuItem mntmStopSim = new MenuItem(menu_2, SWT.NONE);
+		mntmStopSim.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if(simThread != null && simThread.isRunning()) {
+					simThread.stopRunning();
+				}
+			}
+		});
+		mntmStopSim.setText("Stop simulation");
 
 		MenuItem mntmNexBreakpoint = new MenuItem(menu_2, SWT.NONE);
 		mntmNexBreakpoint.addSelectionListener(new SelectionAdapter() {
