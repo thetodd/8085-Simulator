@@ -40,6 +40,8 @@
 		<copy todir="${builddir}/application">
 			<fileset dir="${src}" includes="**/*.png">
 			</fileset>
+			<fileset dir="${src}" includes="**/messages*.properties">
+			</fileset>
 		</copy>
 	</target>
 
