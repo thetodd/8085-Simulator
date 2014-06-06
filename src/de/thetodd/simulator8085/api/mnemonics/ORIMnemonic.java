@@ -1,8 +1,8 @@
 package de.thetodd.simulator8085.api.mnemonics;
 
-import de.thetodd.simulator8085.api.Memory;
 import de.thetodd.simulator8085.api.Mnemonic;
-import de.thetodd.simulator8085.api.Processor;
+import de.thetodd.simulator8085.api.platform.Memory;
+import de.thetodd.simulator8085.api.platform.Processor;
 
 public class ORIMnemonic implements Mnemonic {
 

@@ -1,6 +1,8 @@
-package de.thetodd.simulator8085.api;
+package de.thetodd.simulator8085.api.platform;
 
 import java.util.HashMap;
+
+import de.thetodd.simulator8085.api.Simulator;
 
 public class Memory {
 

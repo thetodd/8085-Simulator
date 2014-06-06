@@ -1,7 +1,7 @@
 package de.thetodd.simulator8085.api.actions;
 
-import de.thetodd.simulator8085.api.Memory;
 import de.thetodd.simulator8085.api.Simulator;
+import de.thetodd.simulator8085.api.platform.Memory;
 
 public class AssembleAction implements Action {
 

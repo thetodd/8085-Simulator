@@ -1,10 +1,10 @@
 package de.thetodd.simulator8085.api.mnemonics;
 
-import de.thetodd.simulator8085.api.Memory;
 import de.thetodd.simulator8085.api.Mnemonic;
-import de.thetodd.simulator8085.api.Processor;
-import de.thetodd.simulator8085.api.ProcessorError;
 import de.thetodd.simulator8085.api.Simulator;
+import de.thetodd.simulator8085.api.exceptions.ProcessorError;
+import de.thetodd.simulator8085.api.platform.Memory;
+import de.thetodd.simulator8085.api.platform.Processor;
 
 public class JCMnemonic implements Mnemonic {
 

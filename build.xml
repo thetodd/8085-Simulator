@@ -40,6 +40,8 @@
 		<copy todir="${builddir}/application">
 			<fileset dir="${src}" includes="**/*.png">
 			</fileset>
+			<fileset dir="${src}" includes="**/messages*.properties">
+			</fileset>
 		</copy>
 	</target>
 
@@ -72,15 +74,16 @@
 	<target name="main" depends="build, test">
 	</target>
 
-	<target name="jar" depends="build">
-		<jar jarfile="${dist}/deps.jar">
+	<target name="dist_32bit" depends="build">
+		<jar jarfile="${dist}/deps_x86.jar">
 			<zipgroupfileset dir="libs/application">
 				<include name="**/*.jar" />
+				<exclude name="**/swt.jar" />
 			</zipgroupfileset>
 		</jar>
 		<sleep seconds="1" />
-		<jar jarfile="${dist}/${distname}_${time.stamp}.jar" basedir="${builddir}/application">
-			<zipfileset src="${dist}/deps.jar" excludes="META-INF/*.SF" />
+		<jar jarfile="${dist}/${distname}_${time.stamp}_x86.jar" basedir="${builddir}/application">
+			<zipfileset src="${dist}/deps_x86.jar" excludes="META-INF/*.SF" />
 			<fileset dir="${src}">
 				<include name="**/*.png" />
 			</fileset>
@@ -90,6 +93,25 @@
 		</jar>
 	</target>
 
+	<target name="dist_64bit" depends="build">
+		<jar jarfile="${dist}/deps_x64.jar">
+			<zipgroupfileset dir="libs/application">
+				<include name="**/*.jar" />
+				<exclude name="**/swt_x86.jar" />
+			</zipgroupfileset>
+		</jar>
+		<sleep seconds="1" />
+		<jar jarfile="${dist}/${distname}_${time.stamp}_x64.jar" basedir="${builddir}/application">
+			<zipfileset src="${dist}/deps_x64.jar" excludes="META-INF/*.SF" />
+			<fileset dir="${src}">
+				<include name="**/*.png" />
+			</fileset>
+			<manifest>
+				<attribute name="Main-Class" value="${mainclass}" />
+			</manifest>
+		</jar>
+	</target>
+	
 	<target name="clean">
 		<delete dir="${builddir}" />
 		<delete dir="${dist}" />
