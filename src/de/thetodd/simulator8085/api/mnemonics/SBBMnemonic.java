@@ -1,10 +1,11 @@
 package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
+import de.thetodd.simulator8085.api.Simulator;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
-public class SBBMnemonic implements Mnemonic {
+public class SBBMnemonic extends Mnemonic {
 
 	public byte[] getOpcode(String[] arguments) {
 		byte[] opcode = new byte[1];
@@ -71,7 +72,8 @@ public class SBBMnemonic implements Mnemonic {
 			b = (Processor.getInstance().getRegisterL());
 			break;
 		case (byte) 0x9E:
-			b = Memory.getInstance().get(Processor.getInstance().getRegisterHL());
+			b = Memory.getInstance().get(
+					Processor.getInstance().getRegisterHL());
 			break;
 		default:
 			break;
@@ -80,7 +82,7 @@ public class SBBMnemonic implements Mnemonic {
 		short a2 = (short) (Processor.getInstance().getRegisterA() & 0xFF);
 		short b2 = (short) (b & 0xFF);
 		int c = a2 - b2;
-		if(Processor.getInstance().isCarryFlag()) {
+		if (Processor.getInstance().isCarryFlag()) {
 			c -= 1;
 		}
 		Processor.getInstance().setRegisterA((byte) c);
@@ -88,12 +90,17 @@ public class SBBMnemonic implements Mnemonic {
 	}
 
 	@Override
-	public boolean hasOpcode(byte opcode) {
+	public boolean validateOpcode(byte opcode) {
 		return (opcode >= (byte) 0x98) && (opcode <= (byte) 0x9F);
 	}
 
 	@Override
 	public byte size() {
 		return 1;
+	}
+
+	@Override
+	public boolean validateArguments(String[] args) {
+		return args.length == 1 && Simulator.isRegistername(args[0]);
 	}
 }

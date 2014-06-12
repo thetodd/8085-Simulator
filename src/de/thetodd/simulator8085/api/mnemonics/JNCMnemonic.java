@@ -6,7 +6,7 @@ import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
-public class JNCMnemonic implements Mnemonic {
+public class JNCMnemonic extends Mnemonic {
 
 	@Override
 	public byte[] getOpcode(String[] arguments) throws IllegalArgumentException {
@@ -43,7 +43,7 @@ public class JNCMnemonic implements Mnemonic {
 	}
 
 	@Override
-	public boolean hasOpcode(byte opcode) {
+	public boolean validateOpcode(byte opcode) {
 		return (opcode == (byte) 0xD2);
 	}
 

@@ -45,7 +45,7 @@ public class SimulatorThread extends Thread {
 				byte opcode = Memory.getInstance().get(pc);
 				System.out.printf("Opcode: %02Xh\n", opcode);
 				for (Mnemonic mnemonic : mnemonics) {
-					if (mnemonic.hasOpcode(opcode)) {
+					if (mnemonic.validateOpcode(opcode)) {
 						mnemonic.execute();
 						break;
 					}
