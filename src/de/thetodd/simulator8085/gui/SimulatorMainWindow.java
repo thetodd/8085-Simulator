@@ -58,6 +58,7 @@ import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 import de.thetodd.simulator8085.gui.outviews.LEDBar;
 import de.thetodd.simulator8085.gui.outviews.ListView;
+import org.eclipse.swt.custom.CLabel;
 
 public class SimulatorMainWindow implements ProcessorChangedListener {
 
@@ -88,9 +89,10 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 	private File document;
 	private SimulatorMainWindow window;
 	private SimulatorThread simThread;
+	private CLabel lblStatusLine; // a rudimental statusline
 
 	public SimulatorMainWindow() {
-		
+
 	}
 
 	/**
@@ -109,7 +111,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		Simulator.getInstance().fireMemoryChangeEvent();
 		Simulator.getInstance().fireRegisterChangeEvent(
 				new RegisterChangeEvent(RegisterChangeEvent.getAllTemplate()));
-		
+
 		this.window = this;
 
 		while (!shlSimulator.isDisposed()) {
@@ -347,7 +349,8 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		composite_1.setLayout(new GridLayout(3, false));
 
 		Label lblSpeicherbereich = new Label(composite_1, SWT.NONE);
-		lblSpeicherbereich.setText(Messages.SimulatorMainWindow_lblSpeicherbereich_text);
+		lblSpeicherbereich
+				.setText(Messages.SimulatorMainWindow_lblSpeicherbereich_text);
 
 		txtMemoryStart = new Text(composite_1, SWT.BORDER);
 		txtMemoryStart.setText("0x1800");
@@ -370,7 +373,8 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				Simulator.getInstance().fireMemoryChangeEvent();
 			}
 		});
-		btnSetMemory.setToolTipText(Messages.SimulatorMainWindow_btnSetMemory_toolTipText);
+		btnSetMemory
+				.setToolTipText(Messages.SimulatorMainWindow_btnSetMemory_toolTipText);
 		btnSetMemory.setImage(SWTResourceManager.getImage(
 				SimulatorMainWindow.class,
 				"/de/thetodd/simulator8085/gui/icons/drive_edit.png"));
@@ -378,7 +382,8 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				false, 1, 2));
 
 		Label lblSpeicherbereichEnde = new Label(composite_1, SWT.NONE);
-		lblSpeicherbereichEnde.setText(Messages.SimulatorMainWindow_lblSpeicherbereichEnde_text);
+		lblSpeicherbereichEnde
+				.setText(Messages.SimulatorMainWindow_lblSpeicherbereichEnde_text);
 
 		txtMemoryEnd = new Text(composite_1, SWT.BORDER);
 		txtMemoryEnd.setText("0x1BFF");
@@ -430,7 +435,8 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				tableViewer, SWT.NONE);
 		TableColumn tblclmnAdresse = tableViewerColumn.getColumn();
 		tblclmnAdresse.setWidth(64);
-		tblclmnAdresse.setText(Messages.SimulatorMainWindow_tblclmnAdresse_text);
+		tblclmnAdresse
+				.setText(Messages.SimulatorMainWindow_tblclmnAdresse_text);
 
 		TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(
 				tableViewer, SWT.NONE);
@@ -532,7 +538,8 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		tbtmProgramminformationen.setImage(SWTResourceManager.getImage(
 				SimulatorMainWindow.class,
 				"/de/thetodd/simulator8085/gui/icons/chart_bar.png"));
-		tbtmProgramminformationen.setText(Messages.SimulatorMainWindow_tbtmProgramminformationen_text);
+		tbtmProgramminformationen
+				.setText(Messages.SimulatorMainWindow_tbtmProgramminformationen_text);
 
 		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
 		tbtmProgramminformationen.setControl(composite_2);
@@ -544,7 +551,8 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		fd_lblProgrammgre.top = new FormAttachment(0, 10);
 		fd_lblProgrammgre.left = new FormAttachment(0, 10);
 		lblProgrammgre.setLayoutData(fd_lblProgrammgre);
-		lblProgrammgre.setText(Messages.SimulatorMainWindow_lblProgrammgre_text);
+		lblProgrammgre
+				.setText(Messages.SimulatorMainWindow_lblProgrammgre_text);
 
 		Label lblAnzahlAnweisungen = new Label(composite_2, SWT.NONE);
 		FormData fd_lblAnzahlAnweisungen = new FormData();
@@ -552,7 +560,8 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		fd_lblAnzahlAnweisungen.left = new FormAttachment(lblProgrammgre, 0,
 				SWT.LEFT);
 		lblAnzahlAnweisungen.setLayoutData(fd_lblAnzahlAnweisungen);
-		lblAnzahlAnweisungen.setText(Messages.SimulatorMainWindow_lblAnzahlAnweisungen_text);
+		lblAnzahlAnweisungen
+				.setText(Messages.SimulatorMainWindow_lblAnzahlAnweisungen_text);
 
 		Label lblAuslastungSpeicherbereich = new Label(composite_2, SWT.NONE);
 		FormData fd_lblAuslastungSpeicherbereich = new FormData();
@@ -561,7 +570,8 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		fd_lblAuslastungSpeicherbereich.left = new FormAttachment(0, 10);
 		lblAuslastungSpeicherbereich
 				.setLayoutData(fd_lblAuslastungSpeicherbereich);
-		lblAuslastungSpeicherbereich.setText(Messages.SimulatorMainWindow_lblAuslastungSpeicherbereich_text);
+		lblAuslastungSpeicherbereich
+				.setText(Messages.SimulatorMainWindow_lblAuslastungSpeicherbereich_text);
 
 		lblPercent = new Label(composite_2, SWT.NONE);
 		FormData fd_lblPercent = new FormData();
@@ -572,14 +582,17 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 
 		lblCommandCount = new Text(composite_2, SWT.NONE);
 		FormData fd_lblCommandCount = new FormData();
-		fd_lblCommandCount.right = new FormAttachment(lblAnzahlAnweisungen, 169, SWT.RIGHT);
+		fd_lblCommandCount.right = new FormAttachment(lblAnzahlAnweisungen,
+				169, SWT.RIGHT);
 		fd_lblCommandCount.left = new FormAttachment(lblAnzahlAnweisungen, 42);
-		fd_lblCommandCount.top = new FormAttachment(lblAnzahlAnweisungen, 0, SWT.TOP);
+		fd_lblCommandCount.top = new FormAttachment(lblAnzahlAnweisungen, 0,
+				SWT.TOP);
 		lblCommandCount.setLayoutData(fd_lblCommandCount);
 
 		lblProgramSize = new Text(composite_2, SWT.NONE);
 		FormData fd_lblProgramSize = new FormData();
-		fd_lblProgramSize.right = new FormAttachment(lblCommandCount, 0, SWT.RIGHT);
+		fd_lblProgramSize.right = new FormAttachment(lblCommandCount, 0,
+				SWT.RIGHT);
 		fd_lblProgramSize.left = new FormAttachment(lblProgrammgre, 40);
 		fd_lblProgramSize.top = new FormAttachment(lblProgrammgre, 0, SWT.TOP);
 		lblProgramSize.setLayoutData(fd_lblProgramSize);
@@ -589,8 +602,14 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		FormData fd_pbLoad = new FormData();
 		fd_pbLoad.right = new FormAttachment(lblPercent, 183, SWT.RIGHT);
 		fd_pbLoad.left = new FormAttachment(lblPercent, 56);
-		fd_pbLoad.top = new FormAttachment(lblAuslastungSpeicherbereich, 0, SWT.TOP);
+		fd_pbLoad.top = new FormAttachment(lblAuslastungSpeicherbereich, 0,
+				SWT.TOP);
 		pbLoad.setLayoutData(fd_pbLoad);
+
+		lblStatusLine = new CLabel(composite, SWT.NONE);
+		lblStatusLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false,
+				false, 2, 1));
+		lblStatusLine.setText(Messages.SimulatorMainWindow_lblNewLabel_5_text);
 
 		Menu menu = new Menu(shlSimulator, SWT.BAR);
 		shlSimulator.setMenuBar(menu);
@@ -702,6 +721,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				Action assemble = new AssembleAction(codeText.getText());
+				setStatus("Assembling...");
 				assemble.run();
 
 				// Reload counters
@@ -719,7 +739,8 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 					pbLoad.setState(SWT.NORMAL);
 				}
 
-				updateLineHighlighting();
+				updateLineHighlighting(); //maybe to soon
+				clearStatus();
 			}
 		});
 		mntmAsseble.setImage(SWTResourceManager.getImage(
@@ -737,34 +758,39 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				Simulator.getInstance().fireRegisterChangeEvent(
 						new RegisterChangeEvent(RegisterChangeEvent
 								.getAllTemplate()));
+				setStatus("Processor has been reset");
 			}
 		});
 		mntmResetProcessor
 				.setImage(SWTResourceManager
 						.getImage(SimulatorMainWindow.class,
 								"/de/thetodd/simulator8085/gui/icons/arrow_rotate_anticlockwise.png"));
-		mntmResetProcessor.setText(Messages.SimulatorMainWindow_mntmResetProcessor_text);
+		mntmResetProcessor
+				.setText(Messages.SimulatorMainWindow_mntmResetProcessor_text);
 		mntmResetProcessor.setAccelerator(SWT.MOD1 + 'R');
-		
+
 		MenuItem mntmSimulate_1 = new MenuItem(menu_2, SWT.NONE);
 		mntmSimulate_1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if(simThread != null && simThread.isRunning()) {
+				if (simThread != null && simThread.isRunning()) {
 					simThread.stopRunning();
 				}
 				simThread = new SimulatorThread(window);
+				setStatus("Simulating...");
 				simThread.startRunning();
 			}
 		});
-		mntmSimulate_1.setText(Messages.SimulatorMainWindow_mntmSimulate_1_text);
-		
+		mntmSimulate_1
+				.setText(Messages.SimulatorMainWindow_mntmSimulate_1_text);
+
 		MenuItem mntmStopSim = new MenuItem(menu_2, SWT.NONE);
 		mntmStopSim.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if(simThread != null && simThread.isRunning()) {
+				if (simThread != null && simThread.isRunning()) {
 					simThread.stopRunning();
+					clearStatus();
 				}
 			}
 		});
@@ -775,14 +801,17 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				SimulateAction simulate = new SimulateAction();
+				setStatus("Simulating till next breakpoint...");
 				simulate.run();
 				updateLineHighlighting();
+				clearStatus();
 			}
 		});
 		mntmNexBreakpoint.setImage(SWTResourceManager.getImage(
 				SimulatorMainWindow.class,
 				"/de/thetodd/simulator8085/gui/icons/control_end_blue.png"));
-		mntmNexBreakpoint.setText(Messages.SimulatorMainWindow_mntmNexBreakpoint_text);
+		mntmNexBreakpoint
+				.setText(Messages.SimulatorMainWindow_mntmNexBreakpoint_text);
 		mntmNexBreakpoint.setAccelerator(SWT.F8);
 
 		MenuItem mntmOneStep = new MenuItem(menu_2, SWT.NONE);
@@ -802,13 +831,13 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				"/de/thetodd/simulator8085/gui/icons/control_play.png"));
 		mntmOneStep.setText(Messages.SimulatorMainWindow_mntmOneStep_text);
 		mntmOneStep.setAccelerator(SWT.F7);
-		
+
 		MenuItem mntmViewers = new MenuItem(menu, SWT.CASCADE);
 		mntmViewers.setText(Messages.SimulatorMainWindow_mntmViewers_text);
-		
+
 		Menu menu_4 = new Menu(mntmViewers);
 		mntmViewers.setMenu(menu_4);
-		
+
 		MenuItem mntmList = new MenuItem(menu_4, SWT.NONE);
 		mntmList.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -819,7 +848,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 			}
 		});
 		mntmList.setText(Messages.SimulatorMainWindow_mntmList_text);
-		
+
 		MenuItem mntmIntersection = new MenuItem(menu_4, SWT.NONE);
 		mntmIntersection.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -829,16 +858,19 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				insect.layout();
 			}
 		});
-		mntmIntersection.setText(Messages.SimulatorMainWindow_mntmIntersection_text);
+		mntmIntersection
+				.setText(Messages.SimulatorMainWindow_mntmIntersection_text);
 
 		MenuItem mntmNewSubmenu = new MenuItem(menu, SWT.CASCADE);
-		mntmNewSubmenu.setText(Messages.SimulatorMainWindow_mntmNewSubmenu_text);
+		mntmNewSubmenu
+				.setText(Messages.SimulatorMainWindow_mntmNewSubmenu_text);
 
 		Menu menu_3 = new Menu(mntmNewSubmenu);
 		mntmNewSubmenu.setMenu(menu_3);
 
 		MenuItem mntmHelpContents = new MenuItem(menu_3, SWT.NONE);
-		mntmHelpContents.setText(Messages.SimulatorMainWindow_mntmHelpContents_text);
+		mntmHelpContents
+				.setText(Messages.SimulatorMainWindow_mntmHelpContents_text);
 		mntmHelpContents.setAccelerator(SWT.F1);
 
 		MenuItem mntmAbout = new MenuItem(menu_3, SWT.NONE);
@@ -951,6 +983,14 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 	}
 
 	@Override
-	public void outChanged(byte adr, byte value) {		
+	public void outChanged(byte adr, byte value) {
+	}
+
+	private void setStatus(String statustext) {
+		this.lblStatusLine.setText("8085 Simulator - " + statustext);
+	}
+
+	private void clearStatus() {
+		this.lblStatusLine.setText("8085 Simulator");
 	}
 }
