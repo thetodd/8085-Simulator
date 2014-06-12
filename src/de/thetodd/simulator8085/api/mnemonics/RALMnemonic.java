@@ -3,7 +3,7 @@ package de.thetodd.simulator8085.api.mnemonics;
 import de.thetodd.simulator8085.api.Mnemonic;
 import de.thetodd.simulator8085.api.platform.Processor;
 
-public class RALMnemonic implements Mnemonic {
+public class RALMnemonic extends Mnemonic {
 
 	public byte[] getOpcode(String[] arguments) {
 		byte[] opcode = new byte[1];
@@ -35,12 +35,17 @@ public class RALMnemonic implements Mnemonic {
 	}
 
 	@Override
-	public boolean hasOpcode(byte opcode) {
+	public boolean validateOpcode(byte opcode) {
 		return (opcode == 0x17);
 	}
 
 	@Override
 	public byte size() {
 		return 1;
+	}
+	
+	@Override
+	public boolean validateArguments(String[] args) {
+		return args.length == 0;
 	}
 }

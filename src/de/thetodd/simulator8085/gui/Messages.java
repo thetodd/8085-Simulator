@@ -38,6 +38,7 @@ public class Messages extends NLS {
 	public static String SimulatorMainWindow_mntmNewSubmenu_text;
 	public static String SimulatorMainWindow_mntmHelpContents_text;
 	public static String SimulatorMainWindow_mntmAbout_text;
+	public static String SimulatorMainWindow_lblNewLabel_5_text;
 	////////////////////////////////////////////////////////////////////////////
 	//
 	// Constructor

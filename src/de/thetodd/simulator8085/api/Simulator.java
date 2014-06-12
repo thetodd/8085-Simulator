@@ -2,6 +2,7 @@ package de.thetodd.simulator8085.api;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -354,5 +355,24 @@ public class Simulator {
 
 	public void setDebugMode(boolean debugMode) {
 		this.debugMode = debugMode;
+	}
+	
+	/**
+	 * Checks if the register in the parameter r is on of A,F,B,C,D,E,H,L
+	 * @param r a registername
+	 * @return true if r is a registername
+	 */
+	public static boolean isRegistername(String r) {
+		String[] registers = {"A","F","B","C","D","E","H","L"};
+		return Arrays.binarySearch(registers, r.toUpperCase()) >= 0;
+	}
+	
+	public static boolean isNumber(String n) {
+		try {
+			Integer.decode(n).byteValue();
+			return true;
+		} catch (NumberFormatException ex) {
+			return false;
+		}
 	}
 }

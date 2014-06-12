@@ -1,11 +1,12 @@
 package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
+import de.thetodd.simulator8085.api.Simulator;
 import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
-public class SBIMnemonic implements Mnemonic {
+public class SBIMnemonic extends Mnemonic {
 
 	@Override
 	public byte[] getOpcode(String[] arguments) {
@@ -37,13 +38,18 @@ public class SBIMnemonic implements Mnemonic {
 	}
 
 	@Override
-	public boolean hasOpcode(byte opcode) {
+	public boolean validateOpcode(byte opcode) {
 		return (opcode == (byte) 0xDE);
 	}
 
 	@Override
 	public byte size() {
 		return 2;
+	}
+	
+	@Override
+	public boolean validateArguments(String[] args) {
+		return args.length == 1 && Simulator.isNumber(args[0]);
 	}
 
 }

@@ -6,7 +6,7 @@ import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
-public class CPEMnemonic implements Mnemonic {
+public class CPEMnemonic extends Mnemonic {
 
 	@Override
 	public byte[] getOpcode(String[] arguments) throws IllegalArgumentException {
@@ -48,7 +48,7 @@ public class CPEMnemonic implements Mnemonic {
 	}
 
 	@Override
-	public boolean hasOpcode(byte opcode) {
+	public boolean validateOpcode(byte opcode) {
 		return (opcode == (byte) 0xEC);
 	}
 

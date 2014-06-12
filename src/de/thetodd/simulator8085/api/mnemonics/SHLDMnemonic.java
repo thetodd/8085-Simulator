@@ -4,7 +4,7 @@ import de.thetodd.simulator8085.api.Mnemonic;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
-public class SHLDMnemonic implements Mnemonic {
+public class SHLDMnemonic extends Mnemonic {
 
 	public byte[] getOpcode(String[] arguments) {
 		byte[] opcode = new byte[3];
@@ -31,7 +31,7 @@ public class SHLDMnemonic implements Mnemonic {
 	}
 
 	@Override
-	public boolean hasOpcode(byte opcode) {
+	public boolean validateOpcode(byte opcode) {
 		return (opcode == 0x22);
 	}
 

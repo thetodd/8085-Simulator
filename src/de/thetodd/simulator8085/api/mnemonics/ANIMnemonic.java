@@ -1,10 +1,11 @@
 package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
+import de.thetodd.simulator8085.api.Simulator;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
-public class ANIMnemonic implements Mnemonic {
+public class ANIMnemonic extends Mnemonic {
 
 	public byte[] getOpcode(String[] arguments) {
 		byte[] opcode = new byte[2];
@@ -31,16 +32,21 @@ public class ANIMnemonic implements Mnemonic {
 		// Set flags
 		Processor.getInstance().setFlags(c);
 		Processor.getInstance().setAuxiliaryCarryFlag(true);
-		Processor.getInstance().setCarryFlag(false);		
+		Processor.getInstance().setCarryFlag(false);
 	}
 
 	@Override
-	public boolean hasOpcode(byte opcode) {
+	public boolean validateOpcode(byte opcode) {
 		return (opcode == (byte) 0xE6);
 	}
 
 	@Override
 	public byte size() {
 		return 2;
+	}
+
+	@Override
+	public boolean validateArguments(String[] args) {
+		return args.length == 1 && Simulator.isNumber(args[0]);
 	}
 }

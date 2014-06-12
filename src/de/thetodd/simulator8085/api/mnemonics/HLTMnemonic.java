@@ -4,7 +4,7 @@ import de.thetodd.simulator8085.api.Mnemonic;
 import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Processor;
 
-public class HLTMnemonic implements Mnemonic {
+public class HLTMnemonic extends Mnemonic {
 
 	@Override
 	public byte[] getOpcode(String[] arguments) {
@@ -28,14 +28,18 @@ public class HLTMnemonic implements Mnemonic {
 	}
 
 	@Override
-	public boolean hasOpcode(byte opcode) {
+	public boolean validateOpcode(byte opcode) {
 		return (opcode == 0x76);
 	}
 
 	@Override
 	public byte size() {
-		// TODO Auto-generated method stub
 		return 1;
+	}
+	
+	@Override
+	public boolean validateArguments(String[] args) {
+		return args.length == 0;
 	}
 
 }

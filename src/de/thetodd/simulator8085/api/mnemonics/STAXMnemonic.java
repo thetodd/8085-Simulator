@@ -4,7 +4,7 @@ import de.thetodd.simulator8085.api.Mnemonic;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
-public class STAXMnemonic implements Mnemonic {
+public class STAXMnemonic extends Mnemonic {
 
 	public byte[] getOpcode(String[] arguments) {
 		byte[] opcode = new byte[1];
@@ -35,7 +35,7 @@ public class STAXMnemonic implements Mnemonic {
 	}
 
 	@Override
-	public boolean hasOpcode(byte opcode) {
+	public boolean validateOpcode(byte opcode) {
 		return (opcode == 0x02) || (opcode == 0x12);
 	}
 

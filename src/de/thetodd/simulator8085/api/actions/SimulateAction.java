@@ -26,7 +26,7 @@ public class SimulateAction implements Action {
 				short pc = Processor.getInstance().getProgramcounter();
 				byte opcode = Memory.getInstance().get(pc);
 				for (Mnemonic mnemonic : mnemonics) {
-					if (mnemonic.hasOpcode(opcode)) {
+					if (mnemonic.validateOpcode(opcode)) {
 						//System.out.println(mnemonic.toString());
 						mnemonic.execute();
 						break;

@@ -3,7 +3,7 @@ package de.thetodd.simulator8085.api.mnemonics;
 import de.thetodd.simulator8085.api.Mnemonic;
 import de.thetodd.simulator8085.api.platform.Processor;
 
-public class CMCMnemonic implements Mnemonic {
+public class CMCMnemonic extends Mnemonic {
 
 	public byte[] getOpcode(String[] arguments) {
 		byte[] opcode = new byte[1];
@@ -25,12 +25,17 @@ public class CMCMnemonic implements Mnemonic {
 	}
 
 	@Override
-	public boolean hasOpcode(byte opcode) {
+	public boolean validateOpcode(byte opcode) {
 		return (opcode == (byte) 0x3F);
 	}
 
 	@Override
 	public byte size() {
 		return 1;
+	}
+	
+	@Override
+	public boolean validateArguments(String[] args) {
+		return args.length == 0;
 	}
 }

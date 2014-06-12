@@ -1,10 +1,11 @@
 package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
+import de.thetodd.simulator8085.api.Simulator;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
-public class SUBMnemonic implements Mnemonic {
+public class SUBMnemonic extends Mnemonic {
 
 	public byte[] getOpcode(String[] arguments) {
 		byte[] opcode = new byte[1];
@@ -71,7 +72,8 @@ public class SUBMnemonic implements Mnemonic {
 			b = (Processor.getInstance().getRegisterL());
 			break;
 		case (byte) 0x96:
-			b = Memory.getInstance().get(Processor.getInstance().getRegisterHL());
+			b = Memory.getInstance().get(
+					Processor.getInstance().getRegisterHL());
 			break;
 		default:
 			break;
@@ -85,12 +87,17 @@ public class SUBMnemonic implements Mnemonic {
 	}
 
 	@Override
-	public boolean hasOpcode(byte opcode) {
+	public boolean validateOpcode(byte opcode) {
 		return (opcode >= (byte) 0x90) && (opcode <= (byte) 0x97);
 	}
 
 	@Override
 	public byte size() {
 		return 1;
+	}
+
+	@Override
+	public boolean validateArguments(String[] args) {
+		return args.length == 1 && Simulator.isRegistername(args[0]);
 	}
 }

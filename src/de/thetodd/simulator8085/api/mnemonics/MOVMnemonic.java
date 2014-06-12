@@ -1,10 +1,11 @@
 package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
+import de.thetodd.simulator8085.api.Simulator;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
-public class MOVMnemonic implements Mnemonic {
+public class MOVMnemonic extends Mnemonic {
 
 	private byte[][] opcodeMatrix;
 
@@ -366,7 +367,7 @@ public class MOVMnemonic implements Mnemonic {
 	}
 
 	@Override
-	public boolean hasOpcode(byte opcode) {
+	public boolean validateOpcode(byte opcode) {
 		return (opcode >= (byte) 0x40) && (opcode <= (byte) 0x7F)
 				&& (opcode != (byte) 0x76);
 	}
@@ -374,5 +375,11 @@ public class MOVMnemonic implements Mnemonic {
 	@Override
 	public byte size() {
 		return 1;
+	}
+
+	@Override
+	public boolean validateArguments(String[] args) {
+		return args.length == 2 && Simulator.isRegistername(args[0])
+				&& Simulator.isRegistername(args[1]);
 	}
 }

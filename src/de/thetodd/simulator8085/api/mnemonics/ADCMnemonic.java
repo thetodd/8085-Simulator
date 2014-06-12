@@ -1,10 +1,11 @@
 package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
+import de.thetodd.simulator8085.api.Simulator;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
-public class ADCMnemonic implements Mnemonic {
+public class ADCMnemonic extends Mnemonic {
 
 	public byte[] getOpcode(String[] arguments) {
 		byte[] opcode = new byte[1];
@@ -77,7 +78,7 @@ public class ADCMnemonic implements Mnemonic {
 		short a2 = (short) (Processor.getInstance().getRegisterA() & 0xFF);
 		short b2 = (short) (b & 0xFF);
 		int c = a2 + b2;
-		if(Processor.getInstance().isCarryFlag()) {
+		if (Processor.getInstance().isCarryFlag()) {
 			c++;
 		}
 		Processor.getInstance().setRegisterA((byte) c);
@@ -85,12 +86,17 @@ public class ADCMnemonic implements Mnemonic {
 	}
 
 	@Override
-	public boolean hasOpcode(byte opcode) {
+	public boolean validateOpcode(byte opcode) {
 		return (opcode >= (byte) 0x88) && (opcode <= (byte) 0x8F);
 	}
 
 	@Override
 	public byte size() {
 		return 1;
+	}
+
+	@Override
+	public boolean validateArguments(String[] args) {
+		return args.length == 1 && Simulator.isRegistername(args[0]);
 	}
 }

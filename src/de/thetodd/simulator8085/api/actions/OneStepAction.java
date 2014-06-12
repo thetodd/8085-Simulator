@@ -18,7 +18,7 @@ public class OneStepAction implements Action {
 		byte opcode = Memory.getInstance().get(pc);
 		Collection<Mnemonic> mnemonics = Simulator.getInstance().getUsableMnemonics();
 		for (Mnemonic mnemonic : mnemonics) {
-			if(mnemonic.hasOpcode(opcode)) {
+			if(mnemonic.validateOpcode(opcode)) {
 				mnemonic.execute();
 				break;
 			}
