@@ -364,7 +364,7 @@ public class Simulator {
 	 */
 	public static boolean isRegistername(String r) {
 		String[] registers = {"A","F","B","C","D","E","H","L"};
-		return Arrays.binarySearch(registers, r.toUpperCase()) >= 0;
+		return Arrays.asList(registers).contains(r.toUpperCase());
 	}
 	
 	public static boolean isNumber(String n) {
