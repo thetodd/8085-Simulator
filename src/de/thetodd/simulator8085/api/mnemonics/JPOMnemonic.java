@@ -26,7 +26,7 @@ public class JPOMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() throws ProcessorError {
+	public int execute() throws ProcessorError {
 		Processor.getInstance().incProgramcounter();
 		short[] adresse = new short[2];
 		adresse[1] = Memory.getInstance().get(
@@ -39,7 +39,9 @@ public class JPOMnemonic extends Mnemonic {
 		// check if parity flag is not set
 		if (!Processor.getInstance().isParityFlag()) {
 			Processor.getInstance().setProgramcounter(jmpAdr);
+			return 10;
 		}
+		return 7;
 	}
 
 	@Override

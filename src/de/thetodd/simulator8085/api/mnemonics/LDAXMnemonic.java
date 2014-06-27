@@ -1,6 +1,7 @@
 package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
+import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
@@ -22,7 +23,7 @@ public class LDAXMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() {
+	public int execute() throws ProcessorError {
 		byte opcode = Memory.getInstance().get(
 				Processor.getInstance().getProgramcounter());
 		Processor.getInstance().incProgramcounter();
@@ -35,6 +36,8 @@ public class LDAXMnemonic extends Mnemonic {
 					Memory.getInstance().get(
 							Processor.getInstance().getRegisterDE()));
 		}
+		
+		return 7;
 	}
 
 	@Override

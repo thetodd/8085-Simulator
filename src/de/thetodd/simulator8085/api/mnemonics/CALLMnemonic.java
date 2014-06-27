@@ -24,7 +24,7 @@ public class CALLMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() throws ProcessorError {
+	public int execute() throws ProcessorError {
 		Processor.getInstance().incProgramcounter();
 		short[] adresse = new short[2];
 		adresse[1] = Memory.getInstance().get(
@@ -40,6 +40,8 @@ public class CALLMnemonic extends Mnemonic {
 		Memory.getInstance().pushStack(retLow);
 		Memory.getInstance().pushStack(retHigh);
 		Processor.getInstance().setProgramcounter(jmpAdr);
+		
+		return 18;
 	}
 
 	@Override

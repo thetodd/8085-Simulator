@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.JFileChooser;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -58,6 +59,7 @@ import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 import de.thetodd.simulator8085.gui.outviews.LEDBar;
 import de.thetodd.simulator8085.gui.outviews.ListView;
+
 import org.eclipse.swt.custom.CLabel;
 
 public class SimulatorMainWindow implements ProcessorChangedListener {
@@ -90,6 +92,8 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 	private SimulatorMainWindow window;
 	private SimulatorThread simThread;
 	private CLabel lblStatusLine; // a rudimental statusline
+	private Label lblClockrate;
+	private Text txtClock;
 
 	public SimulatorMainWindow() {
 
@@ -387,6 +391,18 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 
 		txtMemoryEnd = new Text(composite_1, SWT.BORDER);
 		txtMemoryEnd.setText("0x1BFF");
+
+		lblClockrate = new Label(composite_1, SWT.NONE);
+		lblClockrate.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
+				false, 1, 1));
+		lblClockrate.setText(Messages.SimulatorMainWindow_lblClockrte_text);
+
+		txtClock = new Text(composite_1, SWT.BORDER);
+		txtClock.setText("");
+		GridData gd_txtClock = new GridData(SWT.FILL, SWT.CENTER, true, false,
+				2, 1);
+		gd_txtClock.widthHint = 57;
+		txtClock.setLayoutData(gd_txtClock);
 
 		CTabFolder tabFolder = new CTabFolder(composite, SWT.BORDER);
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true,
@@ -739,7 +755,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 					pbLoad.setState(SWT.NORMAL);
 				}
 
-				updateLineHighlighting(); //maybe to soon
+				updateLineHighlighting(); // maybe to soon
 				clearStatus();
 			}
 		});
@@ -800,11 +816,16 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		mntmNexBreakpoint.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				SimulateAction simulate = new SimulateAction();
-				setStatus("Simulating till next breakpoint...");
-				simulate.run();
-				updateLineHighlighting();
-				clearStatus();
+				try {
+					double clockrate = Double.valueOf(txtClock.getText());
+					SimulateAction simulate = new SimulateAction(clockrate);
+					setStatus("Simulating till next breakpoint...");
+					simulate.run();
+					updateLineHighlighting();
+					clearStatus();
+				} catch (NumberFormatException ex) {
+					MessageDialog.openError(shlSimulator, "Wrong Clockrate", "The clockrate \""+txtClock.getText()+"\" has the wrong format.");
+				}
 			}
 		});
 		mntmNexBreakpoint.setImage(SWTResourceManager.getImage(

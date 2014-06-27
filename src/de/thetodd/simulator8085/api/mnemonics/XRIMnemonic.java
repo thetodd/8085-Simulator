@@ -2,6 +2,7 @@ package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
 import de.thetodd.simulator8085.api.Simulator;
+import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
@@ -19,7 +20,7 @@ public class XRIMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() {
+	public int execute() throws ProcessorError {
 		Processor.getInstance().incProgramcounter();
 		byte b2 = Memory.getInstance().get(
 				Processor.getInstance().getProgramcounter());
@@ -32,7 +33,9 @@ public class XRIMnemonic extends Mnemonic {
 		// Set flags
 		Processor.getInstance().setFlags(c);
 		Processor.getInstance().setAuxiliaryCarryFlag(false);
-		Processor.getInstance().setCarryFlag(false);		
+		Processor.getInstance().setCarryFlag(false);
+
+		return 7;
 	}
 
 	@Override
@@ -44,7 +47,7 @@ public class XRIMnemonic extends Mnemonic {
 	public byte size() {
 		return 2;
 	}
-	
+
 	@Override
 	public boolean validateArguments(String[] args) {
 		return args.length == 1 && Simulator.isNumber(args[0]);

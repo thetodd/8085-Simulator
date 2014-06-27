@@ -1,6 +1,7 @@
 package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
+import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
@@ -18,7 +19,7 @@ public class RNZMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() {
+	public int execute() throws ProcessorError {
 		if (!Processor.getInstance().isZeroFlag()) {
 			// get return address from stack
 			byte retHigh = Memory.getInstance().popStack();
@@ -26,8 +27,10 @@ public class RNZMnemonic extends Mnemonic {
 			short retAdr = (short) ((retHigh << 8) | retLow);
 
 			Processor.getInstance().setProgramcounter(retAdr);
+			return 12;
 		} else {
 			Processor.getInstance().incProgramcounter();
+			return 6;
 		}
 	}
 
@@ -40,7 +43,7 @@ public class RNZMnemonic extends Mnemonic {
 	public byte size() {
 		return 1;
 	}
-	
+
 	@Override
 	public boolean validateArguments(String[] args) {
 		return args.length == 0;

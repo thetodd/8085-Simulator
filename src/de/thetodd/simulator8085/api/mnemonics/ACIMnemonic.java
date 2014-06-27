@@ -21,7 +21,7 @@ public class ACIMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() throws ProcessorError {
+	public int execute() throws ProcessorError {
 		Processor.getInstance().incProgramcounter();
 		// Get Argument
 		byte b = Memory.getInstance().get(
@@ -36,6 +36,7 @@ public class ACIMnemonic extends Mnemonic {
 		}
 		Processor.getInstance().setRegisterA((byte) c);
 		Processor.getInstance().setFlags((short) c);
+		return 7;
 	}
 
 	@Override
