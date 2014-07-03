@@ -375,4 +375,8 @@ public class Simulator {
 			return false;
 		}
 	}
+	
+	public static boolean isLabel(String l) {
+		return Simulator.getInstance().labelMap.containsKey(l);
+	}
 }
