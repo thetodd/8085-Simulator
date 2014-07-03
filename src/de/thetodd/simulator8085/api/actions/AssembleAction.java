@@ -25,35 +25,35 @@ public class AssembleAction implements Action {
 		Simulator.getInstance().getLabelMap().clear();
 		Simulator.getInstance().getBreakpoints().clear();
 
-		if (scanForSyntaxErrors()) {
-			int linenumber = 0;
-			// Scan for labeladresses
-			short adr = 0x0000;
-			for (String line : codeLines) {
-				String[] command = line.split(" ");
-				String mnemonic = command[0].toLowerCase();
-				if (mnemonic.equals("org")) { // is Org
-					adr = (short) Integer.decode(command[1]).intValue();
-				} else if (line.endsWith(":")) { // is label
-					String labelName = mnemonic.substring(0,
-							mnemonic.length() - 1);
-					Simulator.getInstance().addLabel(labelName, adr);
-				} else if (line.startsWith(";") || line.equals("")) { // Comment-Line
-					// Do nothing
-				} else { // is mnemonic
-					adr += Simulator.getInstance().getMnemonics().get(mnemonic)
-							.size();
-					// Add Mnemonic-Byte-Size to Programsize
-					Simulator.getInstance().setProgramSize(
-							Simulator.getInstance().getProgramSize()
-									+ Simulator.getInstance().getMnemonics()
-											.get(mnemonic).size());
-					// Add 1 to Commandcount
-					Simulator.getInstance().setCommandCount(
-							Simulator.getInstance().getCommandCount() + 1);
-				}
+		int linenumber = 0;
+		// Scan for labeladresses
+		short adr = 0x0000;
+		for (String line : codeLines) {
+			String[] command = line.split(" ");
+			String mnemonic = command[0].toLowerCase();
+			if (mnemonic.equals("org")) { // is Org
+				adr = (short) Integer.decode(command[1]).intValue();
+			} else if (line.endsWith(":")) { // is label
+				String labelName = mnemonic.substring(0,
+						mnemonic.length() - 1);
+				Simulator.getInstance().addLabel(labelName, adr);
+			} else if (line.startsWith(";") || line.equals("")) { // Comment-Line
+				// Do nothing
+			} else { // is mnemonic
+				adr += Simulator.getInstance().getMnemonics().get(mnemonic)
+						.size();
+				// Add Mnemonic-Byte-Size to Programsize
+				Simulator.getInstance().setProgramSize(
+						Simulator.getInstance().getProgramSize()
+								+ Simulator.getInstance().getMnemonics()
+										.get(mnemonic).size());
+				// Add 1 to Commandcount
+				Simulator.getInstance().setCommandCount(
+						Simulator.getInstance().getCommandCount() + 1);
 			}
-
+		}
+		
+		if (scanForSyntaxErrors()) {
 			short adresse = 0x0000; // Adresse wird per ORG angepasst
 			for (String line : codeLines) {
 				String[] command = line.split(" ");
@@ -126,11 +126,12 @@ public class AssembleAction implements Action {
 				linenum++;
 			}
 		} catch (AssemblerException ex) {
-			MessageBox messageBox = new MessageBox(Display.getDefault().getActiveShell(), SWT.ICON_ERROR | SWT.OK);
-	        messageBox.setText("Assembling error");
-	        messageBox.setMessage(ex.getMessage());
-	        messageBox.open();
-	        
+			MessageBox messageBox = new MessageBox(Display.getDefault()
+					.getActiveShell(), SWT.ICON_ERROR | SWT.OK);
+			messageBox.setText("Assembling error");
+			messageBox.setMessage(ex.getMessage());
+			messageBox.open();
+
 			isCorrect = false;
 		}
 		return isCorrect;
