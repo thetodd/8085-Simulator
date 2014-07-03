@@ -14,7 +14,9 @@ public class CALLMnemonic extends Mnemonic {
 		opcode[0] = (byte) 0xCD;
 		short adr = 0;
 		try {
-			adr = Integer.decode(arguments[0]).shortValue(); //support for hard coded addresses
+			adr = Integer.decode(arguments[0]).shortValue(); // support for hard
+																// coded
+																// addresses
 		} catch (Exception ex) {
 			adr = Simulator.getInstance().getLabelAdress(arguments[0]);
 		}
@@ -40,13 +42,19 @@ public class CALLMnemonic extends Mnemonic {
 		Memory.getInstance().pushStack(retLow);
 		Memory.getInstance().pushStack(retHigh);
 		Processor.getInstance().setProgramcounter(jmpAdr);
-		
+
 		return 18;
 	}
 
 	@Override
 	public boolean validateOpcode(byte opcode) {
 		return (opcode == (byte) 0xCD);
+	}
+
+	@Override
+	public boolean validateArguments(String[] args) {
+		return args.length == 1
+				&& (Simulator.isNumber(args[0]) || Simulator.isLabel(args[0]));
 	}
 
 	@Override

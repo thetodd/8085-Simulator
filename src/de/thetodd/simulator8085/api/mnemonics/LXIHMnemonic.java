@@ -1,6 +1,7 @@
 package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
+import de.thetodd.simulator8085.api.Simulator;
 import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
@@ -46,6 +47,11 @@ public class LXIHMnemonic extends Mnemonic {
 	@Override
 	public byte size() {
 		return 3;
+	}
+	
+	@Override
+	public boolean validateArguments(String[] args) {
+		return args.length == 1 && Simulator.isNumber(args[0]);
 	}
 
 }
