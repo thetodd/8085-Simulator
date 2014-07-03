@@ -2,6 +2,8 @@ package de.thetodd.simulator8085.api.platform;
 
 import java.util.HashMap;
 
+import org.eclipse.swt.widgets.Display;
+
 import de.thetodd.simulator8085.api.Simulator;
 
 public class Memory {
@@ -56,7 +58,13 @@ public class Memory {
 	// TODO: Ueberpruefung, ob Speicherzelle zulaessig
 	public void put(short adr, byte content) {
 		memory.put(adr, content);
-		Simulator.getInstance().fireMemoryChangeEvent();
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				Simulator.getInstance().fireMemoryChangeEvent();
+			}
+		});
+		//Simulator.getInstance().fireMemoryChangeEvent();
 	}
 
 	public void resetMemory() {
