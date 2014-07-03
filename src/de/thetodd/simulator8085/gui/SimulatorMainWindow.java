@@ -795,6 +795,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				simThread = new SimulatorThread(window);
 				setStatus("Simulating...");
 				simThread.startRunning();
+				clearStatus();
 			}
 		});
 		mntmSimulate_1
@@ -1007,8 +1008,13 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 	public void outChanged(byte adr, byte value) {
 	}
 
-	private void setStatus(String statustext) {
-		this.lblStatusLine.setText("8085 Simulator - " + statustext);
+	private void setStatus(final String statustext) {
+		Display.getDefault().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				lblStatusLine.setText("8085 Simulator - " + statustext);
+			}
+		});
 	}
 
 	private void clearStatus() {
