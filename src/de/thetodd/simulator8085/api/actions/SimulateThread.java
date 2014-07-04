@@ -62,6 +62,7 @@ public class SimulateThread extends Thread {
 				Simulator.getInstance().fireRegisterChangeEvent(
 						new RegisterChangeEvent(RegisterChangeEvent
 								.getAllTemplate()));
+				
 				MessageDialog.openInformation(
 						null,
 						"Clocks needed",

@@ -399,9 +399,9 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 
 		txtClock = new Text(composite_1, SWT.BORDER);
 		txtClock.setText("");
-		GridData gd_txtClock = new GridData(SWT.FILL, SWT.CENTER, true, false,
+		GridData gd_txtClock = new GridData(SWT.LEFT, SWT.CENTER, true, false,
 				2, 1);
-		gd_txtClock.widthHint = 57;
+		gd_txtClock.widthHint = 96;
 		txtClock.setLayoutData(gd_txtClock);
 
 		CTabFolder tabFolder = new CTabFolder(composite, SWT.BORDER);

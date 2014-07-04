@@ -40,7 +40,6 @@ public class Messages extends NLS {
 	public static String SimulatorMainWindow_mntmAbout_text;
 	public static String SimulatorMainWindow_lblNewLabel_5_text;
 	public static String SimulatorMainWindow_lblClockrte_text;
-	public static String SimulatorMainWindow_text_1_text;
 	////////////////////////////////////////////////////////////////////////////
 	//
 	// Constructor
