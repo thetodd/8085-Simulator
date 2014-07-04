@@ -1,10 +1,11 @@
 package de.thetodd.simulator8085.api;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+
+import org.eclipse.swt.widgets.Display;
 
 import de.thetodd.simulator8085.api.listener.ProcessorChangedListener;
 import de.thetodd.simulator8085.api.listener.RegisterChangeEvent;
@@ -96,7 +97,7 @@ public class Simulator {
 	private boolean debugMode;
 
 	private HashMap<String, Mnemonic> mnemonicMap;
-	private HashMap<Byte,Byte> outMap;
+	private HashMap<Byte, Byte> outMap;
 	private ArrayList<ProcessorChangedListener> changeListeners;
 	private HashMap<Short, Integer> codeMap; // Address <-> Codeline Map
 	private boolean isAssembled;
@@ -124,7 +125,7 @@ public class Simulator {
 		mnemonicMap.put("mvi", new MVIMnemonic());
 		mnemonicMap.put("hlt", new HLTMnemonic());
 		mnemonicMap.put("nop", new NOPMnemonic());
-		
+
 		mnemonicMap.put("jmp", new JMPMnemonic());
 		mnemonicMap.put("jc", new JCMnemonic());
 		mnemonicMap.put("jm", new JMMnemonic());
@@ -134,7 +135,7 @@ public class Simulator {
 		mnemonicMap.put("jp", new JPMnemonic());
 		mnemonicMap.put("jpo", new JPOMnemonic());
 		mnemonicMap.put("jz", new JZMnemonic());
-		
+
 		mnemonicMap.put("add", new ADDMnemonic());
 		mnemonicMap.put("adi", new ADIMnemonic());
 		mnemonicMap.put("aci", new ACIMnemonic());
@@ -143,10 +144,10 @@ public class Simulator {
 		mnemonicMap.put("sub", new SUBMnemonic());
 		mnemonicMap.put("sbi", new SBIMnemonic());
 		mnemonicMap.put("sbb", new SBBMnemonic());
-		
+
 		mnemonicMap.put("push", new PUSHMnemonic());
 		mnemonicMap.put("pop", new POPMnemonic());
-		
+
 		mnemonicMap.put("call", new CALLMnemonic());
 		mnemonicMap.put("cc", new CCMnemonic());
 		mnemonicMap.put("cm", new CMMnemonic());
@@ -156,15 +157,15 @@ public class Simulator {
 		mnemonicMap.put("cp", new CPMnemonic());
 		mnemonicMap.put("cpo", new CPOMnemonic());
 		mnemonicMap.put("cz", new CZMnemonic());
-		
+
 		mnemonicMap.put("cma", new CMAMnemonic());
 		mnemonicMap.put("cmc", new CMCMnemonic());
-		
+
 		mnemonicMap.put("dcx", new DCXMnemonic());
 		mnemonicMap.put("inx", new INXMnemonic());
-		
+
 		mnemonicMap.put("mov", new MOVMnemonic());
-		
+
 		mnemonicMap.put("ret", new RETMnemonic());
 		mnemonicMap.put("rc", new RCMnemonic());
 		mnemonicMap.put("rm", new RMMnemonic());
@@ -174,20 +175,20 @@ public class Simulator {
 		mnemonicMap.put("rp", new RPMnemonic());
 		mnemonicMap.put("rpo", new RPOMnemonic());
 		mnemonicMap.put("rz", new RZMnemonic());
-		
+
 		mnemonicMap.put("out", new OUTMnemonic());
-		
+
 		mnemonicMap.put("ori", new ORIMnemonic());
 		mnemonicMap.put("ora", new ORAMnemonic());
 		mnemonicMap.put("ani", new ANIMnemonic());
 		mnemonicMap.put("ana", new ANAMnemonic());
 		mnemonicMap.put("xri", new XRIMnemonic());
 		mnemonicMap.put("xra", new XRAMnemonic());
-		
+
 		mnemonicMap.put("dad", new DADMnemonic());
 		mnemonicMap.put("dcr", new DCRMnemonic());
 		mnemonicMap.put("inr", new INRMnemonic());
-		
+
 		mnemonicMap.put("sta", new STAMnemonic());
 		mnemonicMap.put("stax", new STAXMnemonic());
 		mnemonicMap.put("lda", new LDAMnemonic());
@@ -197,14 +198,14 @@ public class Simulator {
 		mnemonicMap.put("lxid", new LXIDMnemonic());
 		mnemonicMap.put("lxih", new LXIHMnemonic());
 		mnemonicMap.put("lxisp", new LXISPMnemonic());
-		
+
 		mnemonicMap.put("pchl", new PCHLMnemonic());
 		mnemonicMap.put("xchg", new XCHGMnemonic());
 		mnemonicMap.put("xthl", new XTHLMnemonic());
 		mnemonicMap.put("stc", new STCMnemonic());
 		mnemonicMap.put("sphl", new SPHLMnemonic());
 		mnemonicMap.put("shld", new SHLDMnemonic());
-		
+
 		mnemonicMap.put("rrc", new RRCMnemonic());
 		mnemonicMap.put("rlc", new RRCMnemonic());
 		mnemonicMap.put("ral", new RALMnemonic());
@@ -234,10 +235,10 @@ public class Simulator {
 			l.memoryChanged();
 		}
 	}
-	
+
 	public void fireOutChangedEvent(byte adr, byte value) {
 		for (ProcessorChangedListener l : changeListeners) {
-			l.outChanged(adr,value);
+			l.outChanged(adr, value);
 		}
 	}
 
@@ -267,15 +268,21 @@ public class Simulator {
 		}
 	}
 
-	public void setOutEntry(byte adr, byte c) {
+	public void setOutEntry(final byte adr, final byte c) {
 		outMap.put(adr, c);
-		fireOutChangedEvent(adr,c);
+		Display.getDefault().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				fireOutChangedEvent(adr, c);
+			}
+		});
+
 	}
-	
+
 	public byte getOutEntry(byte adr) {
 		return outMap.get(adr);
 	}
-	
+
 	/**
 	 * Return true if m is a valid mnemonic
 	 * 
@@ -356,17 +363,19 @@ public class Simulator {
 	public void setDebugMode(boolean debugMode) {
 		this.debugMode = debugMode;
 	}
-	
+
 	/**
 	 * Checks if the register in the parameter r is on of A,F,B,C,D,E,H,L
-	 * @param r a registername
+	 * 
+	 * @param r
+	 *            a registername
 	 * @return true if r is a registername
 	 */
 	public static boolean isRegistername(String r) {
-		String[] registers = {"A","F","B","C","D","E","H","L"};
+		String[] registers = { "A", "F", "B", "C", "D", "E", "H", "L" };
 		return Arrays.asList(registers).contains(r.toUpperCase());
 	}
-	
+
 	public static boolean isNumber(String n) {
 		try {
 			Integer.decode(n).byteValue();
@@ -375,7 +384,7 @@ public class Simulator {
 			return false;
 		}
 	}
-	
+
 	public static boolean isLabel(String l) {
 		return Simulator.getInstance().labelMap.containsKey(l);
 	}
