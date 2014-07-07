@@ -41,9 +41,15 @@ public class SimulatorThread extends Thread {
 				.getUsableMnemonics();
 		while (run) {
 			try {
+				Display.getDefault().syncExec(new Runnable() {
+					@Override
+					public void run() {
+						mainwindow.updateLineHighlighting();
+					}
+				});
 				short pc = Processor.getInstance().getProgramcounter();
 				byte opcode = Memory.getInstance().get(pc);
-				System.out.printf("Opcode: %02Xh\n", opcode);
+				//System.out.printf("Opcode: %02Xh\n", opcode);
 				for (Mnemonic mnemonic : mnemonics) {
 					if (mnemonic.validateOpcode(opcode)) {
 						mnemonic.execute();
@@ -54,13 +60,12 @@ public class SimulatorThread extends Thread {
 						Processor.getInstance().getProgramcounter())) {
 					run = false;
 				}
-				Display.getDefault().asyncExec(new Runnable() {
+				Display.getDefault().syncExec(new Runnable() {
 					@Override
 					public void run() {
 						Simulator.getInstance().fireRegisterChangeEvent(
 						new RegisterChangeEvent(RegisterChangeEvent
 								.getAllTemplate()));
-						mainwindow.updateLineHighlighting();
 					}
 				});
 				

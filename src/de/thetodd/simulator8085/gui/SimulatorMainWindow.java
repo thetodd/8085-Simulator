@@ -739,8 +739,8 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 					pbLoad.setState(SWT.NORMAL);
 				}
 
-				updateLineHighlighting(); //maybe to soon
-				clearStatus();
+				//updateLineHighlighting(); //maybe to soon
+				setStatus("Successfully assembled code");
 			}
 		});
 		mntmAsseble.setImage(SWTResourceManager.getImage(
@@ -758,6 +758,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				Simulator.getInstance().fireRegisterChangeEvent(
 						new RegisterChangeEvent(RegisterChangeEvent
 								.getAllTemplate()));
+				clearLineHighlighting();
 				setStatus("Processor has been reset");
 			}
 		});
@@ -818,9 +819,9 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		mntmOneStep.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				updateLineHighlighting();
 				Action einzel = new OneStepAction();
 				einzel.run();
-				updateLineHighlighting();
 				Simulator.getInstance().fireRegisterChangeEvent(
 						new RegisterChangeEvent(RegisterChangeEvent
 								.getAllTemplate()));
@@ -976,10 +977,14 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				.containsKey(Processor.getInstance().getProgramcounter())) {
 			int linenumber = Simulator.getInstance().getCodeMap()
 					.get(Processor.getInstance().getProgramcounter());
-			codeText.setLineBackground(0, codeText.getLineCount(), null);
+			clearLineHighlighting();
 			codeText.setLineBackground(linenumber, 1,
 					new Color(Display.getDefault(), 0xFF, 0xFF, 0x99));
 		}
+	}
+
+	private void clearLineHighlighting() {
+		codeText.setLineBackground(0, codeText.getLineCount(), null);
 	}
 
 	@Override
