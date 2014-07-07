@@ -1,6 +1,7 @@
 package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
+import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Processor;
 
 public class RARMnemonic extends Mnemonic {
@@ -17,11 +18,11 @@ public class RARMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() {
+	public int execute() throws ProcessorError {
 		byte a = Processor.getInstance().getRegisterA();
 		byte lsb = (byte) (a & 0x01);
 		a = (byte) ((a & 0xff) >> 1);
-		if(Processor.getInstance().isCarryFlag()) {
+		if (Processor.getInstance().isCarryFlag()) {
 			a |= 0x80;
 		}
 		if (lsb != 0x00) { // Bit 1
@@ -32,6 +33,8 @@ public class RARMnemonic extends Mnemonic {
 		Processor.getInstance().setRegisterA(a);
 
 		Processor.getInstance().incProgramcounter();
+
+		return 4;
 	}
 
 	@Override
@@ -43,7 +46,7 @@ public class RARMnemonic extends Mnemonic {
 	public byte size() {
 		return 1;
 	}
-	
+
 	@Override
 	public boolean validateArguments(String[] args) {
 		return args.length == 0;

@@ -1,6 +1,8 @@
 package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
+import de.thetodd.simulator8085.api.Simulator;
+import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
@@ -18,7 +20,7 @@ public class LXIBMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() {
+	public int execute() throws ProcessorError {
 		Processor.getInstance().incProgramcounter();
 		byte b3 = Memory.getInstance().get(Processor.getInstance().getProgramcounter());
 		Processor.getInstance().incProgramcounter();
@@ -28,6 +30,7 @@ public class LXIBMnemonic extends Mnemonic {
 		short adr = (short) ((b2<<8)|b3);
 		
 		Processor.getInstance().setRegisterBC(adr);
+		return 10;
 	}
 
 	@Override
@@ -43,6 +46,11 @@ public class LXIBMnemonic extends Mnemonic {
 	@Override
 	public byte size() {
 		return 3;
+	}
+	
+	@Override
+	public boolean validateArguments(String[] args) {
+		return args.length == 1 && Simulator.isNumber(args[0]);
 	}
 
 }

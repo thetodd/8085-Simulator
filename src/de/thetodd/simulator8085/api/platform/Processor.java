@@ -201,20 +201,20 @@ public class Processor {
 	}
 
 	public short getRegisterBC() {
-		short bc = (short) (getRegisterB() << 8);
-		bc |= getRegisterC();
+		short bc = (short) ((short) (getRegisterB()) << 8);
+		bc |= 0x00FF & (short) getRegisterC();
 		return bc;
 	}
 
 	public short getRegisterDE() {
-		short de = (short) (getRegisterD() << 8);
-		de |= getRegisterE();
+		short de = (short) ((short) (getRegisterD()) << 8);
+		de |= 0x00ff & (short) getRegisterE();
 		return de;
 	}
 
 	public short getRegisterHL() {
-		short hl = (short) (getRegisterH() << 8);
-		hl |= getRegisterL();
+		short hl = (short) ((short) (getRegisterH()) << 8);
+		hl |= 0x00ff & (short) getRegisterL();
 		return hl;
 	}
 

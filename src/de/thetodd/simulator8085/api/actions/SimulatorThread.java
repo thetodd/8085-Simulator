@@ -21,16 +21,16 @@ public class SimulatorThread extends Thread {
 	public SimulatorThread(SimulatorMainWindow mw) {
 		this.mainwindow = mw;
 	}
-	
+
 	public void stopRunning() {
 		this.run = false;
 	}
-	
+
 	public void startRunning() {
 		this.run = true;
 		this.start();
 	}
-	
+
 	public boolean isRunning() {
 		return this.run;
 	}
@@ -41,16 +41,10 @@ public class SimulatorThread extends Thread {
 				.getUsableMnemonics();
 		while (run) {
 			try {
-				Display.getDefault().syncExec(new Runnable() {
-					@Override
-					public void run() {
-						mainwindow.updateLineHighlighting();
-					}
-				});
 				short pc = Processor.getInstance().getProgramcounter();
 				byte opcode = Memory.getInstance().get(pc);
-				//System.out.printf("Opcode: %02Xh\n", opcode);
-				for (Mnemonic mnemonic : mnemonics) {
+				// System.out.printf("Opcode: %02Xh\n", opcode);
+				for (final Mnemonic mnemonic : mnemonics) {
 					if (mnemonic.validateOpcode(opcode)) {
 						mnemonic.execute();
 						break;
@@ -60,15 +54,16 @@ public class SimulatorThread extends Thread {
 						Processor.getInstance().getProgramcounter())) {
 					run = false;
 				}
-				Display.getDefault().syncExec(new Runnable() {
+				Display.getDefault().asyncExec(new Runnable() {
 					@Override
 					public void run() {
 						Simulator.getInstance().fireRegisterChangeEvent(
-						new RegisterChangeEvent(RegisterChangeEvent
-								.getAllTemplate()));
+								new RegisterChangeEvent(RegisterChangeEvent
+										.getAllTemplate()));
+						mainwindow.updateLineHighlighting();
 					}
 				});
-				
+
 				Thread.sleep(1000);
 			} catch (ProcessorError | InterruptedException ex) {
 				if (!ex.getMessage().equals("System Halt!")) {

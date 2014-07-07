@@ -2,6 +2,7 @@ package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
 import de.thetodd.simulator8085.api.Simulator;
+import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
@@ -44,32 +45,42 @@ public class ADCMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() {
+	public int execute() throws ProcessorError {
 		byte opcode = Memory.getInstance().get(
 				Processor.getInstance().getProgramcounter());
 		Processor.getInstance().incProgramcounter();
 		byte b = 0;
+		int clock = 0;
+		
+		//TODO: Needs support for memory
 		switch (opcode) {
 		case (byte) 0x8F:
 			b = Processor.getInstance().getRegisterA();
+			clock = 4;
 			break;
 		case (byte) 0x88:
 			b = Processor.getInstance().getRegisterB();
+			clock = 4;
 			break;
 		case (byte) 0x89:
 			b = Processor.getInstance().getRegisterC();
+			clock = 4;
 			break;
 		case (byte) 0x8A:
 			b = (Processor.getInstance().getRegisterD());
+			clock = 4;
 			break;
 		case (byte) 0x8B:
 			b = (Processor.getInstance().getRegisterE());
+			clock = 4;
 			break;
 		case (byte) 0x8C:
 			b = (Processor.getInstance().getRegisterH());
+			clock = 4;
 			break;
 		case (byte) 0x8D:
 			b = (Processor.getInstance().getRegisterL());
+			clock = 4;
 			break;
 		default:
 			break;
@@ -83,6 +94,8 @@ public class ADCMnemonic extends Mnemonic {
 		}
 		Processor.getInstance().setRegisterA((byte) c);
 		Processor.getInstance().setFlags((short) c);
+
+		return clock;
 	}
 
 	@Override

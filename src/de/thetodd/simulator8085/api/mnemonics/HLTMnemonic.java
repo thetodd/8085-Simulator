@@ -18,7 +18,7 @@ public class HLTMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() throws ProcessorError {
+	public int execute() throws ProcessorError {
 		System.out.println("HLT");
 
 		Processor.getInstance().setProgramcounter(

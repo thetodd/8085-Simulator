@@ -1,6 +1,7 @@
 package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
+import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
@@ -26,30 +27,40 @@ public class POPMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() {
+	public int execute() throws ProcessorError {
 		byte opcode = Memory.getInstance().get(
 				Processor.getInstance().getProgramcounter());
 		switch (opcode) {
 		case (byte) 0xC1:
-			Processor.getInstance().setRegisterC(Memory.getInstance().popStack());
-			Processor.getInstance().setRegisterB(Memory.getInstance().popStack());
+			Processor.getInstance().setRegisterC(
+					Memory.getInstance().popStack());
+			Processor.getInstance().setRegisterB(
+					Memory.getInstance().popStack());
 			break;
 		case (byte) 0xD1:
-			Processor.getInstance().setRegisterE(Memory.getInstance().popStack());
-			Processor.getInstance().setRegisterD(Memory.getInstance().popStack());
+			Processor.getInstance().setRegisterE(
+					Memory.getInstance().popStack());
+			Processor.getInstance().setRegisterD(
+					Memory.getInstance().popStack());
 			break;
 		case (byte) 0xE1:
-			Processor.getInstance().setRegisterL(Memory.getInstance().popStack());
-			Processor.getInstance().setRegisterH(Memory.getInstance().popStack());
+			Processor.getInstance().setRegisterL(
+					Memory.getInstance().popStack());
+			Processor.getInstance().setRegisterH(
+					Memory.getInstance().popStack());
 			break;
 		case (byte) 0xF1:
-			Processor.getInstance().setRegisterF(Memory.getInstance().popStack());
-			Processor.getInstance().setRegisterA(Memory.getInstance().popStack());
+			Processor.getInstance().setRegisterF(
+					Memory.getInstance().popStack());
+			Processor.getInstance().setRegisterA(
+					Memory.getInstance().popStack());
 			break;
 		default:
 			break;
 		}
 		Processor.getInstance().incProgramcounter();
+
+		return 10;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
 import de.thetodd.simulator8085.api.Simulator;
+import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
@@ -44,10 +45,12 @@ public class INRMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() {
+	public int execute() throws ProcessorError {
 		byte opcode = Memory.getInstance().get(
 				Processor.getInstance().getProgramcounter());
 		Processor.getInstance().incProgramcounter();
+
+		int clock = 4;
 		switch (opcode) {
 		case (byte) 0x3c:
 			Processor.getInstance().setRegisterA(
@@ -85,10 +88,13 @@ public class INRMnemonic extends Mnemonic {
 			m += 1;
 			Memory.getInstance()
 					.put(Processor.getInstance().getRegisterHL(), m);
+			clock = 10;
 			break;
 		default:
 			break;
 		}
+
+		return clock;
 	}
 
 	@Override

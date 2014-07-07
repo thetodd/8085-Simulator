@@ -12,7 +12,8 @@ public class SUIMnemonic extends Mnemonic {
 	public byte[] getOpcode(String[] arguments) {
 		byte[] opcode = new byte[2];
 		if (arguments.length != 1) {
-			throw new IllegalArgumentException("Argumente sind nicht zulaessig!");
+			throw new IllegalArgumentException(
+					"Argumente sind nicht zulaessig!");
 		}
 		opcode[0] = (byte) 0xD6;
 		opcode[1] = (byte) Integer.decode(arguments[0]).intValue();
@@ -20,7 +21,7 @@ public class SUIMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() throws ProcessorError {
+	public int execute() throws ProcessorError {
 		Processor.getInstance().incProgramcounter();
 		// Get Argument
 		byte b = Memory.getInstance().get(
@@ -32,6 +33,8 @@ public class SUIMnemonic extends Mnemonic {
 		int c = a - b2;
 		Processor.getInstance().setRegisterA((byte) c);
 		Processor.getInstance().setFlags((short) c);
+
+		return 7;
 	}
 
 	@Override
@@ -43,7 +46,7 @@ public class SUIMnemonic extends Mnemonic {
 	public byte size() {
 		return 2;
 	}
-	
+
 	@Override
 	public boolean validateArguments(String[] args) {
 		return args.length == 1 && Simulator.isNumber(args[0]);
