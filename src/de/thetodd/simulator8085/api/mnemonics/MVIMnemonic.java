@@ -41,8 +41,11 @@ public class MVIMnemonic extends Mnemonic {
 				Processor.getInstance().getProgramcounter());
 		Processor.getInstance().incProgramcounter();
 		if (opcode == 0x3E) {
-			System.out.println("Set Register A");
+			// System.out.println("Set Register A");
 			Processor.getInstance().setRegisterA(
+					Memory.getInstance().get(
+							Processor.getInstance().getProgramcounter()));
+			Processor.getInstance().setFlags(
 					Memory.getInstance().get(
 							Processor.getInstance().getProgramcounter()));
 		} else if (opcode == 0x06) {
