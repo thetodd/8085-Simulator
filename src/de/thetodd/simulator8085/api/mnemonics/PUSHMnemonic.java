@@ -1,6 +1,7 @@
 package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
+import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
@@ -26,7 +27,7 @@ public class PUSHMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() {
+	public int execute() throws ProcessorError {
 		byte opcode = Memory.getInstance().get(
 				Processor.getInstance().getProgramcounter());
 		switch (opcode) {
@@ -58,6 +59,8 @@ public class PUSHMnemonic extends Mnemonic {
 			break;
 		}
 		Processor.getInstance().incProgramcounter();
+
+		return 12;
 	}
 
 	@Override

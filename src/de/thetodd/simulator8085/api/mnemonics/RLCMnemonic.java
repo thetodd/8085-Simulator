@@ -1,6 +1,7 @@
 package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
+import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Processor;
 
 public class RLCMnemonic extends Mnemonic {
@@ -17,7 +18,7 @@ public class RLCMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() {
+	public int execute() throws ProcessorError {
 		byte a = Processor.getInstance().getRegisterA();
 		byte cf = (byte) (a & 0x80);
 		a = (byte) ((a & 0xff) << 1);
@@ -30,6 +31,8 @@ public class RLCMnemonic extends Mnemonic {
 		Processor.getInstance().setRegisterA(a);
 
 		Processor.getInstance().incProgramcounter();
+
+		return 4;
 	}
 
 	@Override
@@ -41,7 +44,7 @@ public class RLCMnemonic extends Mnemonic {
 	public byte size() {
 		return 1;
 	}
-	
+
 	@Override
 	public boolean validateArguments(String[] args) {
 		return args.length == 0;

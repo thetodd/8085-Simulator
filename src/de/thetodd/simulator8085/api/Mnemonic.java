@@ -8,8 +8,13 @@ public class Mnemonic {
 		return null;
 	}
 
-	public void execute() throws ProcessorError {
-
+	/**
+	 * Executes the mnemonic according to the opcode in the memory.
+	 * @return clocks needed for execution <i>defaults to 1</i>
+	 * @throws ProcessorError
+	 */
+	public int execute() throws ProcessorError {
+		return 1;
 	}
 
 	public boolean validateOpcode(byte opcode) {

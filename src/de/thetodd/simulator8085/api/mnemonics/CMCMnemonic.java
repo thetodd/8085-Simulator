@@ -1,6 +1,7 @@
 package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
+import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Processor;
 
 public class CMCMnemonic extends Mnemonic {
@@ -16,12 +17,14 @@ public class CMCMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() {
+	public int execute() throws ProcessorError {
 		boolean cflag = Processor.getInstance().isCarryFlag();
 		cflag = !cflag;
 		Processor.getInstance().setCarryFlag(cflag);
 		
 		Processor.getInstance().incProgramcounter();
+		
+		return 4;
 	}
 
 	@Override

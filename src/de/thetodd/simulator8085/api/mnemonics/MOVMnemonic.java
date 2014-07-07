@@ -2,6 +2,7 @@ package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
 import de.thetodd.simulator8085.api.Simulator;
+import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
@@ -98,7 +99,9 @@ public class MOVMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() {
+	public int execute() throws ProcessorError {
+		int clock = 4;
+		
 		byte opcode = Memory.getInstance().get(
 				Processor.getInstance().getProgramcounter());
 		switch (opcode) {
@@ -130,6 +133,7 @@ public class MOVMnemonic extends Mnemonic {
 			Processor.getInstance().setRegisterB(
 					Memory.getInstance().get(
 							Processor.getInstance().getRegisterHL()));
+			clock = 7;
 			break;
 		case 0x47:
 			Processor.getInstance().setRegisterB(
@@ -163,6 +167,7 @@ public class MOVMnemonic extends Mnemonic {
 			Processor.getInstance().setRegisterC(
 					Memory.getInstance().get(
 							Processor.getInstance().getRegisterHL()));
+			clock = 7;
 			break;
 		case 0x4f:
 			Processor.getInstance().setRegisterC(
@@ -196,6 +201,7 @@ public class MOVMnemonic extends Mnemonic {
 			Processor.getInstance().setRegisterD(
 					Memory.getInstance().get(
 							Processor.getInstance().getRegisterHL()));
+			clock = 7;
 			break;
 		case 0x57:
 			Processor.getInstance().setRegisterD(
@@ -229,6 +235,7 @@ public class MOVMnemonic extends Mnemonic {
 			Processor.getInstance().setRegisterE(
 					Memory.getInstance().get(
 							Processor.getInstance().getRegisterHL()));
+			clock = 7;
 			break;
 		case 0x5f:
 			Processor.getInstance().setRegisterE(
@@ -262,6 +269,7 @@ public class MOVMnemonic extends Mnemonic {
 			Processor.getInstance().setRegisterH(
 					Memory.getInstance().get(
 							Processor.getInstance().getRegisterHL()));
+			clock = 7;
 			break;
 		case 0x67:
 			Processor.getInstance().setRegisterH(
@@ -295,6 +303,7 @@ public class MOVMnemonic extends Mnemonic {
 			Processor.getInstance().setRegisterL(
 					Memory.getInstance().get(
 							Processor.getInstance().getRegisterHL()));
+			clock = 7;
 			break;
 		case 0x6f:
 			Processor.getInstance().setRegisterL(
@@ -303,30 +312,37 @@ public class MOVMnemonic extends Mnemonic {
 		case 0x70:
 			Memory.getInstance().put(Processor.getInstance().getRegisterHL(),
 					Processor.getInstance().getRegisterB());
+			clock = 7;
 			break;
 		case 0x71:
 			Memory.getInstance().put(Processor.getInstance().getRegisterHL(),
 					Processor.getInstance().getRegisterC());
+			clock = 7;
 			break;
 		case 0x72:
 			Memory.getInstance().put(Processor.getInstance().getRegisterHL(),
 					Processor.getInstance().getRegisterD());
+			clock = 7;
 			break;
 		case 0x73:
 			Memory.getInstance().put(Processor.getInstance().getRegisterHL(),
 					Processor.getInstance().getRegisterE());
+			clock = 7;
 			break;
 		case 0x74:
 			Memory.getInstance().put(Processor.getInstance().getRegisterHL(),
 					Processor.getInstance().getRegisterH());
+			clock = 7;
 			break;
 		case 0x75:
 			Memory.getInstance().put(Processor.getInstance().getRegisterHL(),
 					Processor.getInstance().getRegisterL());
+			clock = 7;
 			break;
 		case 0x77:
 			Memory.getInstance().put(Processor.getInstance().getRegisterHL(),
 					Processor.getInstance().getRegisterA());
+			clock = 7;
 			break;
 		case 0x78:
 			Processor.getInstance().setRegisterA(
@@ -356,6 +372,7 @@ public class MOVMnemonic extends Mnemonic {
 			Processor.getInstance().setRegisterA(
 					Memory.getInstance().get(
 							Processor.getInstance().getRegisterHL()));
+			clock = 7;
 			break;
 		case 0x7f:
 			Processor.getInstance().setRegisterA(
@@ -364,6 +381,8 @@ public class MOVMnemonic extends Mnemonic {
 		}
 
 		Processor.getInstance().incProgramcounter();
+		
+		return clock;
 	}
 
 	@Override

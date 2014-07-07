@@ -2,6 +2,7 @@ package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
 import de.thetodd.simulator8085.api.Simulator;
+import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
@@ -36,11 +37,11 @@ public class XRAMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() {
+	public int execute() throws ProcessorError {
 		byte opcode = Memory.getInstance().get(
 				Processor.getInstance().getProgramcounter());
 		byte a = Processor.getInstance().getRegisterA();
-
+		int clock = 4;
 		byte b2 = 0x00;
 		switch (opcode) {
 		case (byte) 0xa8:
@@ -64,6 +65,7 @@ public class XRAMnemonic extends Mnemonic {
 		case (byte) 0xae:
 			b2 = Memory.getInstance().get(
 					Processor.getInstance().getRegisterHL());
+			clock = 7;
 			break;
 		case (byte) 0xaf:
 			b2 = Processor.getInstance().getRegisterA();
@@ -77,6 +79,8 @@ public class XRAMnemonic extends Mnemonic {
 		Processor.getInstance().setFlags(c);
 		Processor.getInstance().setAuxiliaryCarryFlag(false);
 		Processor.getInstance().setCarryFlag(false);
+
+		return clock;
 	}
 
 	@Override
@@ -88,7 +92,7 @@ public class XRAMnemonic extends Mnemonic {
 	public byte size() {
 		return 1;
 	}
-	
+
 	@Override
 	public boolean validateArguments(String[] args) {
 		return args.length == 1 && Simulator.isRegistername(args[0]);

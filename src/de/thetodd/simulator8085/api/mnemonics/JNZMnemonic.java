@@ -26,7 +26,7 @@ public class JNZMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() throws ProcessorError {
+	public int execute() throws ProcessorError {
 		Processor.getInstance().incProgramcounter();
 		short[] adresse = new short[2];
 		adresse[1] = Memory.getInstance().get(
@@ -39,7 +39,9 @@ public class JNZMnemonic extends Mnemonic {
 		// check if zero flag is not set
 		if (!Processor.getInstance().isZeroFlag()) {
 			Processor.getInstance().setProgramcounter(jmpAdr);
+			return 10;
 		}
+		return 7;
 	}
 
 	@Override

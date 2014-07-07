@@ -13,5 +13,12 @@ public class ProcessorTest {
 		Processor.getInstance().setRegisterA((byte) 0xCC);
 		assertEquals(Processor.getInstance().getRegisterA(),(byte) 0xCC);
 	}
+	
+	@Test
+	public void testRegisterPairDE() {
+		Processor.getInstance().setRegisterD((byte) 0x1b);
+		Processor.getInstance().setRegisterE((byte) 0xf0);
+		assertEquals(Processor.getInstance().getRegisterDE(), 0x1bf0);
+	}
 
 }

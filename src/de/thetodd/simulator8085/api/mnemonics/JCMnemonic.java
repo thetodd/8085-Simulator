@@ -26,7 +26,7 @@ public class JCMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() throws ProcessorError {
+	public int execute() throws ProcessorError {
 		Processor.getInstance().incProgramcounter();
 		short[] adresse = new short[2];
 		adresse[1] = Memory.getInstance().get(
@@ -39,7 +39,9 @@ public class JCMnemonic extends Mnemonic {
 		// check if carry flag is set
 		if (Processor.getInstance().isCarryFlag()) {
 			Processor.getInstance().setProgramcounter(jmpAdr);
+			return 10;
 		}
+		return 7;
 	}
 
 	@Override

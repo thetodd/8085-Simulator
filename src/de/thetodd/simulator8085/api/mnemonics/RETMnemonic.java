@@ -1,6 +1,7 @@
 package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
+import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
@@ -9,7 +10,8 @@ public class RETMnemonic extends Mnemonic {
 	public byte[] getOpcode(String[] arguments) {
 		byte[] opcode = new byte[1];
 		if (arguments.length > 0) {
-			throw new IllegalArgumentException("Argumente sind nicht zulaessig!");
+			throw new IllegalArgumentException(
+					"Argumente sind nicht zulaessig!");
 		}
 		opcode[0] = (byte) 0xC9;
 
@@ -17,13 +19,15 @@ public class RETMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() {
-		//get return address from stack
+	public int execute() throws ProcessorError {
+		// get return address from stack
 		byte retHigh = Memory.getInstance().popStack();
 		byte retLow = Memory.getInstance().popStack();
 		short retAdr = (short) ((retHigh << 8) | retLow);
-		
+
 		Processor.getInstance().setProgramcounter(retAdr);
+
+		return 10;
 	}
 
 	@Override
@@ -35,7 +39,7 @@ public class RETMnemonic extends Mnemonic {
 	public byte size() {
 		return 1;
 	}
-	
+
 	@Override
 	public boolean validateArguments(String[] args) {
 		return args.length == 0;

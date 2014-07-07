@@ -2,6 +2,7 @@ package de.thetodd.simulator8085.api.mnemonics;
 
 import de.thetodd.simulator8085.api.Mnemonic;
 import de.thetodd.simulator8085.api.Simulator;
+import de.thetodd.simulator8085.api.exceptions.ProcessorError;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
@@ -19,13 +20,15 @@ public class OUTMnemonic extends Mnemonic {
 	}
 
 	@Override
-	public void execute() {
+	public int execute() throws ProcessorError {
 		Processor.getInstance().incProgramcounter();
 		byte adr = Memory.getInstance().get(
 				Processor.getInstance().getProgramcounter());
 		Processor.getInstance().incProgramcounter();
 		Simulator.getInstance().setOutEntry(adr,
 				Processor.getInstance().getRegisterA());
+
+		return 10;
 	}
 
 	@Override
@@ -37,7 +40,7 @@ public class OUTMnemonic extends Mnemonic {
 	public byte size() {
 		return 2;
 	}
-	
+
 	@Override
 	public boolean validateArguments(String[] args) {
 		return args.length == 1 && Simulator.isNumber(args[0]);
