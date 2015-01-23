@@ -1,13 +1,7 @@
 8085-Simulator
 ==============
 
-**Master-Branch:** [![Build status](https://travis-ci.org/thetodd/8085-Simulator.svg?branch=master)](https://travis-ci.org/thetodd/8085-Simulator)
-
-**Developer-Branch:** [![Build status](https://travis-ci.org/thetodd/8085-Simulator.svg?branch=development)](https://travis-ci.org/thetodd/8085-Simulator)
-
 This project simulates a 8085 processor.
-
-![screenshot](https://raw.githubusercontent.com/thetodd/8085-Simulator/gh-pages/screenshots/screenshot8085.PNG)
 
 ###Supported Features
 - 8085 assembler
