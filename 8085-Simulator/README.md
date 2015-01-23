@@ -16,10 +16,11 @@ This project simulates a 8085 processor.
 Building is provided by *ant*.
 
 ```
-ant dist
+ant jar_x86 (only for 32bit systems)
+ant jar_x64 (only for 64bit systems)
 ```
 
-creates a directory called `dist` which contains a jar file. Currently this jar file isn't able to be started standalone.
+creates a directory called `dist` which contains the jar file and the used libraries. Simple doubleclick on the "Sim8085[...]" jar to start the application.
 
 To clean up your development environment you can run
 
