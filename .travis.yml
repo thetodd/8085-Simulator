@@ -3,4 +3,5 @@ jdk:
 - openjdk7
 - oraclejdk7
 script:
-- ant -buildfile 8085-Simulator/build.xml
+- ant -buildfile 8085-Simulator/build.xml jar_x86
+- ant -buildfile 8085-Simulator/build.xml jar_x64
