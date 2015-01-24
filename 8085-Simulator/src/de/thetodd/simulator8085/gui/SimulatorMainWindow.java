@@ -896,6 +896,13 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		mntmHelpContents.setAccelerator(SWT.F1);
 
 		MenuItem mntmAbout = new MenuItem(menu_3, SWT.NONE);
+		mntmAbout.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				AboutDialog about = new AboutDialog(shlSimulator);
+				about.open();
+			}
+		});
 		mntmAbout.setText(Messages.SimulatorMainWindow_mntmAbout_text);
 	}
 
