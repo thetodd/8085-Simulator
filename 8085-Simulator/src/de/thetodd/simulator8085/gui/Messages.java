@@ -40,6 +40,13 @@ public class Messages extends NLS {
 	public static String SimulatorMainWindow_mntmAbout_text;
 	public static String SimulatorMainWindow_lblNewLabel_5_text;
 	public static String SimulatorMainWindow_lblClockrte_text;
+	public static String AboutDialog_newShell_text;
+	public static String AboutDialog_lblSimulator_text;
+	public static String AboutDialog_lblVersion_text;
+	public static String AboutDialog_lblNewLabel_text;
+	public static String AboutDialog_lblEntstandenImRahmen_text;
+	public static String ProgramVersion;
+	public static String AboutDialog_styledText_text;
 	////////////////////////////////////////////////////////////////////////////
 	//
 	// Constructor
