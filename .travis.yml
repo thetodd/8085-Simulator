@@ -1,0 +1,6 @@
+language: java
+jdk:
+- openjdk7
+- oraclejdk7
+script:
+- ant -buildfile 8085-Simulator/build.xml
