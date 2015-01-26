@@ -2,14 +2,18 @@ package de.thetodd.simulator8085.gui.sourceviewer;
 
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationAccess;
+import org.eclipse.jface.text.source.IAnnotationAccessExtension;
 import org.eclipse.jface.text.source.ImageUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 
-public class AnnotationMarkerAccess implements IAnnotationAccess {
+public class AnnotationMarkerAccess implements IAnnotationAccess, IAnnotationAccessExtension {
 
+	public AnnotationMarkerAccess() {
+	}
+	
 	public Object getType(Annotation annotation) {
 		return annotation.getType();
 	}
