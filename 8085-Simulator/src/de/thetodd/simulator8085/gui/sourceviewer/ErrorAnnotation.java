@@ -4,7 +4,9 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.wb.swt.SWTResourceManager;
+
+import de.thetodd.simulator8085.gui.SimulatorMainWindow;
 
 public class ErrorAnnotation extends Annotation {
 
@@ -13,7 +15,9 @@ public class ErrorAnnotation extends Annotation {
 	private int line;
 	private Position position;
 	public static final String ERROR_TYPE = "error.type";
-	private static final Image ERROR_IMG = new Image(Display.getDefault(),"d:/exclamation.png");
+	private static final Image ERROR_IMG = SWTResourceManager
+			.getImage(SimulatorMainWindow.class,
+					"/de/thetodd/simulator8085/gui/icons/warning.png");
 
 	public ErrorAnnotation(IMarker marker) {
 		this.marker = marker;

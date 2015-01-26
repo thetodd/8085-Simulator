@@ -428,45 +428,52 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		tbtmProgramm.setText(Messages.SimulatorMainWindow_tbtmProgramm_text);
 		tabFolder.setSelection(tbtmProgramm);
 
-		CompositeRuler fCompositeRuler = new CompositeRuler();
 		IAnnotationAccess fAnnotationAccess = new AnnotationMarkerAccess();
-		AnnotationRulerColumn annotationRuler = new AnnotationRulerColumn(
-				fAnnotationModel, 16, fAnnotationAccess);
-		annotationRuler.addAnnotationType(ErrorAnnotation.ERROR_TYPE);
-		fCompositeRuler.setModel(fAnnotationModel);
-		fCompositeRuler.addDecorator(0, annotationRuler);
+
+		// rulers
+		CompositeRuler fCompositeRuler = new CompositeRuler();
 		LineNumberRulerColumn lnrc = new LineNumberRulerColumn();
 		lnrc.setForeground(new Color(Display.getDefault(), 0x66, 0x66, 0x66));
 		lnrc.setFont(new Font(Display.getDefault(), "Courier New", 10,
 				SWT.NORMAL));
 		fCompositeRuler.addDecorator(1, lnrc);
-		
-		sv = new SourceViewer(tabFolder, fCompositeRuler, null, true, SWT.MULTI
-				| SWT.V_SCROLL | SWT.H_SCROLL);
+		AnnotationRulerColumn annotationRuler = new AnnotationRulerColumn(
+				fAnnotationModel, 16, fAnnotationAccess);
+		fCompositeRuler.setModel(fAnnotationModel);
+
+		// annotation ruler is decorating our composite ruler
+		fCompositeRuler.addDecorator(0, annotationRuler);
+
+		// add what types are show on the different rulers
+		annotationRuler.addAnnotationType(ErrorAnnotation.ERROR_TYPE);
+
+		// source viewer
+		sv = new SourceViewer(tabFolder, fCompositeRuler, null,
+				true, SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		sv.configure(new MySourceViewerConf());
 		Document doc = new Document();
 		sv.setDocument(doc, fAnnotationModel);
 		sv.getTextWidget().setFont(
 				new Font(Display.getDefault(), "Courier New", 10, SWT.NORMAL));
 
-		
 		// to paint the annotations
 		AnnotationPainter ap = new AnnotationPainter(sv, fAnnotationAccess);
 		ap.addAnnotationType(ErrorAnnotation.ERROR_TYPE);
-		ap.setAnnotationTypeColor(ErrorAnnotation.ERROR_TYPE, new Color(Display.getDefault(),
-				200,0,0));
+		ap.setAnnotationTypeColor(ErrorAnnotation.ERROR_TYPE,
+				new Color(Display.getDefault(), 200, 0, 0));
 
 		// this will draw the squigglies under the text
 		sv.addPainter(ap);
 
-		// Only testing
-		sv.getDocument().set("ORG 0x1800\r\nMVI a,0x33\r\nHLT");
-		ErrorAnnotation errorAnnotation = new ErrorAnnotation(1,
+		// some misspelled text
+		/*doc.set("ORG 0x1800\nMVI a,0x33\nHLT");
+		// add an annotation
+		ErrorAnnotation errorAnnotation = new ErrorAnnotation(2,
 				"Learn how to spell \"text!\"");
 
 		// lets underline the word "texst"
-		fAnnotationModel.addAnnotation(errorAnnotation, new Position(0, 3));
-
+		fAnnotationModel.addAnnotation(errorAnnotation, new Position(12, 5));*/
+		
 		tbtmProgramm.setControl(sv.getControl());
 
 		CTabItem tbtmSpeicher = new CTabItem(tabFolder, SWT.NONE);
