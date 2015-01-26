@@ -1,30 +1,30 @@
-package de.thetodd.simulator8085.gui.sourceviewer;
+package de.thetodd.simulator8085.gui.sourceviewer.annotations;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.text.Position;
-import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import de.thetodd.simulator8085.gui.SimulatorMainWindow;
 
-public class ErrorAnnotation extends Annotation {
+public class AssembleErrorAnnotation extends MyAnnotation {
 
 	private IMarker marker;
 	private String text;
 	private int line;
 	private Position position;
-	public static final String ERROR_TYPE = "error.type";
-	private static final Image ERROR_IMG = SWTResourceManager
+	public static final String TYPE = "assemble.type";
+	private static final Image IMG = SWTResourceManager
 			.getImage(SimulatorMainWindow.class,
-					"/de/thetodd/simulator8085/gui/icons/warning.png");
+					"/de/thetodd/simulator8085/gui/icons/compile_error.png");
 
-	public ErrorAnnotation(IMarker marker) {
+	public AssembleErrorAnnotation(IMarker marker) {
+		super("");
 		this.marker = marker;
 	}
 
-	public ErrorAnnotation(int line, String text) {
-		super(ERROR_TYPE, true, null);
+	public AssembleErrorAnnotation(int line, String text) {
+		super(TYPE);
 		this.marker = null;
 		this.line = line;
 		this.text = text;
@@ -43,7 +43,7 @@ public class ErrorAnnotation extends Annotation {
 	}
 
 	public Image getImage() {
-		return ERROR_IMG;
+		return IMG;
 	}
 
 	public int getLayer() {
@@ -51,7 +51,7 @@ public class ErrorAnnotation extends Annotation {
 	}
 
 	public String getType() {
-		return ERROR_TYPE;
+		return TYPE;
 	}
 
 	public Position getPosition() {

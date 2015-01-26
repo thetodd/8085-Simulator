@@ -9,6 +9,10 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 
+import de.thetodd.simulator8085.gui.sourceviewer.annotations.AssembleErrorAnnotation;
+import de.thetodd.simulator8085.gui.sourceviewer.annotations.ErrorAnnotation;
+import de.thetodd.simulator8085.gui.sourceviewer.annotations.MyAnnotation;
+
 public class AnnotationMarkerAccess implements IAnnotationAccess, IAnnotationAccessExtension {
 
 	public AnnotationMarkerAccess() {
@@ -29,6 +33,8 @@ public class AnnotationMarkerAccess implements IAnnotationAccess, IAnnotationAcc
 	public String getTypeLabel(Annotation annotation) {
 		if (annotation instanceof ErrorAnnotation)
 			return "Errors";
+		if (annotation instanceof AssembleErrorAnnotation)
+			return "AssembleErrors";
 
 		return null;
 	}
@@ -42,7 +48,8 @@ public class AnnotationMarkerAccess implements IAnnotationAccess, IAnnotationAcc
 
 	public void paint(Annotation annotation, GC gc, Canvas canvas,
 			Rectangle bounds) {
-		ImageUtilities.drawImage(((ErrorAnnotation) annotation).getImage(),
+		
+		ImageUtilities.drawImage(((MyAnnotation) annotation).getImage(),
 				gc, canvas, bounds, SWT.CENTER, SWT.TOP);
 	}
 

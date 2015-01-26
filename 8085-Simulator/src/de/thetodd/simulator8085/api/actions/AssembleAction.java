@@ -1,5 +1,6 @@
 package de.thetodd.simulator8085.api.actions;
 
+import org.eclipse.jface.text.Position;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
@@ -7,13 +8,17 @@ import org.eclipse.swt.widgets.MessageBox;
 import de.thetodd.simulator8085.api.Simulator;
 import de.thetodd.simulator8085.api.exceptions.AssemblerException;
 import de.thetodd.simulator8085.api.platform.Memory;
+import de.thetodd.simulator8085.gui.sourceviewer.AssemblerSourceViewer;
 
 public class AssembleAction implements Action {
 
 	private String code;
+	private AssemblerSourceViewer sv;
 
-	public AssembleAction(String code) {
+	public AssembleAction(AssemblerSourceViewer sv, String code) {
 		this.code = code;
+		this.sv = sv;
+		sv.clearAnnotations();
 	}
 
 	public void run() {
@@ -130,9 +135,11 @@ public class AssembleAction implements Action {
 					.getActiveShell(), SWT.ICON_ERROR | SWT.OK);
 			messageBox.setText("Assembling error");
 			messageBox.setMessage(ex.getMessage());
-			messageBox.open();
+			//messageBox.open();
 
 			isCorrect = false;
+			ex.printStackTrace();
+			sv.addCompileError(new Position(1,3),ex.getMessage());
 		}
 		return isCorrect;
 	}

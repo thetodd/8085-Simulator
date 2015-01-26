@@ -639,7 +639,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				Simulator.getInstance().fireRegisterChangeEvent(
 						new RegisterChangeEvent(RegisterChangeEvent
 								.getAllTemplate()));
-				sv.getDocument().set("");
+				sv.setText("");
 			}
 		});
 		mntmNewFile.setText(Messages.SimulatorMainWindow_mntmNewFile_text);
@@ -728,7 +728,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		mntmAsseble.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				Action assemble = new AssembleAction(sv.getDocument().get());
+				Action assemble = new AssembleAction(sv,sv.getText());
 				setStatus("Assembling...");
 				assemble.run();
 

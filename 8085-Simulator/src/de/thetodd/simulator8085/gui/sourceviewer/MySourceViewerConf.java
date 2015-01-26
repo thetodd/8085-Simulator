@@ -13,7 +13,7 @@ public class MySourceViewerConf extends SourceViewerConfiguration {
 
 		PresentationReconciler reconciler= new PresentationReconciler();
 
-		DefaultDamagerRepairer dr= new DefaultDamagerRepairer(new MyJavaCodeScanner());
+		DefaultDamagerRepairer dr= new DefaultDamagerRepairer(new MyASMCodeScanner());
 		reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
 		reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
 		
