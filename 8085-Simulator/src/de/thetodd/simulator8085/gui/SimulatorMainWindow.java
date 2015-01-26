@@ -11,13 +11,6 @@ import java.util.List;
 import javax.swing.JFileChooser;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.text.Document;
-import org.eclipse.jface.text.source.AnnotationPainter;
-import org.eclipse.jface.text.source.AnnotationRulerColumn;
-import org.eclipse.jface.text.source.CompositeRuler;
-import org.eclipse.jface.text.source.IAnnotationAccess;
-import org.eclipse.jface.text.source.LineNumberRulerColumn;
-import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
@@ -26,8 +19,6 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
@@ -64,10 +55,7 @@ import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 import de.thetodd.simulator8085.gui.outviews.LEDBar;
 import de.thetodd.simulator8085.gui.outviews.ListView;
-import de.thetodd.simulator8085.gui.sourceviewer.AnnotationMarkerAccess;
 import de.thetodd.simulator8085.gui.sourceviewer.AssemblerSourceViewer;
-import de.thetodd.simulator8085.gui.sourceviewer.ErrorAnnotation;
-import de.thetodd.simulator8085.gui.sourceviewer.MySourceViewerConf;
 
 public class SimulatorMainWindow implements ProcessorChangedListener {
 
