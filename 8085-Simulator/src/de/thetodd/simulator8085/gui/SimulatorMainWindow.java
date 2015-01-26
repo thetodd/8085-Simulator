@@ -12,8 +12,6 @@ import javax.swing.JFileChooser;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.Document;
-import org.eclipse.jface.text.Position;
-import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.AnnotationPainter;
 import org.eclipse.jface.text.source.AnnotationRulerColumn;
 import org.eclipse.jface.text.source.CompositeRuler;
@@ -67,6 +65,7 @@ import de.thetodd.simulator8085.api.platform.Processor;
 import de.thetodd.simulator8085.gui.outviews.LEDBar;
 import de.thetodd.simulator8085.gui.outviews.ListView;
 import de.thetodd.simulator8085.gui.sourceviewer.AnnotationMarkerAccess;
+import de.thetodd.simulator8085.gui.sourceviewer.AssemblerSourceViewer;
 import de.thetodd.simulator8085.gui.sourceviewer.ErrorAnnotation;
 import de.thetodd.simulator8085.gui.sourceviewer.MySourceViewerConf;
 
@@ -101,9 +100,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 	private CLabel lblStatusLine; // a rudimental statusline
 	private Label lblClockrate;
 	private Text txtClock;
-	private SourceViewer sv;
-	private AnnotationModel fAnnotationModel = new AnnotationModel(); // annotation
-																		// model
+	private AssemblerSourceViewer sv;
 
 	public SimulatorMainWindow() {
 
@@ -428,42 +425,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		tbtmProgramm.setText(Messages.SimulatorMainWindow_tbtmProgramm_text);
 		tabFolder.setSelection(tbtmProgramm);
 
-		IAnnotationAccess fAnnotationAccess = new AnnotationMarkerAccess();
-
-		// rulers
-		CompositeRuler fCompositeRuler = new CompositeRuler();
-		LineNumberRulerColumn lnrc = new LineNumberRulerColumn();
-		lnrc.setForeground(new Color(Display.getDefault(), 0x66, 0x66, 0x66));
-		lnrc.setFont(new Font(Display.getDefault(), "Courier New", 10,
-				SWT.NORMAL));
-		fCompositeRuler.addDecorator(1, lnrc);
-		AnnotationRulerColumn annotationRuler = new AnnotationRulerColumn(
-				fAnnotationModel, 16, fAnnotationAccess);
-		fCompositeRuler.setModel(fAnnotationModel);
-
-		// annotation ruler is decorating our composite ruler
-		fCompositeRuler.addDecorator(0, annotationRuler);
-
-		// add what types are show on the different rulers
-		annotationRuler.addAnnotationType(ErrorAnnotation.ERROR_TYPE);
-
-		// source viewer
-		sv = new SourceViewer(tabFolder, fCompositeRuler, null,
-				true, SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
-		sv.configure(new MySourceViewerConf());
-		Document doc = new Document();
-		sv.setDocument(doc, fAnnotationModel);
-		sv.getTextWidget().setFont(
-				new Font(Display.getDefault(), "Courier New", 10, SWT.NORMAL));
-
-		// to paint the annotations
-		AnnotationPainter ap = new AnnotationPainter(sv, fAnnotationAccess);
-		ap.addAnnotationType(ErrorAnnotation.ERROR_TYPE);
-		ap.setAnnotationTypeColor(ErrorAnnotation.ERROR_TYPE,
-				new Color(Display.getDefault(), 200, 0, 0));
-
-		// this will draw the squigglies under the text
-		sv.addPainter(ap);
+		
 
 		// some misspelled text
 		/*doc.set("ORG 0x1800\nMVI a,0x33\nHLT");
@@ -473,7 +435,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 
 		// lets underline the word "texst"
 		fAnnotationModel.addAnnotation(errorAnnotation, new Position(12, 5));*/
-		
+		sv = new AssemblerSourceViewer(tabFolder);
 		tbtmProgramm.setControl(sv.getControl());
 
 		CTabItem tbtmSpeicher = new CTabItem(tabFolder, SWT.NONE);
