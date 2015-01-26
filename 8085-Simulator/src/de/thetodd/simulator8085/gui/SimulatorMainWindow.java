@@ -12,7 +12,12 @@ import javax.swing.JFileChooser;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.Position;
+import org.eclipse.jface.text.source.AnnotationModel;
+import org.eclipse.jface.text.source.AnnotationPainter;
+import org.eclipse.jface.text.source.AnnotationRulerColumn;
 import org.eclipse.jface.text.source.CompositeRuler;
+import org.eclipse.jface.text.source.IAnnotationAccess;
 import org.eclipse.jface.text.source.LineNumberRulerColumn;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.viewers.TableViewer;
@@ -21,7 +26,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -62,6 +66,8 @@ import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 import de.thetodd.simulator8085.gui.outviews.LEDBar;
 import de.thetodd.simulator8085.gui.outviews.ListView;
+import de.thetodd.simulator8085.gui.sourceviewer.AnnotationMarkerAccess;
+import de.thetodd.simulator8085.gui.sourceviewer.ErrorAnnotation;
 import de.thetodd.simulator8085.gui.sourceviewer.MySourceViewerConf;
 
 public class SimulatorMainWindow implements ProcessorChangedListener {
@@ -96,6 +102,8 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 	private Label lblClockrate;
 	private Text txtClock;
 	private SourceViewer sv;
+	private AnnotationModel fAnnotationModel = new AnnotationModel(); // annotation
+																		// model
 
 	public SimulatorMainWindow() {
 
@@ -419,18 +427,45 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 								"/de/thetodd/simulator8085/gui/icons/application_xp_terminal.png"));
 		tbtmProgramm.setText(Messages.SimulatorMainWindow_tbtmProgramm_text);
 		tabFolder.setSelection(tbtmProgramm);
-		
+
 		CompositeRuler fCompositeRuler = new CompositeRuler();
+		IAnnotationAccess fAnnotationAccess = new AnnotationMarkerAccess();
+		AnnotationRulerColumn annotationRuler = new AnnotationRulerColumn(
+				fAnnotationModel, 16, fAnnotationAccess);
+		annotationRuler.addAnnotationType(ErrorAnnotation.ERROR_TYPE);
+		fCompositeRuler.setModel(fAnnotationModel);
+		fCompositeRuler.addDecorator(0, annotationRuler);
 		LineNumberRulerColumn lnrc = new LineNumberRulerColumn();
-		lnrc.setForeground(new Color(Display.getDefault(),0x66,0x66,0x66));
-		lnrc.setFont(new Font(Display.getDefault(),"Courier New",10,SWT.NORMAL));
-		fCompositeRuler.addDecorator(0, lnrc);
-		sv = new SourceViewer(tabFolder, fCompositeRuler,
-				null, true, SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		lnrc.setForeground(new Color(Display.getDefault(), 0x66, 0x66, 0x66));
+		lnrc.setFont(new Font(Display.getDefault(), "Courier New", 10,
+				SWT.NORMAL));
+		fCompositeRuler.addDecorator(1, lnrc);
+		
+		sv = new SourceViewer(tabFolder, fCompositeRuler, null, true, SWT.MULTI
+				| SWT.V_SCROLL | SWT.H_SCROLL);
 		sv.configure(new MySourceViewerConf());
 		Document doc = new Document();
-		sv.setDocument(doc);
-		sv.getTextWidget().setFont(new Font(Display.getDefault(),"Courier New",10,SWT.NORMAL));
+		sv.setDocument(doc, fAnnotationModel);
+		sv.getTextWidget().setFont(
+				new Font(Display.getDefault(), "Courier New", 10, SWT.NORMAL));
+
+		
+		// to paint the annotations
+		AnnotationPainter ap = new AnnotationPainter(sv, fAnnotationAccess);
+		ap.addAnnotationType(ErrorAnnotation.ERROR_TYPE);
+		ap.setAnnotationTypeColor(ErrorAnnotation.ERROR_TYPE, new Color(Display.getDefault(),
+				200,0,0));
+
+		// this will draw the squigglies under the text
+		sv.addPainter(ap);
+
+		// Only testing
+		sv.getDocument().set("ORG 0x1800\r\nMVI a,0x33\r\nHLT");
+		ErrorAnnotation errorAnnotation = new ErrorAnnotation(1,
+				"Learn how to spell \"text!\"");
+
+		// lets underline the word "texst"
+		fAnnotationModel.addAnnotation(errorAnnotation, new Position(0, 3));
 
 		tbtmProgramm.setControl(sv.getControl());
 
@@ -825,7 +860,9 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 					updateLineHighlighting();
 					clearStatus();
 				} catch (NumberFormatException ex) {
-					MessageDialog.openError(shlSimulator, "Wrong Clockrate", "The clockrate \""+txtClock.getText()+"\" has the wrong format.");
+					MessageDialog.openError(shlSimulator, "Wrong Clockrate",
+							"The clockrate \"" + txtClock.getText()
+									+ "\" has the wrong format.");
 				}
 			}
 		});
@@ -1001,15 +1038,17 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 	}
 
 	public void updateLineHighlighting() {
-		//TODO: has to be adapted to the new SourceViewer, perhaps by annotations?!
-		/*if (Simulator.getInstance().getCodeMap()
-				.containsKey(Processor.getInstance().getProgramcounter())) {
-			int linenumber = Simulator.getInstance().getCodeMap()
-					.get(Processor.getInstance().getProgramcounter());
-			codeText.setLineBackground(0, codeText.getLineCount(), null);
-			codeText.setLineBackground(linenumber, 1,
-					new Color(Display.getDefault(), 0xFF, 0xFF, 0x99));
-		}*/
+		// TODO: has to be adapted to the new SourceViewer, perhaps by
+		// annotations?!
+		/*
+		 * if (Simulator.getInstance().getCodeMap()
+		 * .containsKey(Processor.getInstance().getProgramcounter())) { int
+		 * linenumber = Simulator.getInstance().getCodeMap()
+		 * .get(Processor.getInstance().getProgramcounter());
+		 * codeText.setLineBackground(0, codeText.getLineCount(), null);
+		 * codeText.setLineBackground(linenumber, 1, new
+		 * Color(Display.getDefault(), 0xFF, 0xFF, 0x99)); }
+		 */
 	}
 
 	@Override
