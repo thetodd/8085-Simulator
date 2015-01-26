@@ -55,7 +55,7 @@ public class AnnotationMarkerAccess implements IAnnotationAccess, IAnnotationAcc
 
 	public boolean isPaintable(Annotation annotation) {
 		if (annotation instanceof ErrorAnnotation)
-			return ((ErrorAnnotation) annotation).getImage() != null;
+			return ((MyAnnotation) annotation).getImage() != null;
 
 		return false;
 	}

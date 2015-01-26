@@ -4,6 +4,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
+import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 
@@ -18,6 +19,11 @@ public class MySourceViewerConf extends SourceViewerConfiguration {
 		reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
 		
 		return reconciler;
+	}
+	
+	@Override
+	public IAnnotationHover getAnnotationHover(ISourceViewer sourceViewer) {
+		return new MyAnnotationHover();
 	}
 	
 }

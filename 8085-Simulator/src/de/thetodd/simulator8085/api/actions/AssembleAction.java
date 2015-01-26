@@ -1,9 +1,6 @@
 package de.thetodd.simulator8085.api.actions;
 
 import org.eclipse.jface.text.Position;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.MessageBox;
 
 import de.thetodd.simulator8085.api.Simulator;
 import de.thetodd.simulator8085.api.exceptions.AssemblerException;
@@ -39,8 +36,7 @@ public class AssembleAction implements Action {
 			if (mnemonic.equals("org")) { // is Org
 				adr = (short) Integer.decode(command[1]).intValue();
 			} else if (line.endsWith(":")) { // is label
-				String labelName = mnemonic.substring(0,
-						mnemonic.length() - 1);
+				String labelName = mnemonic.substring(0, mnemonic.length() - 1);
 				Simulator.getInstance().addLabel(labelName, adr);
 			} else if (line.startsWith(";") || line.equals("")) { // Comment-Line
 				// Do nothing
@@ -57,7 +53,7 @@ public class AssembleAction implements Action {
 						Simulator.getInstance().getCommandCount() + 1);
 			}
 		}
-		
+
 		if (scanForSyntaxErrors()) {
 			short adresse = 0x0000; // Adresse wird per ORG angepasst
 			for (String line : codeLines) {
@@ -131,17 +127,25 @@ public class AssembleAction implements Action {
 				linenum++;
 			}
 		} catch (AssemblerException ex) {
-			MessageBox messageBox = new MessageBox(Display.getDefault()
-					.getActiveShell(), SWT.ICON_ERROR | SWT.OK);
-			messageBox.setText("Assembling error");
-			messageBox.setMessage(ex.getMessage());
-			//messageBox.open();
+			/*
+			 * MessageBox messageBox = new MessageBox(Display.getDefault()
+			 * .getActiveShell(), SWT.ICON_ERROR | SWT.OK);
+			 * messageBox.setText("Assembling error");
+			 * messageBox.setMessage(ex.getMessage()); messageBox.open();
+			 */
 
 			isCorrect = false;
-			ex.printStackTrace();
-			sv.addCompileError(new Position(1,3),ex.getMessage());
+			//ex.printStackTrace();
+
+			String[] lines = sv.getText().split("\r\n");
+			int pos = 0;
+			for (int i = 0; i < ex.getLine(); i++) {
+				pos += lines[i].length()+2;
+			}
+			
+			System.out.println(pos);
+			sv.addCompileError(ex.getLine(), new Position(pos, 3), ex.getMessage());
 		}
 		return isCorrect;
 	}
-
 }

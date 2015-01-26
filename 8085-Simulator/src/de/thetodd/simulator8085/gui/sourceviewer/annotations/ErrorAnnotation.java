@@ -11,7 +11,6 @@ public class ErrorAnnotation extends MyAnnotation {
 
 	private IMarker marker;
 	private String text;
-	private int line;
 	private Position position;
 	public static final String TYPE = "error.type";
 	private static final Image IMG = SWTResourceManager
@@ -19,23 +18,18 @@ public class ErrorAnnotation extends MyAnnotation {
 					"/de/thetodd/simulator8085/gui/icons/error.png");
 
 	public ErrorAnnotation(IMarker marker) {
-		super("");
+		super(0,"");
 		this.marker = marker;
 	}
 
 	public ErrorAnnotation(int line, String text) {
-		super(TYPE);
+		super(line,TYPE);
 		this.marker = null;
-		this.line = line;
 		this.text = text;
 	}
 
 	public IMarker getMarker() {
 		return marker;
-	}
-
-	public int getLine() {
-		return line;
 	}
 
 	public String getText() {

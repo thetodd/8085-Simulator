@@ -2,7 +2,6 @@ package de.thetodd.simulator8085.gui.sourceviewer.annotations;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.text.Position;
-import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wb.swt.SWTResourceManager;
 
@@ -12,7 +11,6 @@ public class WarningAnnotation extends MyAnnotation {
 
 	private IMarker marker;
 	private String text;
-	private int line;
 	private Position position;
 	public static final String TYPE = "error.type";
 	private static final Image IMG = SWTResourceManager
@@ -20,23 +18,18 @@ public class WarningAnnotation extends MyAnnotation {
 					"/de/thetodd/simulator8085/gui/icons/warning.png");
 
 	public WarningAnnotation(IMarker marker) {
-		super("");
+		super(0,"");
 		this.marker = marker;
 	}
 
 	public WarningAnnotation(int line, String text) {
-		super(TYPE);
+		super(line,TYPE);
 		this.marker = null;
-		this.line = line;
 		this.text = text;
 	}
 
 	public IMarker getMarker() {
 		return marker;
-	}
-
-	public int getLine() {
-		return line;
 	}
 
 	public String getText() {

@@ -54,7 +54,13 @@ public class AssemblerSourceViewer extends SourceViewer {
 				fAnnotationAccess);
 		painter.addAnnotationType(AssembleErrorAnnotation.TYPE);
 		painter.setAnnotationTypeColor(AssembleErrorAnnotation.TYPE, new Color(
-				Display.getDefault(), 200, 0, 0));
+				Display.getDefault(), 0, 0, 200));
+		painter.addAnnotationType(ErrorAnnotation.TYPE);
+		painter.setAnnotationTypeColor(ErrorAnnotation.TYPE, new Color(
+				Display.getDefault(), 255, 0, 0));
+		painter.addAnnotationType(WarningAnnotation.TYPE);
+		painter.setAnnotationTypeColor(WarningAnnotation.TYPE, new Color(
+				Display.getDefault(), 200, 200, 0));
 		this.getPaintManager().addPainter(painter);
 
 		configure(new MySourceViewerConf());
@@ -72,15 +78,14 @@ public class AssemblerSourceViewer extends SourceViewer {
 		return this.document.get();
 	}
 
-	public void addCompileError(Position position, String message) {
+	public void addCompileError(int line, Position position, String message) {
 		// add an annotation
 		AssembleErrorAnnotation errorAnnotation = new AssembleErrorAnnotation(
-				2, message);
-		// lets underline the word "texst"
+				line, message);
 		fAnnotationModel.addAnnotation(errorAnnotation, position);
 		this.getControl().update();
 	}
-	
+
 	public void clearAnnotations() {
 		this.fAnnotationModel.removeAllAnnotations();
 	}

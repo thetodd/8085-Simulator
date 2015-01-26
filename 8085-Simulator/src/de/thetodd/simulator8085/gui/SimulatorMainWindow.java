@@ -413,16 +413,6 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		tbtmProgramm.setText(Messages.SimulatorMainWindow_tbtmProgramm_text);
 		tabFolder.setSelection(tbtmProgramm);
 
-		
-
-		// some misspelled text
-		/*doc.set("ORG 0x1800\nMVI a,0x33\nHLT");
-		// add an annotation
-		ErrorAnnotation errorAnnotation = new ErrorAnnotation(2,
-				"Learn how to spell \"text!\"");
-
-		// lets underline the word "texst"
-		fAnnotationModel.addAnnotation(errorAnnotation, new Position(12, 5));*/
 		sv = new AssemblerSourceViewer(tabFolder);
 		tbtmProgramm.setControl(sv.getControl());
 
