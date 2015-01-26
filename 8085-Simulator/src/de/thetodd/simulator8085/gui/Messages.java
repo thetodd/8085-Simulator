@@ -47,6 +47,11 @@ public class Messages extends NLS {
 	public static String AboutDialog_lblEntstandenImRahmen_text;
 	public static String ProgramVersion;
 	public static String AboutDialog_styledText_text;
+	public static String SimulatorMainWindow_tbtmNewItem_text;
+	public static String SimulatorMainWindow_lblPercent_text;
+	public static String SimulatorMainWindow_lblProgramSize_text;
+	public static String SimulatorMainWindow_lblCommandCount_text;
+	public static String SimulatorMainWindow_grpFlags_text;
 	////////////////////////////////////////////////////////////////////////////
 	//
 	// Constructor
