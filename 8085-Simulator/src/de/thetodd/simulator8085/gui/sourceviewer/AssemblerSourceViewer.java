@@ -95,7 +95,7 @@ public class AssemblerSourceViewer extends SourceViewer {
 	public void addBreakpoint(int linenumber, short adresse, Position pos) {
 		// add an annotation
 		BreakpointAnnotation errorAnnotation = new BreakpointAnnotation(
-				linenumber, "Breakpoint at "+String.format("X04", adresse));
+				linenumber, "Breakpoint at "+String.format("0x%04X", adresse));
 		fAnnotationModel.addAnnotation(errorAnnotation, pos);
 		this.getControl().update();
 	}
