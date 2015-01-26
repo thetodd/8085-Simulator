@@ -52,6 +52,7 @@ public class Messages extends NLS {
 	public static String SimulatorMainWindow_lblProgramSize_text;
 	public static String SimulatorMainWindow_lblCommandCount_text;
 	public static String SimulatorMainWindow_grpFlags_text;
+	public static String StatusBar_lblStatus_text;
 	////////////////////////////////////////////////////////////////////////////
 	//
 	// Constructor
