@@ -3,6 +3,7 @@ package de.thetodd.simulator8085.gui;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -11,7 +12,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.custom.StyledText;
 
 public class AboutDialog extends Dialog {
 
@@ -50,7 +50,8 @@ public class AboutDialog extends Dialog {
 		Label lblVersionString = new Label(container, SWT.NONE);
 		lblVersionString.setText(Messages.ProgramVersion);
 		
-		StyledText styledText = new StyledText(container, SWT.BORDER | SWT.WRAP);
+		StyledText styledText = new StyledText(container, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+		styledText.setEditable(false);
 		styledText.setText(Messages.AboutDialog_styledText_text);
 		styledText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		

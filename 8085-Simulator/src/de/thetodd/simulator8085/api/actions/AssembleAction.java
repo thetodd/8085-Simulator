@@ -1,19 +1,21 @@
 package de.thetodd.simulator8085.api.actions;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.jface.text.Position;
 
 import de.thetodd.simulator8085.api.Simulator;
 import de.thetodd.simulator8085.api.exceptions.AssemblerException;
 import de.thetodd.simulator8085.api.platform.Memory;
+import de.thetodd.simulator8085.gui.sourceviewer.AssemblerSourceViewer;
 
 public class AssembleAction implements Action {
 
 	private String code;
+	private AssemblerSourceViewer sv;
 
-	public AssembleAction(String code) {
+	public AssembleAction(AssemblerSourceViewer sv, String code) {
 		this.code = code;
+		this.sv = sv;
+		sv.clearAnnotations();
 	}
 
 	public void run() {
@@ -34,8 +36,7 @@ public class AssembleAction implements Action {
 			if (mnemonic.equals("org")) { // is Org
 				adr = (short) Integer.decode(command[1]).intValue();
 			} else if (line.endsWith(":")) { // is label
-				String labelName = mnemonic.substring(0,
-						mnemonic.length() - 1);
+				String labelName = mnemonic.substring(0, mnemonic.length() - 1);
 				Simulator.getInstance().addLabel(labelName, adr);
 			} else if (line.startsWith(";") || line.equals("")) { // Comment-Line
 				// Do nothing
@@ -52,9 +53,10 @@ public class AssembleAction implements Action {
 						Simulator.getInstance().getCommandCount() + 1);
 			}
 		}
-		
+
 		if (scanForSyntaxErrors()) {
 			short adresse = 0x0000; // Adresse wird per ORG angepasst
+			int pos = 0;
 			for (String line : codeLines) {
 				String[] command = line.split(" ");
 				String mnemonic = command[0].toLowerCase();
@@ -64,6 +66,7 @@ public class AssembleAction implements Action {
 					adresse = (short) Integer.decode(command[1]).intValue();
 				} else if (mnemonic.equals("@:")) {
 					Simulator.getInstance().addBreakpoint(adresse);
+					sv.addBreakpoint(linenumber, adresse, new Position(pos,0));
 				} else if (mnemonic.endsWith(":")) {
 					String labelName = mnemonic.substring(0,
 							mnemonic.length() - 1);
@@ -86,7 +89,7 @@ public class AssembleAction implements Action {
 						adresse++;
 					}
 				}
-
+				pos += line.length()+2;
 				linenumber++;
 			}
 			Simulator.getInstance().fireMemoryChangeEvent();
@@ -126,15 +129,25 @@ public class AssembleAction implements Action {
 				linenum++;
 			}
 		} catch (AssemblerException ex) {
-			MessageBox messageBox = new MessageBox(Display.getDefault()
-					.getActiveShell(), SWT.ICON_ERROR | SWT.OK);
-			messageBox.setText("Assembling error");
-			messageBox.setMessage(ex.getMessage());
-			messageBox.open();
+			/*
+			 * MessageBox messageBox = new MessageBox(Display.getDefault()
+			 * .getActiveShell(), SWT.ICON_ERROR | SWT.OK);
+			 * messageBox.setText("Assembling error");
+			 * messageBox.setMessage(ex.getMessage()); messageBox.open();
+			 */
 
 			isCorrect = false;
+			//ex.printStackTrace();
+
+			String[] lines = sv.getText().split("\r\n");
+			int pos = 0;
+			for (int i = 0; i < ex.getLine(); i++) {
+				pos += lines[i].length()+2;
+			}
+			
+			//System.out.println(pos);
+			sv.addCompileError(ex.getLine(), new Position(pos, 3), ex.getMessage());
 		}
 		return isCorrect;
 	}
-
 }

@@ -14,14 +14,11 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
@@ -51,7 +48,6 @@ import de.thetodd.simulator8085.api.actions.OneStepAction;
 import de.thetodd.simulator8085.api.actions.PrintAction;
 import de.thetodd.simulator8085.api.actions.SimulateAction;
 import de.thetodd.simulator8085.api.actions.SimulatorThread;
-import de.thetodd.simulator8085.api.helpers.SyntaxHighlighter;
 import de.thetodd.simulator8085.api.listener.ProcessorChangedListener;
 import de.thetodd.simulator8085.api.listener.RegisterChangeEvent;
 import de.thetodd.simulator8085.api.listener.RegisterChangeEvent.Register;
@@ -59,8 +55,7 @@ import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 import de.thetodd.simulator8085.gui.outviews.LEDBar;
 import de.thetodd.simulator8085.gui.outviews.ListView;
-
-import org.eclipse.swt.custom.CLabel;
+import de.thetodd.simulator8085.gui.sourceviewer.AssemblerSourceViewer;
 
 public class SimulatorMainWindow implements ProcessorChangedListener {
 
@@ -76,7 +71,6 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 	private Table table;
 	private Text txtRegisterSP;
 	private Text txtRegisterPC;
-	private StyledText codeText;
 	private Text lblProgramSize;
 	private Text lblCommandCount;
 	private Label lblPercent;
@@ -94,6 +88,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 	private CLabel lblStatusLine; // a rudimental statusline
 	private Label lblClockrate;
 	private Text txtClock;
+	private AssemblerSourceViewer sv;
 
 	public SimulatorMainWindow() {
 
@@ -418,21 +413,8 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		tbtmProgramm.setText(Messages.SimulatorMainWindow_tbtmProgramm_text);
 		tabFolder.setSelection(tbtmProgramm);
 
-		codeText = new StyledText(tabFolder, SWT.BORDER | SWT.V_SCROLL);
-		codeText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				SyntaxHighlighter highlighter = new SyntaxHighlighter();
-				highlighter.highlight(codeText);
-			}
-		});
-		codeText.setText("");
-		codeText.setTopMargin(5);
-		codeText.setBottomMargin(5);
-		codeText.setRightMargin(5);
-		codeText.setFont(SWTResourceManager.getFont("Courier New", 10,
-				SWT.NORMAL));
-		codeText.setLeftMargin(5);
-		tbtmProgramm.setControl(codeText);
+		sv = new AssemblerSourceViewer(tabFolder);
+		tbtmProgramm.setControl(sv.getControl());
 
 		CTabItem tbtmSpeicher = new CTabItem(tabFolder, SWT.NONE);
 		tbtmSpeicher.setImage(SWTResourceManager.getImage(
@@ -647,7 +629,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				Simulator.getInstance().fireRegisterChangeEvent(
 						new RegisterChangeEvent(RegisterChangeEvent
 								.getAllTemplate()));
-				codeText.setText("");
+				sv.setText("");
 			}
 		});
 		mntmNewFile.setText(Messages.SimulatorMainWindow_mntmNewFile_text);
@@ -664,7 +646,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 					try {
 						String text = new String(Files.readAllBytes(document
 								.toPath()));
-						codeText.setText(text);
+						sv.getDocument().set(text);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -693,7 +675,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 						// Create file
 						FileWriter fstream = new FileWriter(document);
 						BufferedWriter out = new BufferedWriter(fstream);
-						out.write(codeText.getText());
+						out.write(sv.getDocument().get());
 						// Close the output stream
 						out.close();
 					} catch (Exception e) {// Catch exception if any
@@ -712,7 +694,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		mntmPrint.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				PrintAction print = new PrintAction(codeText.getText(),
+				PrintAction print = new PrintAction(sv.getDocument().get(),
 						"Filename");
 				print.run();
 			}
@@ -736,7 +718,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		mntmAsseble.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				Action assemble = new AssembleAction(codeText.getText());
+				Action assemble = new AssembleAction(sv,sv.getText());
 				setStatus("Assembling...");
 				assemble.run();
 
@@ -825,7 +807,9 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 					updateLineHighlighting();
 					clearStatus();
 				} catch (NumberFormatException ex) {
-					MessageDialog.openError(shlSimulator, "Wrong Clockrate", "The clockrate \""+txtClock.getText()+"\" has the wrong format.");
+					MessageDialog.openError(shlSimulator, "Wrong Clockrate",
+							"The clockrate \"" + txtClock.getText()
+									+ "\" has the wrong format.");
 				}
 			}
 		});
@@ -1001,14 +985,17 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 	}
 
 	public void updateLineHighlighting() {
-		if (Simulator.getInstance().getCodeMap()
-				.containsKey(Processor.getInstance().getProgramcounter())) {
-			int linenumber = Simulator.getInstance().getCodeMap()
-					.get(Processor.getInstance().getProgramcounter());
-			codeText.setLineBackground(0, codeText.getLineCount(), null);
-			codeText.setLineBackground(linenumber, 1,
-					new Color(Display.getDefault(), 0xFF, 0xFF, 0x99));
-		}
+		// TODO: has to be adapted to the new SourceViewer, perhaps by
+		// annotations?!
+		/*
+		 * if (Simulator.getInstance().getCodeMap()
+		 * .containsKey(Processor.getInstance().getProgramcounter())) { int
+		 * linenumber = Simulator.getInstance().getCodeMap()
+		 * .get(Processor.getInstance().getProgramcounter());
+		 * codeText.setLineBackground(0, codeText.getLineCount(), null);
+		 * codeText.setLineBackground(linenumber, 1, new
+		 * Color(Display.getDefault(), 0xFF, 0xFF, 0x99)); }
+		 */
 	}
 
 	@Override

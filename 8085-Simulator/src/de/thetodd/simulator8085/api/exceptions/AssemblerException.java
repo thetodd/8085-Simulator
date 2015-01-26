@@ -17,7 +17,11 @@ public class AssemblerException extends Exception {
 
 	@Override
 	public String getMessage() {
-		return this.message + " in line " + this.line;
+		return this.message + " in line " + (this.line+1);
 	}
 
+	public int getLine() {
+		return line;
+	}
+	
 }
