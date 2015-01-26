@@ -56,6 +56,7 @@ public class AssembleAction implements Action {
 
 		if (scanForSyntaxErrors()) {
 			short adresse = 0x0000; // Adresse wird per ORG angepasst
+			int pos = 0;
 			for (String line : codeLines) {
 				String[] command = line.split(" ");
 				String mnemonic = command[0].toLowerCase();
@@ -65,6 +66,7 @@ public class AssembleAction implements Action {
 					adresse = (short) Integer.decode(command[1]).intValue();
 				} else if (mnemonic.equals("@:")) {
 					Simulator.getInstance().addBreakpoint(adresse);
+					sv.addBreakpoint(linenumber, adresse, new Position(pos,0));
 				} else if (mnemonic.endsWith(":")) {
 					String labelName = mnemonic.substring(0,
 							mnemonic.length() - 1);
@@ -87,7 +89,7 @@ public class AssembleAction implements Action {
 						adresse++;
 					}
 				}
-
+				pos += line.length()+2;
 				linenumber++;
 			}
 			Simulator.getInstance().fireMemoryChangeEvent();
@@ -143,7 +145,7 @@ public class AssembleAction implements Action {
 				pos += lines[i].length()+2;
 			}
 			
-			System.out.println(pos);
+			//System.out.println(pos);
 			sv.addCompileError(ex.getLine(), new Position(pos, 3), ex.getMessage());
 		}
 		return isCorrect;

@@ -1,4 +1,4 @@
-package de.thetodd.simulator8085.gui.sourceviewer;
+package de.thetodd.simulator8085.gui.sourceviewer.syntaxhighlight;
 
 import java.util.TreeSet;
 

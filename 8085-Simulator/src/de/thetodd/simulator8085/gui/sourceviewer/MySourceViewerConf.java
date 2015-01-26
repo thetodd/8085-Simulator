@@ -8,6 +8,8 @@ import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 
+import de.thetodd.simulator8085.gui.sourceviewer.syntaxhighlight.MyASMCodeScanner;
+
 public class MySourceViewerConf extends SourceViewerConfiguration {
 
 	public IPresentationReconciler getPresentationReconciler(ISourceViewer sourceViewer) {

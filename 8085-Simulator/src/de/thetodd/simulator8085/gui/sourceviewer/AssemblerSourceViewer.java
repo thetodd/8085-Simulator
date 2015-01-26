@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 import de.thetodd.simulator8085.gui.sourceviewer.annotations.AssembleErrorAnnotation;
+import de.thetodd.simulator8085.gui.sourceviewer.annotations.BreakpointAnnotation;
 import de.thetodd.simulator8085.gui.sourceviewer.annotations.ErrorAnnotation;
 import de.thetodd.simulator8085.gui.sourceviewer.annotations.WarningAnnotation;
 
@@ -49,6 +50,7 @@ public class AssemblerSourceViewer extends SourceViewer {
 		annotationRuler.addAnnotationType(ErrorAnnotation.TYPE);
 		annotationRuler.addAnnotationType(AssembleErrorAnnotation.TYPE);
 		annotationRuler.addAnnotationType(WarningAnnotation.TYPE);
+		annotationRuler.addAnnotationType(BreakpointAnnotation.TYPE);
 
 		AnnotationPainter painter = new AnnotationPainter(this,
 				fAnnotationAccess);
@@ -56,8 +58,8 @@ public class AssemblerSourceViewer extends SourceViewer {
 		painter.setAnnotationTypeColor(AssembleErrorAnnotation.TYPE, new Color(
 				Display.getDefault(), 0, 0, 200));
 		painter.addAnnotationType(ErrorAnnotation.TYPE);
-		painter.setAnnotationTypeColor(ErrorAnnotation.TYPE, new Color(
-				Display.getDefault(), 255, 0, 0));
+		painter.setAnnotationTypeColor(ErrorAnnotation.TYPE,
+				new Color(Display.getDefault(), 255, 0, 0));
 		painter.addAnnotationType(WarningAnnotation.TYPE);
 		painter.setAnnotationTypeColor(WarningAnnotation.TYPE, new Color(
 				Display.getDefault(), 200, 200, 0));
@@ -88,5 +90,13 @@ public class AssemblerSourceViewer extends SourceViewer {
 
 	public void clearAnnotations() {
 		this.fAnnotationModel.removeAllAnnotations();
+	}
+
+	public void addBreakpoint(int linenumber, short adresse, Position pos) {
+		// add an annotation
+		BreakpointAnnotation errorAnnotation = new BreakpointAnnotation(
+				linenumber, "Breakpoint at "+String.format("X04", adresse));
+		fAnnotationModel.addAnnotation(errorAnnotation, pos);
+		this.getControl().update();
 	}
 }
