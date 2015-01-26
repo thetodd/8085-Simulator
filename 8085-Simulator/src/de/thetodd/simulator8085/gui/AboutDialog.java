@@ -50,7 +50,8 @@ public class AboutDialog extends Dialog {
 		Label lblVersionString = new Label(container, SWT.NONE);
 		lblVersionString.setText(Messages.ProgramVersion);
 		
-		StyledText styledText = new StyledText(container, SWT.BORDER | SWT.WRAP);
+		StyledText styledText = new StyledText(container, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+		styledText.setEditable(false);
 		styledText.setText(Messages.AboutDialog_styledText_text);
 		styledText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		
