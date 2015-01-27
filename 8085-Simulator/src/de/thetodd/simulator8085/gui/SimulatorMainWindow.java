@@ -196,12 +196,10 @@ public class SimulatorMainWindow {
 			    dialog
 			        .setFilterNames(new String[] { "8085-Dateien", "All Files (*.*)" });
 			    dialog.setFilterExtensions(new String[] { "*.asm", "*.*" });
-			    //dialog.setFilterPath("c:\\"); // Windows path
-			    //dialog.setFileName("fred.bat");
-			    File f = new File(dialog.open());
+			    String f = dialog.open();
 				
 				if (f != null) {
-					document = f;
+					document = new File(f);
 					try {
 						String text = new String(Files.readAllBytes(document
 								.toPath()));
