@@ -7,8 +7,10 @@ import java.util.HashMap;
 
 import org.eclipse.swt.widgets.Display;
 
+import de.thetodd.simulator8085.api.listener.ISimulatorListener;
 import de.thetodd.simulator8085.api.listener.ProcessorChangedListener;
 import de.thetodd.simulator8085.api.listener.RegisterChangeEvent;
+import de.thetodd.simulator8085.api.listener.SimulatorEvent;
 import de.thetodd.simulator8085.api.mnemonics.ACIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ADCMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ADDMnemonic;
@@ -99,6 +101,7 @@ public class Simulator {
 	private HashMap<String, Mnemonic> mnemonicMap;
 	private HashMap<Byte, Byte> outMap;
 	private ArrayList<ProcessorChangedListener> changeListeners;
+	private ArrayList<ISimulatorListener> simulatorListeners;
 	private HashMap<Short, Integer> codeMap; // Address <-> Codeline Map
 	private boolean isAssembled;
 
@@ -116,6 +119,7 @@ public class Simulator {
 		breakpoints = new ArrayList<>();
 		labelMap = new HashMap<>();
 		changeListeners = new ArrayList<>();
+		simulatorListeners = new ArrayList<>();
 		codeMap = new HashMap<>();
 		outMap = new HashMap<>();
 	}
@@ -242,6 +246,40 @@ public class Simulator {
 		}
 	}
 
+	/**
+	 * Connects a {@link ISimulatorListener} to this Simulator. It will be
+	 * notified by special fire methods.
+	 * 
+	 * @param listener the ISimulatorListener to be connected
+	 * @since 2.0.0
+	 * @see {@link Simulator#fireSimulatorEvent(SimulatorEvent)}
+	 */
+	public void registerSimulatorListener(ISimulatorListener listener) {
+		simulatorListeners.add(listener);
+	}
+	
+	/**
+	 * Disconnects a {@link ISimulatorListener} from this Simulator. It will not be
+	 * notified any more.
+	 * 
+	 * @param listener the ISimulatorListener to be disconnected
+	 * @since 2.0.0
+	 */
+	public void unregisterSimulatorListener(ISimulatorListener listener) {
+		simulatorListeners.remove(listener);
+	}
+	
+	/**
+	 * Fire a {@link SimulatorEvent}. Notifies all connected listeners.
+	 * @param evt the SimulatorEvent to be fired
+	 * @see {@link ISimulatorListener}, {@link SimulatorEvent}
+	 */
+	private void fireSimulatorEvent(SimulatorEvent evt) {
+		for (ISimulatorListener listener : simulatorListeners) {
+			listener.globalSimulatorEvent(evt);
+		}
+	}
+
 	public Collection<Mnemonic> getUsableMnemonics() {
 		return mnemonicMap.values();
 	}
@@ -354,6 +392,7 @@ public class Simulator {
 
 	public void setAssembled(boolean isAssembled) {
 		this.isAssembled = isAssembled;
+		fireSimulatorEvent(new SimulatorEvent("Code assembled.", SimulatorEvent.TYPE.INFORMATION));
 	}
 
 	public boolean isDebugMode() {

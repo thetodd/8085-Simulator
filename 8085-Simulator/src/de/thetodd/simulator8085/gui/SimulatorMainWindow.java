@@ -285,9 +285,9 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				//		+ " Byte");
 				//lblCommandCount.setText(Simulator.getInstance()
 				//		.getCommandCount() + " Anweisungen");
-				short memSize = Memory.getInstance().getMemorySize();
-				double load = Simulator.getInstance().getProgramSize()
-						/ memSize * 100;
+				//short memSize = Memory.getInstance().getMemorySize();
+				//double load = Simulator.getInstance().getProgramSize()
+				//		/ memSize * 100;
 				//pbLoad.setSelection((int) load);
 				//if (load > memSize) {
 				//	pbLoad.setState(SWT.ERROR);
