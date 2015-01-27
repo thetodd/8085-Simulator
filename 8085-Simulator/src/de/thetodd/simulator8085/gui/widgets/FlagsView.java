@@ -1,8 +1,5 @@
 package de.thetodd.simulator8085.gui.widgets;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -13,20 +10,26 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import de.thetodd.simulator8085.api.Simulator;
-import de.thetodd.simulator8085.api.listener.ProcessorChangedListener;
-import de.thetodd.simulator8085.api.listener.RegisterChangeEvent;
-import de.thetodd.simulator8085.api.listener.RegisterChangeEvent.Register;
+import de.thetodd.simulator8085.api.listener.GlobalSimulatorEvents;
+import de.thetodd.simulator8085.api.listener.ISimulatorListener;
+import de.thetodd.simulator8085.api.listener.SimulatorEvent;
 import de.thetodd.simulator8085.api.platform.Processor;
 import de.thetodd.simulator8085.gui.Messages;
 import de.thetodd.simulator8085.gui.SimulatorMainWindow;
 
-public class FlagsView extends Group implements ProcessorChangedListener {
+public class FlagsView extends Group implements ISimulatorListener {
 
 	private Label lblSignFlag;
 	private Label lblZeroFlag;
 	private Label lblACarryFlag;
 	private Label lblParityFlag;
 	private Label lblCarryFlag;
+	private static final Image imgSet = SWTResourceManager.getImage(
+			FlagsView.class,
+			"/de/thetodd/simulator8085/gui/icons/accept.png");
+	private static final Image imgNotSet = SWTResourceManager.getImage(
+			FlagsView.class,
+			"/de/thetodd/simulator8085/gui/icons/delete.png");
 
 	public FlagsView(Composite parent, int style) {
 		super(parent, style);
@@ -94,7 +97,7 @@ public class FlagsView extends Group implements ProcessorChangedListener {
 				SimulatorMainWindow.class,
 				"/de/thetodd/simulator8085/gui/icons/accept.png"));
 		
-		Simulator.getInstance().registerChangeListener(this);
+		Simulator.getInstance().registerSimulatorListener(this);
 	}
 	
 	@Override
@@ -102,22 +105,9 @@ public class FlagsView extends Group implements ProcessorChangedListener {
 	}
 
 	@Override
-	public void memoryChanged() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void registerChanged(RegisterChangeEvent evt) {
-		List<Register> regs = Arrays.asList(evt.getRegister());
-		if (regs.contains(Register.REGISTER_F)) {
+	public void globalSimulatorEvent(SimulatorEvent evt) {
+		if(evt.getEvent().equals(GlobalSimulatorEvents.REGISTER_F_CHANGED)) {
 			byte f = Processor.getInstance().getRegisterF();
-			Image imgSet = SWTResourceManager.getImage(
-					SimulatorMainWindow.class,
-					"/de/thetodd/simulator8085/gui/icons/accept.png");
-			Image imgNotSet = SWTResourceManager.getImage(
-					SimulatorMainWindow.class,
-					"/de/thetodd/simulator8085/gui/icons/delete.png");
 			if ((f & 0x80) == 0x80) {
 				lblSignFlag.setImage(imgSet);
 			} else {
@@ -144,12 +134,6 @@ public class FlagsView extends Group implements ProcessorChangedListener {
 				lblCarryFlag.setImage(imgNotSet);
 			}
 		}
-	}
-
-	@Override
-	public void outChanged(byte adr, byte value) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

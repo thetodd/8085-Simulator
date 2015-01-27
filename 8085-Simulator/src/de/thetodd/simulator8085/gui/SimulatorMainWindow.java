@@ -29,8 +29,9 @@ import de.thetodd.simulator8085.api.actions.OneStepAction;
 import de.thetodd.simulator8085.api.actions.PrintAction;
 import de.thetodd.simulator8085.api.actions.SimulateAction;
 import de.thetodd.simulator8085.api.actions.SimulatorThread;
-import de.thetodd.simulator8085.api.listener.ProcessorChangedListener;
-import de.thetodd.simulator8085.api.listener.RegisterChangeEvent;
+import de.thetodd.simulator8085.api.listener.GlobalSimulatorEvents;
+import de.thetodd.simulator8085.api.listener.SimulatorEvent;
+import de.thetodd.simulator8085.api.listener.SimulatorEvent.TYPE;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 import de.thetodd.simulator8085.gui.outviews.LEDBar;
@@ -43,7 +44,7 @@ import de.thetodd.simulator8085.gui.widgets.RegistersView;
 import de.thetodd.simulator8085.gui.widgets.SettingsView;
 import de.thetodd.simulator8085.gui.widgets.StatusBar;
 
-public class SimulatorMainWindow implements ProcessorChangedListener {
+public class SimulatorMainWindow {
 
 	protected Shell shlSimulator;
 	private File document;
@@ -67,10 +68,10 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		shlSimulator.open();
 		shlSimulator.layout();
 
-		Simulator.getInstance().registerChangeListener(this);
-		Simulator.getInstance().fireMemoryChangeEvent();
-		Simulator.getInstance().fireRegisterChangeEvent(
-				new RegisterChangeEvent(RegisterChangeEvent.getAllTemplate()));
+		SimulatorEvent evt = new SimulatorEvent(GlobalSimulatorEvents.MEMORY_CHANGE,"all",SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
+		SimulatorEvent evt2 = new SimulatorEvent(GlobalSimulatorEvents.REGISTER_ALL_CHANGED,"all",SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt2);
 
 		this.window = this;
 
@@ -180,10 +181,6 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				document = null;
 				Processor.getInstance().resetProcessor();
 				Memory.getInstance().resetMemory();
-				Simulator.getInstance().fireMemoryChangeEvent();
-				Simulator.getInstance().fireRegisterChangeEvent(
-						new RegisterChangeEvent(RegisterChangeEvent
-								.getAllTemplate()));
 				sv.setText("");
 			}
 		});
@@ -277,23 +274,9 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				setStatus("Assembling...");
 				assemble.run();
 
-				// Reload counters
-				//lblProgramSize.setText(Simulator.getInstance().getProgramSize()
-				//		+ " Byte");
-				//lblCommandCount.setText(Simulator.getInstance()
-				//		.getCommandCount() + " Anweisungen");
-				//short memSize = Memory.getInstance().getMemorySize();
-				//double load = Simulator.getInstance().getProgramSize()
-				//		/ memSize * 100;
-				//pbLoad.setSelection((int) load);
-				//if (load > memSize) {
-				//	pbLoad.setState(SWT.ERROR);
-				//} else {
-				//	pbLoad.setState(SWT.NORMAL);
-				//}
-
 				updateLineHighlighting(); // maybe to soon
-				clearStatus();
+
+				setStatus("");
 			}
 		});
 		mntmAsseble.setImage(SWTResourceManager.getImage(
@@ -306,11 +289,8 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		mntmResetProcessor.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				Memory.getInstance().resetMemory();
+				//Memory.getInstance().resetMemory(); //you must not reset the memory, clears the program too.
 				Processor.getInstance().resetProcessor();
-				Simulator.getInstance().fireRegisterChangeEvent(
-						new RegisterChangeEvent(RegisterChangeEvent
-								.getAllTemplate()));
 				setStatus("Processor has been reset");
 			}
 		});
@@ -332,7 +312,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				simThread = new SimulatorThread(window);
 				setStatus("Simulating...");
 				simThread.startRunning();
-				clearStatus();
+				setStatus("");
 			}
 		});
 		mntmSimulate_1
@@ -344,7 +324,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 			public void widgetSelected(SelectionEvent arg0) {
 				if (simThread != null && simThread.isRunning()) {
 					simThread.stopRunning();
-					clearStatus();
+					setStatus("");
 				}
 			}
 		});
@@ -360,7 +340,7 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 					setStatus("Simulating till next breakpoint...");
 					simulate.run();
 					updateLineHighlighting();
-					clearStatus();
+					setStatus("");
 				} catch (NumberFormatException ex) {
 					/*MessageDialog.openError(shlSimulator, "Wrong Clockrate",
 							"The clockrate \"" + txtClock.getText()
@@ -382,9 +362,6 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 				Action einzel = new OneStepAction();
 				einzel.run();
 				updateLineHighlighting();
-				Simulator.getInstance().fireRegisterChangeEvent(
-						new RegisterChangeEvent(RegisterChangeEvent
-								.getAllTemplate()));
 			}
 		});
 		mntmOneStep.setImage(SWTResourceManager.getImage(
@@ -445,14 +422,9 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		mntmAbout.setText(Messages.SimulatorMainWindow_mntmAbout_text);
 	}
 
-	@Override
-	public void memoryChanged() {
-
-	}
-
-	@Override
-	public void registerChanged(RegisterChangeEvent evt) {
-
+	protected void setStatus(String message) {
+		SimulatorEvent evt = new SimulatorEvent(GlobalSimulatorEvents.STATUS,message,TYPE.INFORMATION);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	public void updateLineHighlighting() {
@@ -468,21 +440,5 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 		 * Color(Display.getDefault(), 0xFF, 0xFF, 0x99)); }
 		 */
 	}
-
-	@Override
-	public void outChanged(byte adr, byte value) {
-	}
-
-	private void setStatus(final String statustext) {
-		Display.getDefault().syncExec(new Runnable() {
-			@Override
-			public void run() {
-				//lblStatusLine.setText("8085 Simulator - " + statustext);
-			}
-		});
-	}
-
-	private void clearStatus() {
-		//this.lblStatusLine.setText("8085 Simulator");
-	}
+	
 }

@@ -13,10 +13,11 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import de.thetodd.simulator8085.api.Simulator;
-import de.thetodd.simulator8085.api.listener.ProcessorChangedListener;
-import de.thetodd.simulator8085.api.listener.RegisterChangeEvent;
+import de.thetodd.simulator8085.api.listener.GlobalSimulatorEvents;
+import de.thetodd.simulator8085.api.listener.ISimulatorListener;
+import de.thetodd.simulator8085.api.listener.SimulatorEvent;
 
-public class ListView extends Shell implements ProcessorChangedListener {
+public class ListView extends Shell implements ISimulatorListener {
 	private Table table;
 
 	/**
@@ -28,7 +29,7 @@ public class ListView extends Shell implements ProcessorChangedListener {
 		super(display, SWT.DIALOG_TRIM);
 		createContents();
 
-		Simulator.getInstance().registerChangeListener(this);
+		Simulator.getInstance().registerSimulatorListener(this);
 		setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		TableViewer tableViewer = new TableViewer(this, SWT.BORDER
@@ -57,15 +58,15 @@ public class ListView extends Shell implements ProcessorChangedListener {
 		setText("List Viewer");
 		setSize(452, 302);
 
-
 		addDisposeListener(new DisposeListener() {
-			
+
 			@Override
 			public void widgetDisposed(DisposeEvent arg0) {
-				Simulator.getInstance().unregisterChangeListener(ListView.this);				
+				Simulator.getInstance().unregisterSimulatorListener(
+						ListView.this);
 			}
 		});
-		
+
 	}
 
 	@Override
@@ -74,28 +75,24 @@ public class ListView extends Shell implements ProcessorChangedListener {
 	}
 
 	@Override
-	public void memoryChanged() {
-	}
-
-	@Override
-	public void registerChanged(RegisterChangeEvent evt) {
-	}
-
-	@Override
-	public void outChanged(byte adr, byte value) {
-		TableItem[] items = table.getItems();
-		boolean found = false;
-		for (TableItem tableItem : items) {
-			if(tableItem.getText(0).equals(String.format("%02xh", adr))) {
-				tableItem.setText(1, String.format("%02xh", value));
-				found = true;
-				break;
+	public void globalSimulatorEvent(SimulatorEvent evt) {
+		if (evt.getEvent().equals(GlobalSimulatorEvents.PORT_WRITE)) {
+			byte adr = Byte.parseByte(evt.getMessage().split(":")[0]);
+			byte value = Byte.parseByte(evt.getMessage().split(":")[1]);
+			TableItem[] items = table.getItems();
+			boolean found = false;
+			for (TableItem tableItem : items) {
+				if (tableItem.getText(0).equals(String.format("%02xh", adr))) {
+					tableItem.setText(1, String.format("%02xh", value));
+					found = true;
+					break;
+				}
 			}
-		}
-		if(!found) {
-			TableItem item = new TableItem(table,SWT.NONE);
-			item.setText(0, String.format("%02xh", adr));
-			item.setText(1, String.format("%02xh", value));
+			if (!found) {
+				TableItem item = new TableItem(table, SWT.NONE);
+				item.setText(0, String.format("%02xh", adr));
+				item.setText(1, String.format("%02xh", value));
+			}
 		}
 	}
 }

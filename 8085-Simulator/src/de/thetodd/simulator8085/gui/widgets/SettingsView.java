@@ -11,7 +11,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import de.thetodd.simulator8085.api.Simulator;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 import de.thetodd.simulator8085.gui.Messages;
@@ -56,7 +55,6 @@ public class SettingsView extends Composite {
 						.getInstance().getMemoryEnd()));
 
 				Processor.getInstance().resetProcessor();
-				Simulator.getInstance().fireMemoryChangeEvent();
 			}
 		});
 		btnSetMemory

@@ -10,6 +10,7 @@ public class GlobalSimulatorEvents {
 
 	public static final String RESET_PROCESSOR = "reset.processor";
 	public static final String ASSEMBLED = "assembled";
+	public static final String REGISTER_ALL_CHANGED = "register.changed.all";
 	public static final String REGISTER_A_CHANGED = "register.changed.a";
 	public static final String REGISTER_B_CHANGED = "register.changed.b";
 	public static final String REGISTER_C_CHANGED = "register.changed.c";
@@ -21,5 +22,7 @@ public class GlobalSimulatorEvents {
 	public static final String REGISTER_SP_CHANGED = "register.changed.sp";
 	public static final String REGISTER_PC_CHANGED = "register.changed.pc";
 	public static final String PORT_WRITE = "port.write";
+	public static final String MEMORY_CHANGE = "memory.change";
+	public static final String STATUS = "status";
 	
 }

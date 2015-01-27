@@ -2,9 +2,9 @@ package de.thetodd.simulator8085.api.platform;
 
 import java.util.HashMap;
 
-import org.eclipse.swt.widgets.Display;
-
 import de.thetodd.simulator8085.api.Simulator;
+import de.thetodd.simulator8085.api.listener.GlobalSimulatorEvents;
+import de.thetodd.simulator8085.api.listener.SimulatorEvent;
 
 public class Memory {
 
@@ -22,18 +22,10 @@ public class Memory {
 
 	public Memory(short start, short end) {
 		memory = new HashMap<Short, Byte>();
-		setRange(start, end);
+		initRange(start, end);
 	}
-
-	/**
-	 * Sets the range of the simulated memory. Clears the old memory and creates
-	 * a new memory cells.
-	 * 
-	 * @param start
-	 * @param end
-	 * @throws Exception
-	 */
-	public void setRange(short start, short end) {
+	
+	private void initRange(short start, short end) {
 		start = (short) (start & (short) 0xFFF0);
 		end = (short) (end | (short) 0x000F);
 		memory.clear();
@@ -47,7 +39,22 @@ public class Memory {
 		}
 		this.start = start;
 		this.end = end;
-		// Simulator.getInstance().fireMemoryChangeEvent();
+	}
+
+	/**
+	 * Sets the range of the simulated memory. Clears the old memory and creates
+	 * a new memory cells.
+	 * 
+	 * @param start
+	 * @param end
+	 * @throws Exception
+	 */
+	public void setRange(short start, short end) {
+		initRange(start, end);
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.MEMORY_CHANGE, "reset",
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	// TODO: Ueberpruefung, ob Speicherzelle zulaessig
@@ -58,18 +65,18 @@ public class Memory {
 	// TODO: Ueberpruefung, ob Speicherzelle zulaessig
 	public void put(short adr, byte content) {
 		memory.put(adr, content);
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				Simulator.getInstance().fireMemoryChangeEvent();
-			}
-		});
-		//Simulator.getInstance().fireMemoryChangeEvent();
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.MEMORY_CHANGE, Short.toString(adr),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	public void resetMemory() {
-		setRange(this.start,this.end);
-		Simulator.getInstance().fireMemoryChangeEvent();
+		setRange(this.start, this.end);
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.MEMORY_CHANGE, "reset",
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	public short getMemoryStart() {

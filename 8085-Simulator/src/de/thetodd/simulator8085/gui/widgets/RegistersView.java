@@ -11,7 +11,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import de.thetodd.simulator8085.api.Simulator;
-import de.thetodd.simulator8085.api.listener.GlobalSimulatorEvents;
 import de.thetodd.simulator8085.api.listener.ISimulatorListener;
 import de.thetodd.simulator8085.api.listener.SimulatorEvent;
 import de.thetodd.simulator8085.api.platform.Processor;
@@ -185,43 +184,24 @@ public class RegistersView extends Group implements ISimulatorListener {
 			Display.getDefault().syncExec(new Runnable() {
 				@Override
 				public void run() {
-					if (evt.getEvent().equals(
-							GlobalSimulatorEvents.REGISTER_A_CHANGED)) {
-						txtRegisterA.setText(String.format("0x%02X", Processor
-								.getInstance().getRegisterA()));
-					} else if (evt.getEvent().equals(
-							GlobalSimulatorEvents.REGISTER_B_CHANGED)) {
-						txtRegisterB.setText(String.format("0x%02X", Processor
-								.getInstance().getRegisterB()));
-					} else if (evt.getEvent().equals(
-							GlobalSimulatorEvents.REGISTER_C_CHANGED)) {
-						txtRegisterC.setText(String.format("0x%02X", Processor
-								.getInstance().getRegisterC()));
-					} else if (evt.getEvent().equals(
-							GlobalSimulatorEvents.REGISTER_D_CHANGED)) {
-						txtRegisterD.setText(String.format("0x%02X", Processor
-								.getInstance().getRegisterD()));
-					} else if (evt.getEvent().equals(
-							GlobalSimulatorEvents.REGISTER_E_CHANGED)) {
-						txtRegisterE.setText(String.format("0x%02X", Processor
-								.getInstance().getRegisterE()));
-					} else if (evt.getEvent().equals(
-							GlobalSimulatorEvents.REGISTER_H_CHANGED)) {
-						txtRegisterH.setText(String.format("0x%02X", Processor
-								.getInstance().getRegisterH()));
-					} else if (evt.getEvent().equals(
-							GlobalSimulatorEvents.REGISTER_L_CHANGED)) {
-						txtRegisterL.setText(String.format("0x%02X", Processor
-								.getInstance().getRegisterL()));
-					} else if (evt.getEvent().equals(
-							GlobalSimulatorEvents.REGISTER_SP_CHANGED)) {
-						txtRegisterSP.setText(String.format("0x%04X", Processor
-								.getInstance().getStackpointer()));
-					} else if (evt.getEvent().equals(
-							GlobalSimulatorEvents.REGISTER_PC_CHANGED)) {
-						txtRegisterPC.setText(String.format("0x%04X", Processor
-								.getInstance().getProgramcounter()));
-					}
+					txtRegisterA.setText(String.format("0x%02X", Processor
+							.getInstance().getRegisterA()));
+					txtRegisterB.setText(String.format("0x%02X", Processor
+							.getInstance().getRegisterB()));
+					txtRegisterC.setText(String.format("0x%02X", Processor
+							.getInstance().getRegisterC()));
+					txtRegisterD.setText(String.format("0x%02X", Processor
+							.getInstance().getRegisterD()));
+					txtRegisterE.setText(String.format("0x%02X", Processor
+							.getInstance().getRegisterE()));
+					txtRegisterH.setText(String.format("0x%02X", Processor
+							.getInstance().getRegisterH()));
+					txtRegisterL.setText(String.format("0x%02X", Processor
+							.getInstance().getRegisterL()));
+					txtRegisterSP.setText(String.format("0x%04X", Processor
+							.getInstance().getStackpointer()));
+					txtRegisterPC.setText(String.format("0x%04X", Processor
+							.getInstance().getProgramcounter()));
 				}
 			});
 		}
