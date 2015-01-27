@@ -6,8 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import javax.swing.JFileChooser;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -221,11 +219,15 @@ public class SimulatorMainWindow {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if (document == null) { // We have a new file, ask for save path
-					JFileChooser fc = new JFileChooser();
-					int returnVal = fc.showSaveDialog(null);
-					if (returnVal == JFileChooser.APPROVE_OPTION) {
-						document = fc.getSelectedFile();
-					}
+					FileDialog dialog = new FileDialog(shlSimulator, SWT.SAVE);
+				    dialog
+				        .setFilterNames(new String[] { "8085-Dateien", "All Files (*.*)" });
+				    dialog.setFilterExtensions(new String[] { "*.asm", "*.*" });
+				    dialog.setFileName("unnamed.asm");
+				    String f = dialog.open();
+				    if(f != null) {
+				    	document = new File(f);
+				    }
 				}
 				if (document != null) {
 					try {
