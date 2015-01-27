@@ -253,8 +253,14 @@ public class SimulatorMainWindow {
 		mntmPrint.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				String filename;
+				if(document != null) {
+					filename = document.getName();
+				} else {
+					filename = "unnamed";
+				}
 				PrintAction print = new PrintAction(sv.getDocument().get(),
-						"Filename");
+						filename);
 				print.run();
 			}
 		});
