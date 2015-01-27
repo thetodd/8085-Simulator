@@ -17,6 +17,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
@@ -191,10 +192,16 @@ public class SimulatorMainWindow {
 		mntmOpen.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				JFileChooser fc = new JFileChooser();
-				int returnVal = fc.showOpenDialog(null);
-				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					document = fc.getSelectedFile();
+				FileDialog dialog = new FileDialog(shlSimulator, SWT.OPEN);
+			    dialog
+			        .setFilterNames(new String[] { "8085-Dateien", "All Files (*.*)" });
+			    dialog.setFilterExtensions(new String[] { "*.asm", "*.*" });
+			    //dialog.setFilterPath("c:\\"); // Windows path
+			    //dialog.setFileName("fred.bat");
+			    File f = new File(dialog.open());
+				
+				if (f != null) {
+					document = f;
 					try {
 						String text = new String(Files.readAllBytes(document
 								.toPath()));
