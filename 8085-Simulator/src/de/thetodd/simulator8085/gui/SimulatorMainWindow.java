@@ -8,7 +8,6 @@ import java.nio.file.Files;
 
 import javax.swing.JFileChooser;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -21,7 +20,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import de.thetodd.simulator8085.api.Simulator;
@@ -51,7 +49,6 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 	private File document;
 	private SimulatorMainWindow window;
 	private SimulatorThread simThread;
-	private Text txtClock;
 	private AssemblerSourceViewer sv;
 
 	public SimulatorMainWindow() {
@@ -358,16 +355,16 @@ public class SimulatorMainWindow implements ProcessorChangedListener {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				try {
-					double clockrate = Double.valueOf(txtClock.getText());
+					double clockrate = 1; //leave to 1MHz for now. //Double.valueOf(txtClock.getText());
 					SimulateAction simulate = new SimulateAction(clockrate);
 					setStatus("Simulating till next breakpoint...");
 					simulate.run();
 					updateLineHighlighting();
 					clearStatus();
 				} catch (NumberFormatException ex) {
-					MessageDialog.openError(shlSimulator, "Wrong Clockrate",
+					/*MessageDialog.openError(shlSimulator, "Wrong Clockrate",
 							"The clockrate \"" + txtClock.getText()
-									+ "\" has the wrong format.");
+									+ "\" has the wrong format.");*/
 				}
 			}
 		});
