@@ -1,25 +1,23 @@
 package de.thetodd.simulator8085.gui.widgets;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import de.thetodd.simulator8085.api.Simulator;
-import de.thetodd.simulator8085.api.listener.ProcessorChangedListener;
-import de.thetodd.simulator8085.api.listener.RegisterChangeEvent;
-import de.thetodd.simulator8085.api.listener.RegisterChangeEvent.Register;
+import de.thetodd.simulator8085.api.listener.GlobalSimulatorEvents;
+import de.thetodd.simulator8085.api.listener.ISimulatorListener;
+import de.thetodd.simulator8085.api.listener.SimulatorEvent;
 import de.thetodd.simulator8085.api.platform.Processor;
 import de.thetodd.simulator8085.gui.Messages;
 
-public class RegistersView extends Group implements ProcessorChangedListener {
+public class RegistersView extends Group implements ISimulatorListener {
 
 	private Text txtRegisterA;
 	private Text txtRegisterB;
@@ -172,70 +170,61 @@ public class RegistersView extends Group implements ProcessorChangedListener {
 		new Label(this, SWT.NONE);
 		new Label(this, SWT.NONE);
 
-		Simulator.getInstance().registerChangeListener(this);
-	}
-
-	@Override
-	public void memoryChanged() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void registerChanged(RegisterChangeEvent evt) {
-		// Reload Registers
-		List<Register> regs = Arrays.asList(evt.getRegister());
-		if (regs.contains(Register.REGISTER_A)) {
-			txtRegisterA.setText(String.format("0x%02X", Processor
-					.getInstance().getRegisterA()));
-		}
-		if (regs.contains(Register.REGISTER_B)) {
-			txtRegisterB.setText(String.format("0x%02X", Processor
-					.getInstance().getRegisterB()));
-		}
-		if (regs.contains(Register.REGISTER_C)) {
-			txtRegisterC.setText(String.format("0x%02X", Processor
-					.getInstance().getRegisterC()));
-		}
-		if (regs.contains(Register.REGISTER_D)) {
-			txtRegisterD.setText(String.format("0x%02X", Processor
-					.getInstance().getRegisterD()));
-		}
-		if (regs.contains(Register.REGISTER_E)) {
-			txtRegisterE.setText(String.format("0x%02X", Processor
-					.getInstance().getRegisterE()));
-		}
-		if (regs.contains(Register.REGISTER_F)) {
-			// Nothing to do in this widget
-		}
-		if (regs.contains(Register.REGISTER_H)) {
-			txtRegisterH.setText(String.format("0x%02X", Processor
-					.getInstance().getRegisterH()));
-		}
-		if (regs.contains(Register.REGISTER_L)) {
-			txtRegisterL.setText(String.format("0x%02X", Processor
-					.getInstance().getRegisterL()));
-		}
-		if (regs.contains(Register.REGISTER_SP)) {
-			txtRegisterSP.setText(String.format("0x%04X", Processor
-					.getInstance().getStackpointer()));
-		}
-		if (regs.contains(Register.REGISTER_PC)) {
-			txtRegisterPC.setText(String.format("0x%04X", Processor
-					.getInstance().getProgramcounter()));
-		}
-
-	}
-
-	@Override
-	public void outChanged(byte adr, byte value) {
-		// TODO Auto-generated method stub
-
+		// Simulator.getInstance().registerChangeListener(this);
+		Simulator.getInstance().registerSimulatorListener(this);
 	}
 
 	@Override
 	protected void checkSubclass() {
 
+	}
+
+	@Override
+	public void globalSimulatorEvent(SimulatorEvent evt) {
+		if (evt.getEvent().startsWith("register.changed")) {
+			Display.getDefault().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					if (evt.getEvent().equals(
+							GlobalSimulatorEvents.REGISTER_A_CHANGED)) {
+						txtRegisterA.setText(String.format("0x%02X", Processor
+								.getInstance().getRegisterA()));
+					} else if (evt.getEvent().equals(
+							GlobalSimulatorEvents.REGISTER_B_CHANGED)) {
+						txtRegisterB.setText(String.format("0x%02X", Processor
+								.getInstance().getRegisterB()));
+					} else if (evt.getEvent().equals(
+							GlobalSimulatorEvents.REGISTER_C_CHANGED)) {
+						txtRegisterC.setText(String.format("0x%02X", Processor
+								.getInstance().getRegisterC()));
+					} else if (evt.getEvent().equals(
+							GlobalSimulatorEvents.REGISTER_D_CHANGED)) {
+						txtRegisterD.setText(String.format("0x%02X", Processor
+								.getInstance().getRegisterD()));
+					} else if (evt.getEvent().equals(
+							GlobalSimulatorEvents.REGISTER_E_CHANGED)) {
+						txtRegisterE.setText(String.format("0x%02X", Processor
+								.getInstance().getRegisterE()));
+					} else if (evt.getEvent().equals(
+							GlobalSimulatorEvents.REGISTER_H_CHANGED)) {
+						txtRegisterH.setText(String.format("0x%02X", Processor
+								.getInstance().getRegisterH()));
+					} else if (evt.getEvent().equals(
+							GlobalSimulatorEvents.REGISTER_L_CHANGED)) {
+						txtRegisterL.setText(String.format("0x%02X", Processor
+								.getInstance().getRegisterL()));
+					} else if (evt.getEvent().equals(
+							GlobalSimulatorEvents.REGISTER_SP_CHANGED)) {
+						txtRegisterSP.setText(String.format("0x%04X", Processor
+								.getInstance().getStackpointer()));
+					} else if (evt.getEvent().equals(
+							GlobalSimulatorEvents.REGISTER_PC_CHANGED)) {
+						txtRegisterPC.setText(String.format("0x%04X", Processor
+								.getInstance().getProgramcounter()));
+					}
+				}
+			});
+		}
 	}
 
 }

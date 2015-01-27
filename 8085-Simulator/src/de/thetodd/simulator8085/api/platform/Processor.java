@@ -1,5 +1,9 @@
 package de.thetodd.simulator8085.api.platform;
 
+import de.thetodd.simulator8085.api.Simulator;
+import de.thetodd.simulator8085.api.listener.GlobalSimulatorEvents;
+import de.thetodd.simulator8085.api.listener.SimulatorEvent;
+
 public class Processor {
 
 	private static Processor processorInstance;
@@ -46,8 +50,10 @@ public class Processor {
 	 */
 	public void setRegisterA(byte a) {
 		this.a = a;
-		// Simulator.getInstance().fireRegisterChangeEvent(new
-		// RegisterChangeEvent(Register.REGISTER_A));
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_A_CHANGED, Byte.toString(a),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	/**
@@ -63,8 +69,10 @@ public class Processor {
 	 */
 	public void setRegisterB(byte b) {
 		this.b = b;
-		// Simulator.getInstance().fireRegisterChangeEvent(new
-		// RegisterChangeEvent(Register.REGISTER_B));
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_B_CHANGED, Byte.toString(b),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	/**
@@ -80,8 +88,10 @@ public class Processor {
 	 */
 	public void setRegisterC(byte c) {
 		this.c = c;
-		// Simulator.getInstance().fireRegisterChangeEvent(new
-		// RegisterChangeEvent(Register.REGISTER_C));
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_C_CHANGED, Byte.toString(c),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	/**
@@ -97,8 +107,10 @@ public class Processor {
 	 */
 	public void setRegisterD(byte d) {
 		this.d = d;
-		// Simulator.getInstance().fireRegisterChangeEvent(new
-		// RegisterChangeEvent(Register.REGISTER_D));
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_D_CHANGED, Byte.toString(d),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	/**
@@ -114,8 +126,10 @@ public class Processor {
 	 */
 	public void setRegisterE(byte e) {
 		this.e = e;
-		// Simulator.getInstance().fireRegisterChangeEvent(new
-		// RegisterChangeEvent(Register.REGISTER_E));
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_E_CHANGED, Byte.toString(e),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	/**
@@ -164,6 +178,12 @@ public class Processor {
 		if ((flags &= 0x01) == 0x01) {
 			setCarryFlag(true);
 		}
+		
+
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_F_CHANGED, Byte.toString(flags),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	/**
@@ -179,8 +199,10 @@ public class Processor {
 	 */
 	public void setRegisterH(byte h) {
 		this.h = h;
-		// Simulator.getInstance().fireRegisterChangeEvent(new
-		// RegisterChangeEvent(Register.REGISTER_H));
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_H_CHANGED, Byte.toString(h),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	/**
@@ -196,8 +218,10 @@ public class Processor {
 	 */
 	public void setRegisterL(byte l) {
 		this.l = l;
-		// Simulator.getInstance().fireRegisterChangeEvent(new
-		// RegisterChangeEvent(Register.REGISTER_L));
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_L_CHANGED, Byte.toString(l),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	public short getRegisterBC() {
@@ -221,16 +245,40 @@ public class Processor {
 	public void setRegisterBC(short bc) {
 		setRegisterB((byte) (bc >> 8));
 		setRegisterC((byte) (bc));
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_B_CHANGED, Short.toString(bc),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
+		SimulatorEvent evt2 = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_C_CHANGED, Short.toString(bc),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt2);
 	}
 
 	public void setRegisterDE(short de) {
 		setRegisterD((byte) (de >> 8));
 		setRegisterE((byte) (de));
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_D_CHANGED, Short.toString(de),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
+		SimulatorEvent evt2 = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_E_CHANGED, Short.toString(de),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt2);
 	}
 
 	public void setRegisterHL(short hl) {
 		setRegisterH((byte) (hl >> 8));
 		setRegisterL((byte) (hl));
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_H_CHANGED, Short.toString(hl),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
+		SimulatorEvent evt2 = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_L_CHANGED, Short.toString(hl),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt2);
 	}
 
 	/**
@@ -246,15 +294,19 @@ public class Processor {
 	 */
 	public void setProgramcounter(short pc) {
 		this.pc = pc;
-		// Simulator.getInstance().fireRegisterChangeEvent(new
-		// RegisterChangeEvent(Register.REGISTER_PC));
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_PC_CHANGED, Short.toString(pc),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	// Inkrementiert den PCum 1
 	public void incProgramcounter() {
 		this.pc += 1;
-		// Simulator.getInstance().fireRegisterChangeEvent(new
-		// RegisterChangeEvent(Register.REGISTER_PC));
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_PC_CHANGED, Short.toString(pc),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	/**
@@ -270,8 +322,10 @@ public class Processor {
 	 */
 	public void setStackpointer(short sp) {
 		this.sp = sp;
-		// Simulator.getInstance().fireRegisterChangeEvent(new
-		// RegisterChangeEvent(Register.REGISTER_SP));
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_SP_CHANGED, Short.toString(sp),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	/**
@@ -295,8 +349,11 @@ public class Processor {
 		signFlag = false;
 		auxiliaryCarryFlag = false;
 
-		// Simulator.getInstance().fireRegisterChangeEvent(new
-		// RegisterChangeEvent(RegisterChangeEvent.getBCTemplate()));
+
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.RESET_PROCESSOR, "Processor reset.",
+				SimulatorEvent.TYPE.INFORMATION);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	/**
@@ -312,8 +369,10 @@ public class Processor {
 	 */
 	public void setZeroFlag(boolean zeroFlag) {
 		this.zeroFlag = zeroFlag;
-		// Simulator.getInstance().fireRegisterChangeEvent(new
-		// RegisterChangeEvent(Register.REGISTER_F));
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_F_CHANGED, Byte.toString(getRegisterF()),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	/**
@@ -329,8 +388,10 @@ public class Processor {
 	 */
 	public void setParityFlag(boolean parityFlag) {
 		this.parityFlag = parityFlag;
-		// Simulator.getInstance().fireRegisterChangeEvent(new
-		// RegisterChangeEvent(Register.REGISTER_F));
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_F_CHANGED, Byte.toString(getRegisterF()),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	/**
@@ -346,8 +407,10 @@ public class Processor {
 	 */
 	public void setCarryFlag(boolean carryFlag) {
 		this.carryFlag = carryFlag;
-		// Simulator.getInstance().fireRegisterChangeEvent(new
-		// RegisterChangeEvent(Register.REGISTER_F));
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_F_CHANGED, Byte.toString(getRegisterF()),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	/**
@@ -363,8 +426,10 @@ public class Processor {
 	 */
 	public void setSignFlag(boolean signFlag) {
 		this.signFlag = signFlag;
-		// Simulator.getInstance().fireRegisterChangeEvent(new
-		// RegisterChangeEvent(Register.REGISTER_F));
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_F_CHANGED, Byte.toString(getRegisterF()),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	/**
@@ -380,8 +445,10 @@ public class Processor {
 	 */
 	public void setAuxiliaryCarryFlag(boolean auxiliaryCarryFlag) {
 		this.auxiliaryCarryFlag = auxiliaryCarryFlag;
-		// Simulator.getInstance().fireRegisterChangeEvent(new
-		// RegisterChangeEvent(Register.REGISTER_F));
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_F_CHANGED, Byte.toString(getRegisterF()),
+				SimulatorEvent.TYPE.SUCCESS);
+		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
 	/**

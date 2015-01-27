@@ -19,15 +19,17 @@ public class SimulatorEvent {
 	
 	private String message;
 	private SimulatorEvent.TYPE type;
+	private String event;
 	
 	public SimulatorEvent() {
-		this.message = "";
+		this("","",TYPE.ERROR);
 	}
 
-	public SimulatorEvent(String message, SimulatorEvent.TYPE type) {
+	public SimulatorEvent(String event, String message, SimulatorEvent.TYPE type) {
 		super();
 		this.message = message;
 		this.type = type;
+		this.event = event;
 	}
 	
 	public String getMessage() {
@@ -36,6 +38,14 @@ public class SimulatorEvent {
 	
 	public SimulatorEvent.TYPE getType() {
 		return type;
+	}
+	
+	/**
+	 * A String which identifies the SimulatorEvent.
+	 * @return identifying constant String from {@link GlobalSimulatorEvents}
+	 */
+	public String getEvent() {
+		return event;
 	}
 	
 }
