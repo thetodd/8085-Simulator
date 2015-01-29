@@ -57,7 +57,7 @@ public class StatusBar extends Composite implements ISimulatorListener {
 	}
 
 	@Override
-	public void globalSimulatorEvent(SimulatorEvent evt) {
+	public void globalSimulatorEvent(final SimulatorEvent evt) {
 		if (evt.getEvent().equals(GlobalSimulatorEvents.STATUS)) {
 			Display.getDefault().syncExec(new Runnable() {
 				@Override

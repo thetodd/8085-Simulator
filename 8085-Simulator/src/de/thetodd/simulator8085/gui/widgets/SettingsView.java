@@ -18,6 +18,9 @@ import de.thetodd.simulator8085.gui.SimulatorMainWindow;
 
 public class SettingsView extends Composite {
 
+	private Text txtMemoryStart;
+	private Text txtMemoryEnd;
+
 	public SettingsView(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new GridLayout(3, false));
@@ -26,7 +29,7 @@ public class SettingsView extends Composite {
 		lblSpeicherbereich
 				.setText(Messages.SimulatorMainWindow_lblSpeicherbereich_text);
 
-		Text txtMemoryStart = new Text(this, SWT.BORDER);
+		txtMemoryStart = new Text(this, SWT.BORDER);
 		txtMemoryStart.setText("0x1800");
 		new Label(this, SWT.NONE);
 
@@ -34,7 +37,7 @@ public class SettingsView extends Composite {
 		lblSpeicherbereichEnde
 				.setText(Messages.SimulatorMainWindow_lblSpeicherbereichEnde_text);
 
-		Text txtMemoryEnd = new Text(this, SWT.BORDER);
+		txtMemoryEnd = new Text(this, SWT.BORDER);
 		txtMemoryEnd.setText("0x1BFF");
 		new Label(this, SWT.NONE);
 
