@@ -92,7 +92,6 @@ public class AssembleAction implements Action {
 				pos += line.length()+2;
 				linenumber++;
 			}
-			Simulator.getInstance().fireMemoryChangeEvent();
 			Simulator.getInstance().setAssembled(true);
 		}
 	}

@@ -2,6 +2,9 @@ package de.thetodd.simulator8085.api.listener;
 
 import java.util.Date;
 
+/**
+ * @deprecated as of 2.0.0, you should use {@link ISimulatorListener}
+ */
 public class RegisterChangeEvent {
 
 	public static enum Register {

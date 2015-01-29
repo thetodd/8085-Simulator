@@ -5,10 +5,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.eclipse.swt.widgets.Display;
-
-import de.thetodd.simulator8085.api.listener.ProcessorChangedListener;
-import de.thetodd.simulator8085.api.listener.RegisterChangeEvent;
+import de.thetodd.simulator8085.api.listener.GlobalSimulatorEvents;
+import de.thetodd.simulator8085.api.listener.ISimulatorListener;
+import de.thetodd.simulator8085.api.listener.SimulatorEvent;
 import de.thetodd.simulator8085.api.mnemonics.ACIMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ADCMnemonic;
 import de.thetodd.simulator8085.api.mnemonics.ADDMnemonic;
@@ -98,7 +97,7 @@ public class Simulator {
 
 	private HashMap<String, Mnemonic> mnemonicMap;
 	private HashMap<Byte, Byte> outMap;
-	private ArrayList<ProcessorChangedListener> changeListeners;
+	private ArrayList<ISimulatorListener> simulatorListeners;
 	private HashMap<Short, Integer> codeMap; // Address <-> Codeline Map
 	private boolean isAssembled;
 
@@ -115,7 +114,7 @@ public class Simulator {
 
 		breakpoints = new ArrayList<>();
 		labelMap = new HashMap<>();
-		changeListeners = new ArrayList<>();
+		simulatorListeners = new ArrayList<>();
 		codeMap = new HashMap<>();
 		outMap = new HashMap<>();
 	}
@@ -216,29 +215,41 @@ public class Simulator {
 		return codeMap;
 	}
 
-	public void registerChangeListener(ProcessorChangedListener listener) {
-		changeListeners.add(listener);
+	/**
+	 * Connects a {@link ISimulatorListener} to this Simulator. It will be
+	 * notified by special fire methods.
+	 * 
+	 * @param listener
+	 *            the ISimulatorListener to be connected
+	 * @since 2.0.0
+	 * @see {@link Simulator#fireSimulatorEvent(SimulatorEvent)}
+	 */
+	public void registerSimulatorListener(ISimulatorListener listener) {
+		simulatorListeners.add(listener);
 	}
 
-	public void unregisterChangeListener(ProcessorChangedListener listener) {
-		changeListeners.remove(listener);
+	/**
+	 * Disconnects a {@link ISimulatorListener} from this Simulator. It will not
+	 * be notified any more.
+	 * 
+	 * @param listener
+	 *            the ISimulatorListener to be disconnected
+	 * @since 2.0.0
+	 */
+	public void unregisterSimulatorListener(ISimulatorListener listener) {
+		simulatorListeners.remove(listener);
 	}
 
-	public void fireRegisterChangeEvent(RegisterChangeEvent evt) {
-		for (ProcessorChangedListener l : changeListeners) {
-			l.registerChanged(evt);
-		}
-	}
-
-	public void fireMemoryChangeEvent() {
-		for (ProcessorChangedListener l : changeListeners) {
-			l.memoryChanged();
-		}
-	}
-
-	public void fireOutChangedEvent(byte adr, byte value) {
-		for (ProcessorChangedListener l : changeListeners) {
-			l.outChanged(adr, value);
+	/**
+	 * Fire a {@link SimulatorEvent}. Notifies all connected listeners.
+	 * 
+	 * @param evt
+	 *            the SimulatorEvent to be fired
+	 * @see {@link ISimulatorListener}, {@link SimulatorEvent}
+	 */
+	public void fireSimulatorEvent(SimulatorEvent evt) {
+		for (ISimulatorListener listener : simulatorListeners) {
+			listener.globalSimulatorEvent(evt);
 		}
 	}
 
@@ -270,13 +281,10 @@ public class Simulator {
 
 	public void setOutEntry(final byte adr, final byte c) {
 		outMap.put(adr, c);
-		Display.getDefault().syncExec(new Runnable() {
-			@Override
-			public void run() {
-				fireOutChangedEvent(adr, c);
-			}
-		});
-
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.PORT_WRITE, Byte.toString(adr) + ": "
+						+ Byte.toString(c), SimulatorEvent.TYPE.SUCCESS);
+		fireSimulatorEvent(evt);
 	}
 
 	public byte getOutEntry(byte adr) {
@@ -354,6 +362,10 @@ public class Simulator {
 
 	public void setAssembled(boolean isAssembled) {
 		this.isAssembled = isAssembled;
+		fireSimulatorEvent(new SimulatorEvent(GlobalSimulatorEvents.ASSEMBLED,
+				"Code assembled.", SimulatorEvent.TYPE.SUCCESS));
+		fireSimulatorEvent(new SimulatorEvent(GlobalSimulatorEvents.STATUS,
+				"Code assembled.", SimulatorEvent.TYPE.SUCCESS));
 	}
 
 	public boolean isDebugMode() {

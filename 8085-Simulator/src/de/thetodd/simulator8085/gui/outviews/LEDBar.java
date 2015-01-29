@@ -10,11 +10,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 
 import de.thetodd.simulator8085.api.Simulator;
-import de.thetodd.simulator8085.api.listener.ProcessorChangedListener;
-import de.thetodd.simulator8085.api.listener.RegisterChangeEvent;
+import de.thetodd.simulator8085.api.listener.GlobalSimulatorEvents;
+import de.thetodd.simulator8085.api.listener.ISimulatorListener;
+import de.thetodd.simulator8085.api.listener.SimulatorEvent;
 import de.thetodd.simulator8085.gui.outviews.widgets.LEDWidget;
 
-public class LEDBar extends Shell implements ProcessorChangedListener {
+public class LEDBar extends Shell implements ISimulatorListener {
 	private Spinner adrChooser;
 	private LEDWidget led8;
 	private LEDWidget led7;
@@ -87,13 +88,13 @@ public class LEDBar extends Shell implements ProcessorChangedListener {
 		setText("LED Bar");
 		setSize(450, 62);
 
-		Simulator.getInstance().registerChangeListener(this);
+		Simulator.getInstance().registerSimulatorListener(this);
 		
 		addDisposeListener(new DisposeListener() {
 			
 			@Override
 			public void widgetDisposed(DisposeEvent arg0) {
-				Simulator.getInstance().unregisterChangeListener(LEDBar.this);				
+				Simulator.getInstance().unregisterSimulatorListener(LEDBar.this);				
 			}
 		});
 		
@@ -105,49 +106,45 @@ public class LEDBar extends Shell implements ProcessorChangedListener {
 	}
 
 	@Override
-	public void memoryChanged() {
-	}
-
-	@Override
-	public void registerChanged(RegisterChangeEvent evt) {
-	}
-
-	@Override
-	public void outChanged(byte adr, byte value) {		
-		byte selectedAdr = (byte) adrChooser.getSelection();
-		if(adr == selectedAdr) {
-			led8.setForeground(offColor);
-			led7.setForeground(offColor);
-			led6.setForeground(offColor);
-			led5.setForeground(offColor);
-			led4.setForeground(offColor);
-			led3.setForeground(offColor);
-			led2.setForeground(offColor);
-			led1.setForeground(offColor);
-			
-			if((value&0x80) != 0){
-				led8.setForeground(onColor);
-			}
-			if((value&0x40) != 0){
-				led7.setForeground(onColor);
-			}
-			if((value&0x20) != 0){
-				led6.setForeground(onColor);
-			}
-			if((value&0x10) != 0){
-				led5.setForeground(onColor);
-			}
-			if((value&0x08) != 0){
-				led4.setForeground(onColor);
-			}
-			if((value&0x04) != 0){
-				led3.setForeground(onColor);
-			}
-			if((value&0x02) != 0){
-				led2.setForeground(onColor);
-			}
-			if((value&0x01) != 0){
-				led1.setForeground(onColor);
+	public void globalSimulatorEvent(SimulatorEvent evt) {
+		if(evt.getEvent().equals(GlobalSimulatorEvents.PORT_WRITE)) {
+			byte adr = Byte.parseByte(evt.getMessage().split(":")[0]);
+			byte value = Byte.parseByte(evt.getMessage().split(":")[1]);
+			byte selectedAdr = (byte) adrChooser.getSelection();
+			if(adr == selectedAdr) {
+				led8.setForeground(offColor);
+				led7.setForeground(offColor);
+				led6.setForeground(offColor);
+				led5.setForeground(offColor);
+				led4.setForeground(offColor);
+				led3.setForeground(offColor);
+				led2.setForeground(offColor);
+				led1.setForeground(offColor);
+				
+				if((value&0x80) != 0){
+					led8.setForeground(onColor);
+				}
+				if((value&0x40) != 0){
+					led7.setForeground(onColor);
+				}
+				if((value&0x20) != 0){
+					led6.setForeground(onColor);
+				}
+				if((value&0x10) != 0){
+					led5.setForeground(onColor);
+				}
+				if((value&0x08) != 0){
+					led4.setForeground(onColor);
+				}
+				if((value&0x04) != 0){
+					led3.setForeground(onColor);
+				}
+				if((value&0x02) != 0){
+					led2.setForeground(onColor);
+				}
+				if((value&0x01) != 0){
+					led1.setForeground(onColor);
+				}
 			}
 		}
 	}

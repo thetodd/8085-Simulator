@@ -6,15 +6,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map.Entry;
 
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
 
 import de.thetodd.simulator8085.api.Simulator;
 
@@ -124,18 +124,18 @@ public class PrintAction implements Action {
 
 				// Save the results and ensure that the document is properly
 				// closed:
-				JFileChooser chooser = new JFileChooser();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter(
-						"PDF Files", "pdf");
-				chooser.setFileFilter(filter);
-				int returnVal = chooser.showOpenDialog(null);
-				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					String path = chooser.getSelectedFile().getAbsolutePath();
-					if (!path.endsWith(".pdf")) {
-						path += ".pdf";
+				FileDialog dialog = new FileDialog(new Shell(), SWT.OPEN);
+			    dialog
+			        .setFilterNames(new String[] { "PDF", "All Files (*.*)" });
+			    dialog.setFilterExtensions(new String[] { "*.pdf", "*.*" });
+			    String f = dialog.open();
+			    if(f != null) {
+			    	if (!f.endsWith(".pdf")) {
+						f += ".pdf";
 					}
-					document.save(path);
-				}
+					document.save(f);
+			    }
+				
 				document.close();
 			} catch (IOException e1) {
 				e1.printStackTrace();

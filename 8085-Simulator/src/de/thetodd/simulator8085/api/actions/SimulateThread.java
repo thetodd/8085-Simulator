@@ -8,7 +8,6 @@ import org.eclipse.swt.widgets.Display;
 import de.thetodd.simulator8085.api.Mnemonic;
 import de.thetodd.simulator8085.api.Simulator;
 import de.thetodd.simulator8085.api.exceptions.ProcessorError;
-import de.thetodd.simulator8085.api.listener.RegisterChangeEvent;
 import de.thetodd.simulator8085.api.platform.Memory;
 import de.thetodd.simulator8085.api.platform.Processor;
 
@@ -58,11 +57,7 @@ public class SimulateThread extends Thread {
 		final double z = zeit;
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
-			public void run() {
-				Simulator.getInstance().fireRegisterChangeEvent(
-						new RegisterChangeEvent(RegisterChangeEvent
-								.getAllTemplate()));
-				
+			public void run() {				
 				MessageDialog.openInformation(
 						null,
 						"Clocks needed",
