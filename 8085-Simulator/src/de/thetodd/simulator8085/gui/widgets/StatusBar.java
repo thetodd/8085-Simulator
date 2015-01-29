@@ -62,34 +62,39 @@ public class StatusBar extends Composite implements ISimulatorListener {
 			Display.getDefault().syncExec(new Runnable() {
 				@Override
 				public void run() {
-					switch (evt.getType()) {
-					case ERROR:
-						lblStatus.setForeground(new Color(Display.getDefault(),
-								255, 0, 0));
-						lblStatus.setImage(ERROR_IMG);
-						break;
-					case INFORMATION:
-						lblStatus.setForeground(new Color(Display.getDefault(),
-								0, 50, 200));
-						lblStatus.setImage(INFORMATION_IMG);
-						break;
-					case SUCCESS:
-						lblStatus.setForeground(new Color(Display.getDefault(),
-								0, 150, 0));
-						lblStatus.setImage(SUCCESS_IMG);
-						break;
-					case WARNING:
-						lblStatus.setForeground(new Color(Display.getDefault(),
-								150, 150, 0));
-						lblStatus.setImage(WARNING_IMG);
-						break;
-					default:
-						lblStatus.setForeground(new Color(Display.getDefault(),
-								0, 0, 0));
+					if (!evt.getMessage().equals("")) {
+						switch (evt.getType()) {
+						case ERROR:
+							lblStatus.setForeground(new Color(Display
+									.getDefault(), 255, 0, 0));
+							lblStatus.setImage(ERROR_IMG);
+							break;
+						case INFORMATION:
+							lblStatus.setForeground(new Color(Display
+									.getDefault(), 0, 50, 200));
+							lblStatus.setImage(INFORMATION_IMG);
+							break;
+						case SUCCESS:
+							lblStatus.setForeground(new Color(Display
+									.getDefault(), 0, 150, 0));
+							lblStatus.setImage(SUCCESS_IMG);
+							break;
+						case WARNING:
+							lblStatus.setForeground(new Color(Display
+									.getDefault(), 150, 150, 0));
+							lblStatus.setImage(WARNING_IMG);
+							break;
+						default:
+							lblStatus.setForeground(new Color(Display
+									.getDefault(), 0, 0, 0));
+							lblStatus.setImage(null);
+							break;
+						}
+						lblStatus.setText(evt.getMessage());
+					} else {
 						lblStatus.setImage(null);
-						break;
+						lblStatus.setText("");
 					}
-					lblStatus.setText(evt.getMessage());
 				}
 			});
 		}
