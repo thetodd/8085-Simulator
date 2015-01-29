@@ -364,6 +364,8 @@ public class Simulator {
 		this.isAssembled = isAssembled;
 		fireSimulatorEvent(new SimulatorEvent(GlobalSimulatorEvents.ASSEMBLED,
 				"Code assembled.", SimulatorEvent.TYPE.SUCCESS));
+		fireSimulatorEvent(new SimulatorEvent(GlobalSimulatorEvents.STATUS,
+				"Code assembled.", SimulatorEvent.TYPE.SUCCESS));
 	}
 
 	public boolean isDebugMode() {

@@ -288,8 +288,6 @@ public class SimulatorMainWindow {
 				assemble.run();
 
 				updateLineHighlighting(); // maybe to soon
-
-				setStatus("");
 			}
 		});
 		mntmAsseble.setImage(SWTResourceManager.getImage(
