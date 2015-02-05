@@ -76,6 +76,7 @@ public class RegistersView extends Group implements ISimulatorListener {
 		lblL.setAlignment(SWT.CENTER);
 
 		txtRegisterA = new Text(this, SWT.BORDER);
+		txtRegisterA.setEditable(false);
 		txtRegisterA
 				.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		txtRegisterA.setForeground(SWTResourceManager.getColor(220, 20, 60));
