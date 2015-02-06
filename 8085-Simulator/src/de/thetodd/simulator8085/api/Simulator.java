@@ -388,4 +388,8 @@ public class Simulator {
 	public static boolean isLabel(String l) {
 		return Simulator.getInstance().labelMap.containsKey(l);
 	}
+
+	public Collection<String> getUsableMnemonicNameList() {
+		return mnemonicMap.keySet();
+	}
 }
