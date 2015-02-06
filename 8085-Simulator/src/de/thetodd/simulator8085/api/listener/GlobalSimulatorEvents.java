@@ -23,6 +23,7 @@ public class GlobalSimulatorEvents {
 	public static final String REGISTER_PC_CHANGED = "register.changed.pc";
 	public static final String PORT_WRITE = "port.write";
 	public static final String MEMORY_CHANGE = "memory.change";
+	public static final String DOCUMENT_CHANGE = "document.change";
 	public static final String STATUS = "status";
 	
 }

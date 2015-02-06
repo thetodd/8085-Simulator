@@ -1,6 +1,8 @@
 package de.thetodd.simulator8085.gui.sourceviewer;
 
 import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.DocumentEvent;
+import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.AnnotationPainter;
@@ -15,6 +17,9 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
+import de.thetodd.simulator8085.api.Simulator;
+import de.thetodd.simulator8085.api.listener.GlobalSimulatorEvents;
+import de.thetodd.simulator8085.api.listener.SimulatorEvent;
 import de.thetodd.simulator8085.gui.sourceviewer.annotations.AssembleErrorAnnotation;
 import de.thetodd.simulator8085.gui.sourceviewer.annotations.BreakpointAnnotation;
 import de.thetodd.simulator8085.gui.sourceviewer.annotations.ErrorAnnotation;
@@ -26,10 +31,12 @@ public class AssemblerSourceViewer extends SourceViewer {
 	private Document document;
 	private IAnnotationAccess fAnnotationAccess;
 	private AnnotationModel fAnnotationModel;
+	protected boolean dirty;
 
 	public AssemblerSourceViewer(Composite parent) {
 		super(parent, new CompositeRuler(), null, false, SWT.MULTI
 				| SWT.V_SCROLL);
+		dirty = false;
 		fAnnotationAccess = new AnnotationMarkerAccess();
 		fCompositeRuler = (CompositeRuler) this.getVerticalRuler();
 		fAnnotationModel = new AnnotationModel();
@@ -67,6 +74,21 @@ public class AssemblerSourceViewer extends SourceViewer {
 
 		configure(new MySourceViewerConf());
 		this.document = new Document();
+		this.document.addDocumentListener(new IDocumentListener() {
+
+			@Override
+			public void documentChanged(DocumentEvent arg0) {
+				// set dirty
+				dirty = true;
+				SimulatorEvent evt = new SimulatorEvent(GlobalSimulatorEvents.DOCUMENT_CHANGE, "", SimulatorEvent.TYPE.INFORMATION);
+				Simulator.getInstance().fireSimulatorEvent(evt);
+			}
+
+			@Override
+			public void documentAboutToBeChanged(DocumentEvent arg0) {
+
+			}
+		});
 		this.setDocument(this.document, fAnnotationModel);
 		this.getTextWidget().setFont(
 				new Font(Display.getDefault(), "Courier New", 10, SWT.NORMAL));
@@ -95,8 +117,16 @@ public class AssemblerSourceViewer extends SourceViewer {
 	public void addBreakpoint(int linenumber, short adresse, Position pos) {
 		// add an annotation
 		BreakpointAnnotation errorAnnotation = new BreakpointAnnotation(
-				linenumber, "Breakpoint at "+String.format("0x%04X", adresse));
+				linenumber, "Breakpoint at " + String.format("0x%04X", adresse));
 		fAnnotationModel.addAnnotation(errorAnnotation, pos);
 		this.getControl().update();
+	}
+
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
+	}
+
+	public boolean isDirty() {
+		return dirty;
 	}
 }

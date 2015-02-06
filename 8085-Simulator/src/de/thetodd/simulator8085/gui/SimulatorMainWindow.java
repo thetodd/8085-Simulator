@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 
@@ -67,9 +68,13 @@ public class SimulatorMainWindow {
 		shlSimulator.open();
 		shlSimulator.layout();
 
-		SimulatorEvent evt = new SimulatorEvent(GlobalSimulatorEvents.MEMORY_CHANGE,"all",SimulatorEvent.TYPE.SUCCESS);
+		SimulatorEvent evt = new SimulatorEvent(
+				GlobalSimulatorEvents.MEMORY_CHANGE, "all",
+				SimulatorEvent.TYPE.SUCCESS);
 		Simulator.getInstance().fireSimulatorEvent(evt);
-		SimulatorEvent evt2 = new SimulatorEvent(GlobalSimulatorEvents.REGISTER_ALL_CHANGED,"all",SimulatorEvent.TYPE.SUCCESS);
+		SimulatorEvent evt2 = new SimulatorEvent(
+				GlobalSimulatorEvents.REGISTER_ALL_CHANGED, "all",
+				SimulatorEvent.TYPE.SUCCESS);
 		Simulator.getInstance().fireSimulatorEvent(evt2);
 
 		this.window = this;
@@ -101,9 +106,10 @@ public class SimulatorMainWindow {
 		addMenu();
 
 		new RegistersView(shlSimulator, SWT.NONE);
-		
+
 		FlagsView flagsView = new FlagsView(shlSimulator, SWT.NONE);
-		flagsView.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
+		flagsView.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false,
+				1, 1));
 
 		SashForm sashForm = new SashForm(shlSimulator, SWT.NONE);
 		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2,
@@ -143,7 +149,7 @@ public class SimulatorMainWindow {
 
 		SettingsView settings = new SettingsView(tabsRight, SWT.NONE);
 		tbtmNewItem.setControl(settings);
-		
+
 		CTabItem tbtmProgramminformationen = new CTabItem(tabsRight, SWT.NONE);
 		tbtmProgramminformationen.setImage(SWTResourceManager.getImage(
 				SimulatorMainWindow.class,
@@ -153,10 +159,10 @@ public class SimulatorMainWindow {
 
 		ProgramInfoView infoView = new ProgramInfoView(tabsRight, SWT.NONE);
 		tbtmProgramminformationen.setControl(infoView);
-		
+
 		sashForm.setWeights(new int[] { 3, 1 });
 
-		StatusBar status = new StatusBar(shlSimulator,SWT.NONE);
+		StatusBar status = new StatusBar(shlSimulator, SWT.NONE);
 		status.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 2, 1));
 	}
 
@@ -177,10 +183,27 @@ public class SimulatorMainWindow {
 		mntmNewFile.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				document = null;
-				Processor.getInstance().resetProcessor();
-				Memory.getInstance().resetMemory();
-				sv.setText("");
+				if (sv.isDirty()) {
+					// Ask before create new document
+					MessageBox messageBox = new MessageBox(shlSimulator,
+							SWT.ICON_WARNING | SWT.YES | SWT.NO);
+
+					messageBox.setText("Create a new document?");
+					messageBox.setMessage("You made changes to the current document.\nDo you want to create a new document?");
+					int buttonID = messageBox.open();
+					switch (buttonID) {
+					case SWT.YES:
+						document = null;
+						Processor.getInstance().resetProcessor();
+						Memory.getInstance().resetMemory();
+						sv.setText("");
+						sv.setDirty(false);
+						break;
+					case SWT.NO:
+						// exits here ...
+						break;
+					}
+				}
 			}
 		});
 		mntmNewFile.setText(Messages.SimulatorMainWindow_mntmNewFile_text);
@@ -191,11 +214,11 @@ public class SimulatorMainWindow {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				FileDialog dialog = new FileDialog(shlSimulator, SWT.OPEN);
-			    dialog
-			        .setFilterNames(new String[] { "8085-Dateien", "All Files (*.*)" });
-			    dialog.setFilterExtensions(new String[] { "*.asm", "*.*" });
-			    String f = dialog.open();
-				
+				dialog.setFilterNames(new String[] { "8085-Dateien",
+						"All Files (*.*)" });
+				dialog.setFilterExtensions(new String[] { "*.asm", "*.*" });
+				String f = dialog.open();
+
 				if (f != null) {
 					document = new File(f);
 					try {
@@ -220,14 +243,14 @@ public class SimulatorMainWindow {
 			public void widgetSelected(SelectionEvent arg0) {
 				if (document == null) { // We have a new file, ask for save path
 					FileDialog dialog = new FileDialog(shlSimulator, SWT.SAVE);
-				    dialog
-				        .setFilterNames(new String[] { "8085-Dateien", "All Files (*.*)" });
-				    dialog.setFilterExtensions(new String[] { "*.asm", "*.*" });
-				    dialog.setFileName("unnamed.asm");
-				    String f = dialog.open();
-				    if(f != null) {
-				    	document = new File(f);
-				    }
+					dialog.setFilterNames(new String[] { "8085-Dateien",
+							"All Files (*.*)" });
+					dialog.setFilterExtensions(new String[] { "*.asm", "*.*" });
+					dialog.setFileName("unnamed.asm");
+					String f = dialog.open();
+					if (f != null) {
+						document = new File(f);
+					}
 				}
 				if (document != null) {
 					try {
@@ -254,7 +277,7 @@ public class SimulatorMainWindow {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				String filename;
-				if(document != null) {
+				if (document != null) {
 					filename = document.getName();
 				} else {
 					filename = "unnamed";
@@ -300,7 +323,8 @@ public class SimulatorMainWindow {
 		mntmResetProcessor.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				//Memory.getInstance().resetMemory(); //you must not reset the memory, clears the program too.
+				// Memory.getInstance().resetMemory(); //you must not reset the
+				// memory, clears the program too.
 				Processor.getInstance().resetProcessor();
 				setStatus("Processor has been reset");
 			}
@@ -346,16 +370,19 @@ public class SimulatorMainWindow {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				try {
-					double clockrate = 1; //leave to 1MHz for now. //Double.valueOf(txtClock.getText());
+					double clockrate = 1; // leave to 1MHz for now.
+											// //Double.valueOf(txtClock.getText());
 					SimulateAction simulate = new SimulateAction(clockrate);
 					setStatus("Simulating till next breakpoint...");
 					simulate.run();
 					updateLineHighlighting();
 					setStatus("");
 				} catch (NumberFormatException ex) {
-					/*MessageDialog.openError(shlSimulator, "Wrong Clockrate",
-							"The clockrate \"" + txtClock.getText()
-									+ "\" has the wrong format.");*/
+					/*
+					 * MessageDialog.openError(shlSimulator, "Wrong Clockrate",
+					 * "The clockrate \"" + txtClock.getText() +
+					 * "\" has the wrong format.");
+					 */
 				}
 			}
 		});
@@ -434,7 +461,8 @@ public class SimulatorMainWindow {
 	}
 
 	protected void setStatus(String message) {
-		SimulatorEvent evt = new SimulatorEvent(GlobalSimulatorEvents.STATUS,message,TYPE.INFORMATION);
+		SimulatorEvent evt = new SimulatorEvent(GlobalSimulatorEvents.STATUS,
+				message, TYPE.INFORMATION);
 		Simulator.getInstance().fireSimulatorEvent(evt);
 	}
 
@@ -451,5 +479,5 @@ public class SimulatorMainWindow {
 		 * Color(Display.getDefault(), 0xFF, 0xFF, 0x99)); }
 		 */
 	}
-	
+
 }
