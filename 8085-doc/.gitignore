@@ -2,3 +2,4 @@ document.pdf
 *.aux
 *.log
 *.toc
+*.out
