@@ -1,0 +1,97 @@
+\documentclass[11pt,a4paper]{hsfuldabook}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+\title{8085-Simulator}
+\subtitle{Benutzerhandbuch}
+\author{Florian Schleich}
+\publishers{}
+\uppertitleback{Entwickelt im Rahmen der Lehrveranstaltung "Mikrocontrollerprogrammierung"
+an der Hochschule Fulda.}
+\maketitle
+
+\section*{Lizenzvereinbarung}
+Die Software steht, ebenso wie dieses Dokument, unter der MIT Lizenz.
+
+\begin{verbatim}
+The MIT License (MIT)
+
+Copyright (c) 2014 Florian Schleich (florian.schleich@informatik.hs-fulda.de)
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copyof this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to
+whom the Software is furnished to do so, subject to the
+following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+\end{verbatim}
+
+\tableofcontents
+
+\chapter{Einleitung}
+Dieses Dokument soll Ihnen bei der Benutzung des 8085-Simulators helfen. Im Handbuch werden der
+Ablauf der Simulation und die Handhabung der Software erläutert.
+
+\subsection{Quelldateien}
+Die Software ist Open-Source. Das bedeutet die Quelldateien stehen jedem Interessierten zum Download
+zur Verfügung. Die Quelldateien liegen in einem git-Repository auf
+github.com/thetodd/8085-Simulator.
+
+Ein Anmelden bei GitHub ist nicht notwendig. Das Repository lässt sich auch mit anderen Tools
+klonen und selbst erstellen. Eine Anleitung zum Erstelles des Programmcodes aus den Quelltexten befindet
+sich im Anhang.
+
+\subsection{Bei Fehlern oder Anregungen}
+Sollte Ihnen während der Benutzung dieses 8085-Simulators ein Fehler im Programm auffallen, dürfen
+Sie gerne einen Bug im GitHub-Projekt (www.github.com/thetodd/8085-Simulator/issues) melden,
+oder eine E-Mail an florian.schleich@informatik.hs-fulda.de schreiben. Wir sind stetig bestrebt die
+Software von allen Fehlern und Unschönheiten zu befreien, aber auch uns passiert einmal ein Fehler.
+Wenn nette Menschen wie Sie uns Fehler melden, werden wir diese auch beseitigen.
+
+Haben Sie Anregungen, wie die Software noch ein Stück besser werden kann? Dann nur her damit. Eine
+E-Mail an die Entwickler genügt. Wenn uns die Idee überzeugt, werden wir versuchen sie umzusetzen.
+
+\chapter{Systemvoraussetzungen}
+Derzeit unterstützt die Software nur Microsoft Windows Betriebssysteme. Der Simulator unterstützt
+Windows ab XP (SP3). Grundsätzlich werden 32- sowie 64-Bit Betriebssysteme unterstützt.
+\begin{table}[h!]
+	\begin{tabular}{l || l | l}
+	 & Mindestens & Empfohlen \\
+	 \hline
+	 Betriebssystem & Windows XP (SP3) & Windows 7\\
+	 Prozessorleistung & 1 GHz & 1,7 GHz \\
+	 Arbeitsspeicher & 512MB & 1GB \\
+	 Festplattenplatz & 100 MB & 150MB \\
+	 Auflösung & 800x600 & 1280x720 \\
+	\end{tabular}
+	\caption{Systemvoraussetzungen}
+\end{table}
+
+\chapter{Das Programmfenster}
+Im oberen Bereich des Programmfensters befindet sich die Übersicht über alle Register des simulierten
+Prozessors. Der aktuelle Stackpointer und der Programmzähler werden dort auch angezeigt. Die Werte
+können aber dort nicht angepasst werden. Die Textfelder dienen lediglich zur Ansicht, welche Werte
+aktuell in den Registern stehen.
+
+Oberhalb der Registeranzeige, befindet sich das Menü. Viele Menüelemente lassen sich alternativ auch
+über die Tastatur aufrufen. Die zugehörigen Shortcuts befinden sich bei den Menüelementen immer rechts
+neben dem Namen.
+
+\end{document}
