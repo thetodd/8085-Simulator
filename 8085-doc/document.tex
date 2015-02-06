@@ -2,6 +2,7 @@
 \usepackage[ngerman]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{hyperref}
 
 \begin{document}
 
@@ -51,17 +52,17 @@ Ablauf der Simulation und die Handhabung der Software erläutert.
 
 \subsection{Quelldateien}
 Die Software ist Open-Source. Das bedeutet die Quelldateien stehen jedem Interessierten zum Download
-zur Verfügung. Die Quelldateien liegen in einem git-Repository auf
-github.com/thetodd/8085-Simulator.
+zur Verfügung. Die Quelldateien liegen in einem git-Repository auf\\
+\url{https://github.com/thetodd/8085-Simulator}.
 
 Ein Anmelden bei GitHub ist nicht notwendig. Das Repository lässt sich auch mit anderen Tools
-klonen und selbst erstellen. Eine Anleitung zum Erstelles des Programmcodes aus den Quelltexten befindet
+klonen und selbst erstellen. Eine Anleitung zum Erstellen des Programmcodes aus den Quelltexten befindet
 sich im Anhang.
 
 \subsection{Bei Fehlern oder Anregungen}
 Sollte Ihnen während der Benutzung dieses 8085-Simulators ein Fehler im Programm auffallen, dürfen
-Sie gerne einen Bug im GitHub-Projekt (www.github.com/thetodd/8085-Simulator/issues) melden,
-oder eine E-Mail an florian.schleich@informatik.hs-fulda.de schreiben. Wir sind stetig bestrebt die
+Sie gerne einen Bug im GitHub-Projekt (\url{https://github.com/thetodd/8085-Simulator/issues}) melden,
+oder eine E-Mail an florian.schleich@informatik.hs-fulda.de schreiben. Wir sind stets bestrebt die
 Software von allen Fehlern und Unschönheiten zu befreien, aber auch uns passiert einmal ein Fehler.
 Wenn nette Menschen wie Sie uns Fehler melden, werden wir diese auch beseitigen.
 
@@ -85,13 +86,43 @@ Windows ab XP (SP3). Grundsätzlich werden 32- sowie 64-Bit Betriebssysteme unte
 \end{table}
 
 \chapter{Das Programmfenster}
+In diesem Kapitel lernen Sie das Programmfentser und die Funktionen der einzelnen Programmteile kennen.
+
+\section{Programmteile}
+\subsubsection{Register}
 Im oberen Bereich des Programmfensters befindet sich die Übersicht über alle Register des simulierten
 Prozessors. Der aktuelle Stackpointer und der Programmzähler werden dort auch angezeigt. Die Werte
 können aber dort nicht angepasst werden. Die Textfelder dienen lediglich zur Ansicht, welche Werte
 aktuell in den Registern stehen.
 
+\subsubsection{Das Menü}
 Oberhalb der Registeranzeige, befindet sich das Menü. Viele Menüelemente lassen sich alternativ auch
 über die Tastatur aufrufen. Die zugehörigen Shortcuts befinden sich bei den Menüelementen immer rechts
 neben dem Namen.
+
+\subsubsection{Flags}
+Rechts neben der Anzeige der einzelnen Registerinhalte befindet sich die Statusanzeige des
+Flagregisters. Ein grüner Haken bedeutet in diesem Fall ein gesetztes Flag, ein roter Strich ein
+nicht gesetztes Flag.
+
+\subsubsection{Quelltexteditor}
+
+\subsubsection{Programmspeicher}
+
+\subsubsection{Einstellungen}
+
+\subsubsection{Programmübersicht}
+
+\section{Das Menü}
+\subsection{Simulationsmenü}
+
+\subsection{Anzeigenmenü}
+
+\chapter {Ein Projekt simulieren}
+In diesem Kapitel lernen Sie, wie sie einen Quelltext eingeben, kompilieren und schließlich auf einem
+virtuellen Prozessor simulieren können.
+
+\section{Eingeben des Programmtextes}
+
 
 \end{document}
