@@ -256,6 +256,10 @@ public class Simulator {
 	public Collection<Mnemonic> getUsableMnemonics() {
 		return mnemonicMap.values();
 	}
+	
+	public Collection<String> getUsableMnemonicsNames() {
+		return mnemonicMap.keySet();
+	}
 
 	public HashMap<String, Mnemonic> getMnemonics() {
 		return mnemonicMap;
