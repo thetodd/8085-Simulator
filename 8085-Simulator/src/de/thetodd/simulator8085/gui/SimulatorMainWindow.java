@@ -27,6 +27,7 @@ import de.thetodd.simulator8085.api.actions.Action;
 import de.thetodd.simulator8085.api.actions.AssembleAction;
 import de.thetodd.simulator8085.api.actions.OneStepAction;
 import de.thetodd.simulator8085.api.actions.PrintAction;
+import de.thetodd.simulator8085.api.actions.SetProgramcounterAction;
 import de.thetodd.simulator8085.api.actions.SimulateAction;
 import de.thetodd.simulator8085.api.actions.SimulatorThread;
 import de.thetodd.simulator8085.api.listener.GlobalSimulatorEvents;
@@ -189,7 +190,8 @@ public class SimulatorMainWindow {
 							SWT.ICON_WARNING | SWT.YES | SWT.NO);
 
 					messageBox.setText("Create a new document?");
-					messageBox.setMessage("You made changes to the current document.\nDo you want to create a new document?");
+					messageBox
+							.setMessage("You made changes to the current document.\nDo you want to create a new document?");
 					int buttonID = messageBox.open();
 					switch (buttonID) {
 					case SWT.YES:
@@ -337,6 +339,17 @@ public class SimulatorMainWindow {
 				.setText(Messages.SimulatorMainWindow_mntmResetProcessor_text);
 		mntmResetProcessor.setAccelerator(SWT.MOD1 + 'R');
 
+		MenuItem mntmSetProgramcounter = new MenuItem(menu_2, SWT.NONE);
+		mntmSetProgramcounter.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Action setPCAction = new SetProgramcounterAction();
+				setPCAction.run();
+			}
+		});
+		mntmSetProgramcounter
+				.setText(Messages.SimulatorMainWindow_mntmSetProgramcounter_text);
+
 		MenuItem mntmSimulate_1 = new MenuItem(menu_2, SWT.NONE);
 		mntmSimulate_1.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -479,5 +492,4 @@ public class SimulatorMainWindow {
 		 * Color(Display.getDefault(), 0xFF, 0xFF, 0x99)); }
 		 */
 	}
-
 }
