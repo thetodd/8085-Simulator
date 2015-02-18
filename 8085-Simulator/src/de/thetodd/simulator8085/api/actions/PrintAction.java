@@ -14,6 +14,7 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import de.thetodd.simulator8085.api.Simulator;
@@ -125,23 +126,28 @@ public class PrintAction implements Action {
 				// Save the results and ensure that the document is properly
 				// closed:
 				FileDialog dialog = new FileDialog(new Shell(), SWT.OPEN);
-			    dialog
-			        .setFilterNames(new String[] { "PDF", "All Files (*.*)" });
-			    dialog.setFilterExtensions(new String[] { "*.pdf", "*.*" });
-			    String f = dialog.open();
-			    if(f != null) {
-			    	if (!f.endsWith(".pdf")) {
+				dialog.setFilterNames(new String[] { "PDF", "All Files (*.*)" });
+				dialog.setFilterExtensions(new String[] { "*.pdf", "*.*" });
+				String f = dialog.open();
+				if (f != null) {
+					if (!f.endsWith(".pdf")) {
 						f += ".pdf";
 					}
 					document.save(f);
-			    }
-				
+				}
+
 				document.close();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			} catch (COSVisitorException e) {
 				e.printStackTrace();
 			}
+		} else {
+			MessageBox dialog = new MessageBox(new Shell(), SWT.ICON_WARNING
+					| SWT.OK);
+			dialog.setText("Drucken...");
+			dialog.setMessage("Der Code muss erst übersetzt werden, bevor er gedruckt werden kann.");
+			dialog.open();
 		}
 	}
 
