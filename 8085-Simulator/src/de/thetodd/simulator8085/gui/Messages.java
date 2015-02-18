@@ -53,6 +53,9 @@ public class Messages extends NLS {
 	public static String SimulatorMainWindow_lblCommandCount_text;
 	public static String SimulatorMainWindow_grpFlags_text;
 	public static String StatusBar_lblStatus_text;
+	public static String SimulatorMainWindow_mntmSetProgramcounter_text;
+	public static String SetPCDialog_lblAddress_text;
+	public static String SetPCDialog_text_text;
 	////////////////////////////////////////////////////////////////////////////
 	//
 	// Constructor
