@@ -66,11 +66,13 @@ public class AssembleAction implements Action {
 					adresse = (short) Integer.decode(command[1]).intValue();
 				} else if (mnemonic.equals("@:")) {
 					Simulator.getInstance().addBreakpoint(adresse);
-					sv.addBreakpoint(linenumber, adresse, new Position(pos,0));
+					sv.addBreakpoint(linenumber, adresse, new Position(pos, 0));
 				} else if (mnemonic.endsWith(":")) {
 					String labelName = mnemonic.substring(0,
 							mnemonic.length() - 1);
 					Simulator.getInstance().addLabel(labelName, adresse);
+					sv.addLabelAnnotation(linenumber, adresse, new Position(
+							pos, 0), labelName);
 				} else if (mnemonic.startsWith(";") || line.equals("")) {
 					// DO nothing
 				} else {
@@ -89,7 +91,7 @@ public class AssembleAction implements Action {
 						adresse++;
 					}
 				}
-				pos += line.length()+2;
+				pos += line.length() + 2;
 				linenumber++;
 			}
 			Simulator.getInstance().setAssembled(true);
@@ -136,16 +138,17 @@ public class AssembleAction implements Action {
 			 */
 
 			isCorrect = false;
-			//ex.printStackTrace();
+			// ex.printStackTrace();
 
 			String[] lines = sv.getText().split("\r\n");
 			int pos = 0;
 			for (int i = 0; i < ex.getLine(); i++) {
-				pos += lines[i].length()+2;
+				pos += lines[i].length() + 2;
 			}
-			
-			//System.out.println(pos);
-			sv.addCompileError(ex.getLine(), new Position(pos, 3), ex.getMessage());
+
+			// System.out.println(pos);
+			sv.addCompileError(ex.getLine(), new Position(pos, 3),
+					ex.getMessage());
 		}
 		return isCorrect;
 	}
