@@ -23,6 +23,7 @@ import de.thetodd.simulator8085.api.listener.SimulatorEvent;
 import de.thetodd.simulator8085.gui.sourceviewer.annotations.AssembleErrorAnnotation;
 import de.thetodd.simulator8085.gui.sourceviewer.annotations.BreakpointAnnotation;
 import de.thetodd.simulator8085.gui.sourceviewer.annotations.ErrorAnnotation;
+import de.thetodd.simulator8085.gui.sourceviewer.annotations.LabelAnnotation;
 import de.thetodd.simulator8085.gui.sourceviewer.annotations.WarningAnnotation;
 
 public class AssemblerSourceViewer extends SourceViewer {
@@ -58,6 +59,7 @@ public class AssemblerSourceViewer extends SourceViewer {
 		annotationRuler.addAnnotationType(AssembleErrorAnnotation.TYPE);
 		annotationRuler.addAnnotationType(WarningAnnotation.TYPE);
 		annotationRuler.addAnnotationType(BreakpointAnnotation.TYPE);
+		annotationRuler.addAnnotationType(LabelAnnotation.TYPE);
 
 		AnnotationPainter painter = new AnnotationPainter(this,
 				fAnnotationAccess);
@@ -80,7 +82,9 @@ public class AssemblerSourceViewer extends SourceViewer {
 			public void documentChanged(DocumentEvent arg0) {
 				// set dirty
 				dirty = true;
-				SimulatorEvent evt = new SimulatorEvent(GlobalSimulatorEvents.DOCUMENT_CHANGE, "", SimulatorEvent.TYPE.INFORMATION);
+				SimulatorEvent evt = new SimulatorEvent(
+						GlobalSimulatorEvents.DOCUMENT_CHANGE, "",
+						SimulatorEvent.TYPE.INFORMATION);
 				Simulator.getInstance().fireSimulatorEvent(evt);
 			}
 
@@ -107,6 +111,14 @@ public class AssemblerSourceViewer extends SourceViewer {
 		AssembleErrorAnnotation errorAnnotation = new AssembleErrorAnnotation(
 				line, message);
 		fAnnotationModel.addAnnotation(errorAnnotation, position);
+		this.getControl().update();
+	}
+
+	public void addLabelAnnotation(int line, short address, Position pos,
+			String name) {
+		LabelAnnotation labelAnnotation = new LabelAnnotation(line, "Label \""
+				+ name + "\" at " + String.format("0x%04X", address));
+		fAnnotationModel.addAnnotation(labelAnnotation, pos);
 		this.getControl().update();
 	}
 
