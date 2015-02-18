@@ -146,7 +146,7 @@ public class PrintAction implements Action {
 			MessageBox dialog = new MessageBox(new Shell(), SWT.ICON_WARNING
 					| SWT.OK);
 			dialog.setText("Drucken...");
-			dialog.setMessage("Der Code muss erst übersetzt werden, bevor er gedruckt werden kann.");
+			dialog.setMessage("Der Code muss erst Ã¼bersetzt werden, bevor er gedruckt werden kann.");
 			dialog.open();
 		}
 	}
