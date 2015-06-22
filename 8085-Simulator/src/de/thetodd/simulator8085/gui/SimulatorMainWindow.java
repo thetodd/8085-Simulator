@@ -1,5 +1,6 @@
 package de.thetodd.simulator8085.gui;
 
+import java.awt.Desktop;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -458,6 +459,16 @@ public class SimulatorMainWindow {
 		mntmNewSubmenu.setMenu(menu_3);
 
 		MenuItem mntmHelpContents = new MenuItem(menu_3, SWT.NONE);
+		mntmHelpContents.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				try {
+					Desktop.getDesktop().open(new File("help/Beschreibung 8085 Simulator.pdf"));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		mntmHelpContents
 				.setText(Messages.SimulatorMainWindow_mntmHelpContents_text);
 		mntmHelpContents.setAccelerator(SWT.F1);
