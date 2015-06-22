@@ -286,7 +286,7 @@ public class Simulator {
 	public void setOutEntry(final byte adr, final byte c) {
 		outMap.put(adr, c);
 		SimulatorEvent evt = new SimulatorEvent(
-				GlobalSimulatorEvents.PORT_WRITE, Byte.toString(adr) + ": "
+				GlobalSimulatorEvents.PORT_WRITE, Byte.toString(adr) + ":"
 						+ Byte.toString(c), SimulatorEvent.TYPE.SUCCESS);
 		fireSimulatorEvent(evt);
 	}
