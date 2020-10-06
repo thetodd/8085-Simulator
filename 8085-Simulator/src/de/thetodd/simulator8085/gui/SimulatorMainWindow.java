@@ -1,10 +1,12 @@
 package de.thetodd.simulator8085.gui;
 
 import java.awt.Desktop;
+import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 
 import org.eclipse.swt.SWT;
@@ -61,9 +63,11 @@ public class SimulatorMainWindow {
 	/**
 	 * Open the window.
 	 * 
+	 * @throws IOException
+	 * 
 	 * @wbp.parser.entryPoint
 	 */
-	public void open() {
+	public void open() throws IOException {
 		final Display display = Display.getDefault();
 
 		createContents();
@@ -90,8 +94,10 @@ public class SimulatorMainWindow {
 
 	/**
 	 * Create contents of the window.
+	 * 
+	 * @throws IOException
 	 */
-	protected void createContents() {
+	protected void createContents() throws IOException {
 		shlSimulator = new Shell();
 		shlSimulator
 				.setImage(SWTResourceManager
@@ -130,6 +136,10 @@ public class SimulatorMainWindow {
 		tabsLeft.setSelection(tbtmProgramm);
 
 		sv = new AssemblerSourceViewer(tabsLeft);
+		document = new File(this.getClass().getClassLoader().getResource("de/thetodd/simulator8085/examples/simple_add.asm").getFile());
+		InputStream sampleFileInput = this.getClass().getClassLoader().getResourceAsStream("de/thetodd/simulator8085/examples/simple_add.asm");
+		BufferedInputStream bis = new BufferedInputStream(sampleFileInput);
+		sv.getDocument().set(new String(bis.readAllBytes()));
 		tbtmProgramm.setControl(sv.getControl());
 
 		CTabItem tbtmSpeicher = new CTabItem(tabsLeft, SWT.NONE);
